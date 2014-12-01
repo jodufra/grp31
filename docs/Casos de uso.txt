@@ -1,0 +1,35 @@
+Casos de uso:
+
+-Rules:
+	1 - O utilizador clica no botão "Rules";
+	2 - O sistema apresenta a uma mini janela com as regras do jogo.
+
+-Login:
+	1 - O utilizador clica no botão "Login" da barra de navigação;
+	2 - O sistema apresenta um mini menu de login;
+	3 - O utilizador preenche os dados e clica no botão "Login";
+	4 - O sistema valida todos os dados inseridos pelo utilizador, entra na sessão e apresenta a janela "Home".
+
+	Caminhos alternativos:
+
+	3.1 - O utilizador seleciona a opção "Forgot password" e o sistema apresenta a janela para fazer reset da password e o caso de uso termina;
+	3.2 - O utilizador clica com o rato em qualquer sitio da página web, excepto dentro do menu de login, e o caso de uso termina.
+	4.1 - O sistema verifica que os dados inseridos pelo utilizador estão incorretos, o sistema apresenta uma janela de login com uma mensagem de aviso, e o caso de uso termina.
+
+
+-Registar Utilizador
+
+	1)O utilizador seleciona a opção "Register" da barra de navigação;
+	2)O sistema apresta a janela "user/create";
+	3)O utilizador preenche os dados do formulario na janela "user/create" e seleciona a opção "register", no final da página;
+	4)O sistema valida os dados e volta para a janela "home".
+
+	Caminhos alternativos:
+
+	3.1)Caso o utilizador nao tenha preenchido algum campo obrigatorio, o sistema ira apresentar uma mensagem respectiva a esse mesmo erro e volta para o caminho principal 3.
+	3.2)Caso o utilizador tenha introduzido um mail que ja esta registado, uma mensagem de erro respectivo e volta para o caminho principal 3.
+
+
+-Iniciar Jogo
+	1)o utilizador registar carrega no botao "play"
+	2)o sistema apresenta a janela "Game"
