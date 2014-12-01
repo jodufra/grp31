@@ -30,20 +30,22 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                   @if (Auth::check())
-                   <li><a href="/logout">Log Out</a></li>
-                   <li><a href="/profile">{{ Auth::user()->first_name }}</a></li>
-                   @else
-                   <li><a href="/user/create">Register</a></li>
-                   <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login<span class="caret"></span></a>
+                 @if (Auth::check())
+                 <li><a href="/logout">Log Out</a></li>
+                 <li><a href="/profile">{{ Auth::user()->first_name }}</a></li>
+                 @else
+                 <li><a href="/user/create">Register</a></li>
+                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login
+                        <span class="caret"></span>
+                    </a>
                     <ul class="dropdown-menu" role="menu">
                         @include('users.login')
                         <li class="divider"></li>
                         <li><a href="/user/create">Register</a></li>
                         <li><a href="#">Forgot password</a></li>
                     </ul>
-                </li>
+                 </li>
                 @endif
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -122,11 +124,11 @@
             </div>
         </div>
     </div>
+</div>
+<div class="container">
+    <div class="row">
+        @yield('body')
     </div>
-    <div class="container">
-        <div class="row">
-            @yield('body')
-        </div>
-    </div>
+</div>
 </body>
 </html>
