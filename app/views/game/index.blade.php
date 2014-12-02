@@ -2,17 +2,21 @@
 @section('body')
 <div class="col-md-1"></div>
 <div class="col-md-7">
-	<table>
-		{{ Form::open(array('route'=>'game','method' => 'post', 'class'=>'form-horizontal')) }}
-		<td>{{ Form::number('1',null,array('class' => 'form-control unstyled', 'required', 'min'=>'0', 'max' => '6')) }}</td>
-		<td>{{ Form::number('2',null,array('class' => 'form-control unstyled', 'required', 'min'=>'0', 'max' => '6')) }}</td>
-		<td>{{ Form::number('3',null,array('class' => 'form-control unstyled', 'required', 'min'=>'0', 'max' => '6')) }}</td>
-		<td>{{ Form::number('4',null,array('class' => 'form-control unstyled', 'required', 'min'=>'0', 'max' => '6')) }}</td>
-		<td>{{ Form::number('5',null,array('class' => 'form-control unstyled', 'required', 'min'=>'0', 'max' => '6')) }}</td>
-		<td>{{ Form::submit('Roll',array('class' => 'form-control'))}}</td>
-		{{ Form::close() }}
-	</table>
+
+	<div ng-controller="DicesController">
+		<img id="img1" src="{{asset('img/dice1.png')}}" />
+		<img id="img2" src="{{asset('img/dice2.png')}}" />
+		<img id="img3" src="{{asset('img/dice3.png')}}" />
+		<img id="img4" src="{{asset('img/dice4.png')}}" />
+		<img id="img5" src="{{asset('img/dice5.png')}}" />
+		<button ng-click="roll()">Roll</button>
+	</div>
 </div>
+
+
+
+
+
 <div class="col-md-3">
 	<div class="table-responsive">
 		<table class="table table-bordered table-condensed">

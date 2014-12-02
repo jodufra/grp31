@@ -20,9 +20,33 @@ class GameController extends BaseController
         $result=$calculator->getScore($dices);
         return View::make('game.index')->with('result', $result);
     }
+
+    public function getDices()
+    {
+        $result = array(
+            array(
+                "dice" => rand(1,6)
+            ),
+            array(
+                "dice" => rand(1,6)
+            ),
+            array(
+                "dice" => rand(1,6)
+            ),
+            array(
+                "dice" => rand(1,6)
+            ),
+            array(
+                "dice" => rand(1,6)
+            ),
+        );
+        $teste = array(array(rand(1,6)),array(rand(1,6)),array(rand(1,6)),array(rand(1,6)),array(rand(1,6)));
+        return Response::json($teste);
+    }
+
     public function index()
     {
-        //
+        return View::make('game.index');
     }
 
     /**

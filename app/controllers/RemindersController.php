@@ -66,7 +66,6 @@ class RemindersController extends Controller
             case Password::INVALID_TOKEN:
             case Password::INVALID_USER:
             return Redirect::back()->withErrors(Lang::get($response));
-
             case Password::PASSWORD_RESET:
             return Redirect::to('/');
         }

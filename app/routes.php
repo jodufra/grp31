@@ -30,6 +30,7 @@ Route::group(array('before' => 'auth'), function () {
     Route::get('user/show', array('as' => 'user.show', 'uses' => 'UsersController@show'));
     Route::any('logout', array('as' => 'logout', 'uses' => 'UsersController@logout'));
     Route::any('game', array('as' => 'game', 'uses' => 'GameController@scoreCalculator'));
+    Route::get('getDices','GameController@getDices');
 });
 
 Route::group(array('before' => 'not.supported'), function () {
