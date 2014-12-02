@@ -2,10 +2,10 @@
 <html lang="en" ng-app="app">
 <head>
     <meta charset="UTF-8">
-    {{ HTML::style('apiscss/bootstrap.min.css'); }}
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    {{ HTML::style('apiscss/bootstrap-yeti.min.css'); }}
     {{ HTML::style('apiscss/bootstrap-datepicker.css'); }}
     {{ HTML::style('css/layout.css'); }}
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <title>Yahtzee</title>
 </head>
 <body>
@@ -22,7 +22,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/">
-                    <span class=""><img alt="Yahtzee" src="{{asset('favicon.ico')}}"/>&nbspYahtzee</span>
+                    <span class=""><img alt="Yahtzee" src="{{asset('favicon.ico')}}"/>&nbsp;Yahtzee</span>
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -97,6 +97,7 @@
                         </ul>
                     </div>
                     @endif
+                    {{Notify::parseAll()}}
                 </div>
             </div>
         </div>

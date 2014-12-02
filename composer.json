@@ -7,9 +7,10 @@
 		"laravel/framework": "4.2.*",
 		"barryvdh/laravel-debugbar": "1.x",
 		"barryvdh/laravel-ide-helper": "1.*",
-   "way/generators": "2.6.1",
-   "twitter/bootstrap": "*",
-   "phpunit/phpunit":"4.3.*"
+    "way/generators": "2.6.1",
+    "twitter/bootstrap": "*",
+    "phpunit/phpunit":"4.3.*",
+    "levare/notify": "4.1.*@dev"
    },
    "autoload": {
     "classmap": [

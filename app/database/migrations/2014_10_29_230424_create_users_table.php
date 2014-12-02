@@ -14,7 +14,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             //Account Info
-            $table->increments('id');
+            $table->increments('iduser');
+            $table->int('person_idperson')->unsigned();
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
@@ -23,15 +24,8 @@ class CreateUsersTable extends Migration
             // role = 1 => Admin
             // role = 2 => SuperUser
             // role = 3 => NormalUser
-            //role = 9 => banned User
             // role = 10 => EmailNotVerified
-            $table->integer('gamesPlayed')->unsigned()->defaultValue(0);
-            $table->integer('gamesWon')->unsigned()->defaultValue(0);
-            $table->integer('gamesPlayed')->unsigned()->defaultValue(0);
-            $table->integer('tournamentsParticipated')->unsigned()->defaultValue(0);
-            $table->integer('tournamentsWonFistPlace')->unsigned()->defaultValue(0);
-            $table->integer('tournamentWonSecPlace')->unsigned()->defaultValue(0);
-            $table->integer('tournamentWonThirdPlace')->unsigned()->defaultValue(0);
+            // role = 11 => Banned User
 
             $table->string('remember_token')->nullable();
             $table->timestamps();

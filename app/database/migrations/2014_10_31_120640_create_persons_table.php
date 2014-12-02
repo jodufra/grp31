@@ -12,26 +12,20 @@ class CreatePersonsTable extends Migration
 	 */
     public function up()
     {
-        Schema::create('persons', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->string('photo_url')->nullable();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->date('birth_date');
+        Schema::create('people', function (Blueprint $table) {
+            $table->increments('idperson');
+            $table->string('name');
+            $table->blob('photo')->nullable();
+            $table->date('birthdate');
             $table->string('country');
-            $table->string('city')->nullable();
             $table->text('address')->nullable();
-            $table->decimal('phone_number', 9, 0)->nullable();
+            $table->decimal('phone', 9, 0)->nullable();
             $table->string('facebook_url')->nullable();
             $table->string('twitter_url')->nullable();
             //
-            $table->string('credit_card_type');
             $table->string('credit_card_titular');
             $table->decimal('credit_card_num', 16, 0);
-            $table->integer('credit_card_valid_month')->unsigned();
-            $table->integer('credit_card_valid_year')->unsigned();
-            $table->integer('credit_card_valid_cvc')->unsigned();
+            $table->date('credit_card_valid');
             $table->timestamps();
         });
     }
@@ -44,7 +38,7 @@ class CreatePersonsTable extends Migration
 	 */
     public function down()
     {
-        Schema::drop('persons');
+        Schema::drop('people');
     }
 
 }

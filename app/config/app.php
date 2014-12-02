@@ -123,8 +123,8 @@ return array(
         'Illuminate\Workbench\WorkbenchServiceProvider',
         'Barryvdh\Debugbar\ServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-        'Dollar\Generators\GeneratorsServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
+        'Levare\Notify\NotifyServiceProvider'
         ),
 
     /*
@@ -192,7 +192,7 @@ return array(
         'Validator'       => 'Illuminate\Support\Facades\Validator',
         'View'            => 'Illuminate\Support\Facades\View',
         'Debugbar'        => 'Barryvdh\Debugbar\Facade',
-
+        'Notify'          => 'Levare\Notify\Facades\Notify',
         ),
 
 );

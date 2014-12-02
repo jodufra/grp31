@@ -12,8 +12,8 @@ class CreateUserPersonRelation extends Migration
 	 */
     public function up()
     {
-        Schema::table('persons', function ($table) {
-            $table->foreign('user_id')->references('id')->on('users')
+        Schema::table('users', function ($table) {
+            $table->foreign('person_idperson')->references('idperson')->on('people')
                 ->onDelete('cascade');
         });
     }
@@ -26,8 +26,8 @@ class CreateUserPersonRelation extends Migration
 	 */
     public function down()
     {
-        Schema::table('persons', function ($table) {
-           $table->dropForeign('persons_user_id_foreign');
+        Schema::table('users', function ($table) {
+           $table->dropForeign('users_person_idperson_foreign');
         });
     }
 

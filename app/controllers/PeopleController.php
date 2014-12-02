@@ -1,9 +1,9 @@
 <?php
 
-class PersonsController extends BaseController {
+class PeopleController extends BaseController {
 
 	/**
-	 * Display a listing of persons
+	 * Display a listing of people
 	 *
 	 * @return Response
 	 */
@@ -29,16 +29,7 @@ class PersonsController extends BaseController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), Person::$rules);
-
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
-
-		Person::create($data);
-
-		return Redirect::route('user.show');
+		//
 	}
 
 	/**
@@ -51,7 +42,7 @@ class PersonsController extends BaseController {
 	{
 		$person = Person::findOrFail($id);
 
-		return View::make('persons.show', compact('person'));
+		return View::make('people.show', compact('person'));
 	}
 
 	/**
@@ -64,7 +55,7 @@ class PersonsController extends BaseController {
 	{
 		$person = Person::find($id);
 
-		return View::make('persons.edit', compact('person'));
+		return View::make('people.edit', compact('person'));
 	}
 
 	/**

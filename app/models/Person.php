@@ -8,49 +8,37 @@ class Person extends Eloquent
      *
      * @var string
      */
-    protected $table = 'persons';
+    protected $table = 'people';
 
 
     // Add your validation rules here
     public static $rules = [
-    'first_name'=>'required|min:2',
-    'last_name'=>'required|min:2',
-    'birth_date'=>'required',
+    'name'=>'required|min:5',
+    'birthdate'=>'required',
     'country'=>'required',
-    'city'=>'min:4',
     'address'=>'min:12',
-    'phone_number'=>'min:9',
-    'credit_card_type'=>'required',
+    'phone'=>'min:9',
     'credit_card_titular'=>'required|min:6',
     'credit_card_num'=>'required|min:13',
-    'credit_card_valid_month'=>'required',
-    'credit_card_valid_year'=>'required'
+    'credit_card_valid'=>'required',
     ];
 
     protected $fillable = [
-    'first_name',
-    'last_name',
-    'birth_date',
+    'name',
+    'birthdate',
     'country',
-    'city',
     'address',
-    'phone_number',
+    'phone',
     'facebook_url',
     'twitter_url',
-    'credit_card_type',
     'credit_card_titular',
     'credit_card_num',
-    'credit_card_valid_month',
-    'credit_card_valid_year',
-    'credit_card_valid_cvc'
+    'credit_card_valid',
     ];
 
     protected $hidden = [
-    'photo_url',
-    'credit_card_type',
     'credit_card_num',
-    'credit_card_valid_month',
-    'credit_card_valid_year'
+    'credit_card_valid',
     ];
 
     public function user()

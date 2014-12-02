@@ -18,17 +18,17 @@ Route::get('/', array('as' => 'home', 'uses' => 'HomeController@showHome'));
 
 Route::group(array('before' => 'guest'), function () {
     // Only Guests
-    Route::controller('password','RemindersController');
-    Route::get('login', 'UsersController@showLogin');
     Route::get('user/create', array('as' => 'user.create', 'uses' => 'UsersController@create'));
     Route::post('user/store', array('as' => 'user.store', 'uses' => 'UsersController@store'));
-    Route::post('/', array('as' => 'login', 'uses' => 'UsersController@handleLogin'));
+    Route::get('login', 'AuthController@getLogin');
+    Route::post('/', array('as' => 'login', 'uses' => 'AuthController@postLogin'));
+    Route::controller('password','RemindersController');
 });
 
 Route::group(array('before' => 'auth'), function () {
     // Only Users
+    Route::any('logout', array('as' => 'logout', 'uses' => 'AuthController@logout'));
     Route::get('user/show', array('as' => 'user.show', 'uses' => 'UsersController@show'));
-    Route::any('logout', array('as' => 'logout', 'uses' => 'UsersController@logout'));
     Route::any('game', array('as' => 'game', 'uses' => 'GameController@scoreCalculator'));
     Route::get('getDices','GameController@getDices');
 });
