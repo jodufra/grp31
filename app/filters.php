@@ -36,7 +36,7 @@ Route::filter('auth', function () {
         if (Request::ajax()) {
             return Response::make('Unauthorized', 401);
         } else {
-            return Redirect::guest('login');
+            return Redirect::guest('login')->with('warning','You have to login before seeing that page!');
         }
     }
 });
@@ -59,7 +59,7 @@ Route::filter('auth.basic', function () {
 
 Route::filter('guest', function () {
     if (Auth::check())
-        return Redirect::route('home')->with('flash_notice', 'You are already logged in!');
+        return Redirect::route('home')->with('warning','You are logged in. Are  you sure you want to go there?');
 });
 
 /*
@@ -75,6 +75,7 @@ Route::filter('guest', function () {
 
 Route::filter('csrf', function () {
     if (Session::token() != Input::get('_token')) {
+        return Redirect::route('home')->with('warning','You have been Hacked!!');
         throw new Illuminate\Session\TokenMismatchException;
     }
 });

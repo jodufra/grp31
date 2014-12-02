@@ -1,5 +1,5 @@
 <div class="container-fluid">
-	{{ Form::open(array('route' => 'login', 'method' => 'post', 'class' => 'form-vertical')); }}
+	{{ Form::open(array('action' => 'AuthController@postLogin', 'method' => 'post', 'class' => 'form-vertical')); }}
 	<div class="form-group">
 		{{Form::label('username','Username');}}
 		{{Form::text('username', null,array('class' => 'form-control'));}}

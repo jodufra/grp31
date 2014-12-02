@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,26 +10,29 @@
 |
 */
 
-
-
-
 Route::get('/', array('as' => 'home', 'uses' => 'HomeController@showHome'));
+
 
 Route::group(array('before' => 'guest'), function () {
     // Only Guests
-    Route::get('user/create', array('as' => 'user.create', 'uses' => 'UsersController@create'));
-    Route::post('user/store', array('as' => 'user.store', 'uses' => 'UsersController@store'));
+    Route::group(array('prefix' => 'user'), function(){
+        Route::get('create', array('as' => 'user.create', 'uses' => 'UsersController@create'));
+        Route::post('store', array('as' => 'user.store', 'before' => 'csrf', 'uses' => 'UsersController@store'));
+    });
+
     Route::get('login', 'AuthController@getLogin');
-    Route::post('/', array('as' => 'login', 'uses' => 'AuthController@postLogin'));
-    Route::controller('password','RemindersController');
+    Route::post('login', array('before' => 'csrf', 'uses' => 'AuthController@postLogin'));
+    Route::controller('password', 'RemindersController');
 });
 
 Route::group(array('before' => 'auth'), function () {
     // Only Users
-    Route::any('logout', array('as' => 'logout', 'uses' => 'AuthController@logout'));
+    Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@logout'));
     Route::get('user/show', array('as' => 'user.show', 'uses' => 'UsersController@show'));
-    Route::any('game', array('as' => 'game', 'uses' => 'GameController@scoreCalculator'));
-    Route::get('getDices','GameController@getDices');
+    Route::group(array('prefix' => 'game'), function(){
+        Route::any('/','GameController@scoreCalculator');
+        Route::get('getDices','GameController@getDices');
+    });
 });
 
 Route::group(array('before' => 'not.supported'), function () {

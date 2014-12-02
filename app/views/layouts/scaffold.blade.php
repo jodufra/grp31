@@ -76,28 +76,37 @@
     <div class="content container">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
-                    @if(Session::has('message'))
+                <div class="col-md-8 col-md-offset-2">
+                    @if(Session::has('success'))
                     <div class="alert alert-success">
                         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <ul>
                             <li class="success">
-                                {{ Session::get('message') }}
+                                {{ Session::get('success') }}
                             </li>
                         </ul>
                     </div>
                     @endif
-                    @if(Session::has('flash_notice'))
+                    @if(Session::has('warning'))
                     <div class="alert alert-warning">
                         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <ul>
                             <li class="warning">
-                                {{ Session::get('flash_notice') }}
+                                {{ Session::get('warning') }}
                             </li>
                         </ul>
                     </div>
                     @endif
-                    {{Notify::parseAll()}}
+                    @if(Session::has('info'))
+                    <div class="alert alert-info">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <ul>
+                            <li class="info">
+                                {{ Session::get('info') }}
+                            </li>
+                        </ul>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

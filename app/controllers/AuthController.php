@@ -13,7 +13,7 @@ class AuthController extends \BaseController {
 		$validator = Validator::make($input, User::$login_rules);
 
 		if($validator->fails()) {
-			return $this->showLogin()->withErrors($validator)->withInput(Input::except('password'));
+			return Redirect::route('login')->withErrors($validator)->withInput(Input::except('password'));
 		}
 
 		if(Auth::attempt(['username' => $input['username'], 'password' => $input['password']])) {
@@ -22,7 +22,7 @@ class AuthController extends \BaseController {
 			return Redirect::route('home');
 		}
 
-		return $this->showLogin()->withInput(Input::except('password'))->withErrors('Wrong Username/Email and Password combination.');
+		return Redirect::route('login')->withInput(Input::except('password'))->withErrors('Wrong Username/Email and Password combination.');
 	}
 
 
@@ -31,7 +31,7 @@ class AuthController extends \BaseController {
 		if(Auth::check()){
 			Auth::logout();
 		}
-		return Redirect::route('home');
+		return Redirect::route('home')->with('success','You have logged out.');
 	}
 
 }
