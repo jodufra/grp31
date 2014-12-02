@@ -1,5 +1,7 @@
-<div class="container-fluid">
-	
+@extends('layouts.scaffold')
+@section('body')
+<div class="col-md-6 col-md-offset-3">
+	<h1>Login</h1>
 	@if ($errors->any())
 	<div class="alert alert-danger">
 		<ul>
@@ -7,11 +9,6 @@
 		</ul>
 	</div>
 	@endif
-	{{ Form::open(array('action' => 'UsersController@handleLogin', 'method' => 'post')); }}
-	{{ Form::label('username','Username');}}
-	{{ Form::text('username', null, array('class' => 'form-control'));}}
-	{{ Form::label('password','Password');}}
-	{{ Form::password('password',array('class' => 'form-control'));}}
-	{{ Form::submit('Login', array('class' => 'btn btn-primary'));}}
-	{{ Form::close(); }}
+	@include('users.login_form')
 </div>
+@stop

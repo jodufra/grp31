@@ -8,6 +8,5 @@ composer.lock
 .DS_Store
 Thumbs.db
 _ide_helper.php
-commit.bat
-pull.bat
-push.bat
+*.bat
+projecto.iml

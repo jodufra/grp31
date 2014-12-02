@@ -2,7 +2,7 @@
 
 return array(
 
-	/*
+    /*
 	|--------------------------------------------------------------------------
 	| Third Party Services
 	|--------------------------------------------------------------------------
@@ -14,18 +14,18 @@ return array(
 	|
 	*/
 
-	'mailgun' => array(
-		'domain' => '',
-		'secret' => '',
-	),
+    'mailgun' => array(
+        'domain' => 'sandboxd44870f8b22b44c9b9d99a872990d79a.mailgun.org',
+        'secret' => '864efe271e970d633a0cb9c0081159ff',
+    ),
 
-	'mandrill' => array(
-		'secret' => '',
-	),
+    'mandrill' => array(
+        'secret' => '',
+    ),
 
-	'stripe' => array(
-		'model'  => 'User',
-		'secret' => '',
-	),
+    'stripe' => array(
+        'model'  => 'User',
+        'secret' => '',
+    ),
 
 );
