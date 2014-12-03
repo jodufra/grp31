@@ -11,10 +11,28 @@
 |
 */
 
-App::before(function ($request) {
-    //
-});
+App::before(function($request)  
+{ 
+    $headers=array('key' => '-----BEGIN CERTIFICATE-----
+        MIICvjCCAiegAwIBAgIJAO52hdsvK4RWMA0GCSqGSIb3DQEBBQUAMHcxCzAJBgNV
+        BAYTAlBUMREwDwYDVQQIDAhQb3J0dWdhbDEPMA0GA1UEBwwGTGVpcmlhMSEwHwYD
+        VQQKDBhJUEwsIEVTVEcsIERhZCwgR3J1cG8gMzExETAPBgNVBAsMCEdydXBvIDMx
+        MQ4wDAYDVQQDDAVncnAzMTAgFw0xNDEyMDMwNDE0NTZaGA8zMDE0MDQwNTA0MTQ1
+        NlowdzELMAkGA1UEBhMCUFQxETAPBgNVBAgMCFBvcnR1Z2FsMQ8wDQYDVQQHDAZM
+        ZWlyaWExITAfBgNVBAoMGElQTCwgRVNURywgRGFkLCBHcnVwbyAzMTERMA8GA1UE
+        CwwIR3J1cG8gMzExDjAMBgNVBAMMBWdycDMxMIGfMA0GCSqGSIb3DQEBAQUAA4GN
+        ADCBiQKBgQClUva65ZqtIDmWmRoWOoIyE6ds5MpnkImkgC+8d2oHrtWPIlTTU+Wl
+        12thoeDNh4pxjASYU/2DJ1RmaXkaIkl4twbeL3Q2Bt7NWzw4za9kPka2G3l5i0SN
+        9LfWzGt0S1yCkktI2qJw+M1bSXot8StwBFktWQgGIzgwG2lVbKEK2wIDAQABo1Aw
+        TjAdBgNVHQ4EFgQUfFSQl02zG/3nc3Ww3gkdO9Ic2JQwHwYDVR0jBBgwFoAUfFSQ
+        l02zG/3nc3Ww3gkdO9Ic2JQwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQUFAAOB
+        gQCTC0p7XcW++L+sHsVV2DxneFlTyVXpK8+ewWwjnjOAKrA9yFj/tVdZ4+dhDZVx
+        PyoU7xpTBMib9tmzC7FEM4Lxb7DlmjYI2kLCju0INBswX7Izv2wQTHYtWbKXDZli
+        RlxQyCa8Y2j+JpinkVnnipZ7mBVyyXrtv2VnwMa2fPkNlA==
+        -----END CERTIFICATE-----');
 
+     View::share('headers', $headers);
+}); 
 
 App::after(function ($request, $response) {
     //
@@ -36,7 +54,7 @@ Route::filter('auth', function () {
         if (Request::ajax()) {
             return Response::make('Unauthorized', 401);
         } else {
-            return Redirect::guest('login')->with('warning','You have to login before seeing that page!');
+            return Redirect::guest('login')->with('warning','You have to login first.');
         }
     }
 });
@@ -59,7 +77,7 @@ Route::filter('auth.basic', function () {
 
 Route::filter('guest', function () {
     if (Auth::check())
-        return Redirect::route('home')->with('warning','You are logged in. Are  you sure you want to go there?');
+        return Redirect::route('home')->with('warning','You are logged in. We are pretty sure you don\'t want to go there');
 });
 
 /*
@@ -75,12 +93,23 @@ Route::filter('guest', function () {
 
 Route::filter('csrf', function () {
     if (Session::token() != Input::get('_token')) {
-        return Redirect::route('home')->with('warning','You have been Hacked!!');
+        return Redirect::route('home')->with('danger','You have been Hacked!!');
         throw new Illuminate\Session\TokenMismatchException;
     }
 });
 
 
 Route::filter('not.supported', function () {
-    return Redirect::route('home')->with('flash_notice', 'We are still working on this functionality');
+    return Redirect::route('home')->with('info', 'We are still working on this functionality');
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Cipher Protection Filter
+|--------------------------------------------------------------------------
+|
+| The Cipher filter is responsible for protecting critical user information (passwords, email)
+|
+*/
+Route::filter('cryptOut', 'Yatzhee\Filters\OutgoingCryptFilter');

@@ -10,10 +10,6 @@ class HomeController extends BaseController
 {
 	public function showHome()
 	{
-		Notify::flashDanger("Your Message");
-		Notify::flashSuccess("Your Message");
-		Notify::flashWarning("Your Message");
-		Notify::flashInfo("Your Message");
 		return View::make('home');
 	}
 }

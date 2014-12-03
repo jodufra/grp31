@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-    'debug' => true,
+    'debug' => false,
 
     /*
 	|--------------------------------------------------------------------------
@@ -82,6 +82,8 @@ return array(
 
     'cipher' => MCRYPT_RIJNDAEL_128,
 
+    'privateKey' => 'private.key',
+
     /*
 	|--------------------------------------------------------------------------
 	| Autoloaded Service Providers
@@ -124,7 +126,8 @@ return array(
         'Barryvdh\Debugbar\ServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
-        'Levare\Notify\NotifyServiceProvider'
+        'Levare\Notify\NotifyServiceProvider',
+        'Yatzhee\Providers\CryptoServiceProvider',
         ),
 
     /*
