@@ -4,13 +4,28 @@
 
 var appControllers = angular.module('appControllers', []);
 
-appControllers.controller('DicesController', function($scope, $http) {
-	var roll = function(){
-		$http.get("/getDices").success(
-			function(data) {
-				alert($scope.dices = data);
-			});
+appControllers.controller('DicesController', ['$scope', function($scope){
 
-		/*Write here*/
-	}
-});
+	$scope.result = [];
+	$scope.dices = [{val:1,saved:false},
+	{val:1,saved:false},
+	{val:1,saved:false},
+	{val:1,saved:false},
+	{val:1,saved:false}];
+
+	$scope.result['sum'] = function(){
+		var val = 0;
+		for (var i in $scope.dices) {
+			val += $scope.dices[i].val;
+		}
+		return val;
+	};
+
+	$scope.randomize = function() {
+		$scope.dices = [];
+		var max = 5 - $scope.dices.length;
+		for (var i = 0; i < max; i++) {
+			$scope.dices.push({val:(Math.ceil(Math.random()*6)),saved:false});
+		};
+	};
+}]);

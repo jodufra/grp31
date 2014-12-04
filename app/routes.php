@@ -39,7 +39,7 @@ Route::group(array('before' => 'auth'), function () {
     Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@logout'));
     Route::get('user/show', array('as' => 'user.show', 'uses' => 'UsersController@show'));
     Route::group(array('prefix' => 'game'), function(){
-        Route::any('/','GameController@scoreCalculator');
+        //Route::any('/','GameController@scoreCalculator');
         Route::get('getDices','GameController@getDices');
     });
 });

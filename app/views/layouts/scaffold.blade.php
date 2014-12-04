@@ -122,9 +122,11 @@
                 </div>
             </div>
         </div>
+        <div class="sidebar" id="sidebar">
+            @yield('sidebar')
+        </div>
         <div class="container">
-            <div class="row">
-
+            <div ng-view class="row">
                 @yield('body')
             </div>
         </div>
@@ -137,11 +139,8 @@
     {{ HTML::script('apisjs/bootstrap.min.js'); }}
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
     {{ HTML::script('js/scripts.js'); }}
-    {{ HTML::script('js/app.js'); }}
-    {{ HTML::script('js/animations.js'); }}
     {{ HTML::script('js/controllers.js'); }}
-    {{ HTML::script('js/filters.js'); }}
-    {{ HTML::script('js/services.js'); }}
+    {{ HTML::script('js/app.js'); }}
     {{ HTML::script('js/datepicker.js'); }}
     {{ HTML::script('js/datepickerAtivate.js'); }}
 

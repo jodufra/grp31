@@ -35,7 +35,7 @@ class ApiController extends BaseController {
         $this->crypt->initAes(array(
             'key'   => $key,
             'iv'    => $iv,
-        ));
+            ));
 
         return 'OK';
     }
