@@ -6,7 +6,7 @@
  * Time: 16:54
  */
 
-class HomeController extends ApiController
+class HomeController extends BaseController
 {
 	public function showHome()
 	{

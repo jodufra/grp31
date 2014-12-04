@@ -126,7 +126,6 @@ return array(
         'Barryvdh\Debugbar\ServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
-        'Levare\Notify\NotifyServiceProvider',
         'Yatzhee\Providers\CryptoServiceProvider',
         ),
 
@@ -195,7 +194,6 @@ return array(
         'Validator'       => 'Illuminate\Support\Facades\Validator',
         'View'            => 'Illuminate\Support\Facades\View',
         'Debugbar'        => 'Barryvdh\Debugbar\Facade',
-        'Notify'          => 'Levare\Notify\Facades\Notify',
         ),
 
 );
