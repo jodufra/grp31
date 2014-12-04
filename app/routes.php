@@ -11,7 +11,16 @@
 */
 
 Route::get('/', array('as' => 'home', 'uses' => 'HomeController@showHome'));
+
+//Route::get('/', array('as' => 'home', 'uses' => 'ApiController@showHome'));
 Route::controller('api', 'ApiController');
+
+
+
+
+
+
+
 
 Route::group(array('before' => 'guest'), function () {
     // Only Guests
@@ -20,7 +29,7 @@ Route::group(array('before' => 'guest'), function () {
         Route::post('store', array('as' => 'user.store', 'before' => 'csrf', 'uses' => 'UsersController@store'));
     });
 
-    Route::get('login', array('before' => 'cryptOut', 'uses' => 'AuthController@getLogin'));
+    Route::get('login', array('uses' => 'AuthController@getLogin'));
     Route::post('/', array('as'=>'login', 'before' => 'csrf', 'uses' => 'AuthController@postLogin'));
     Route::controller('password', 'RemindersController');
 });

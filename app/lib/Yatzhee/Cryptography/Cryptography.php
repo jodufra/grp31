@@ -103,11 +103,11 @@ class Cryptography {
         return $signature;
     }
 
-       /**
+     /**
      * AES instance
      * @var \Crypt_AES
      */
-       protected $aes;
+    protected $aes;
 
     /**
      * Whether AES instance is initialized
@@ -120,18 +120,25 @@ class Cryptography {
      * @param array $options Array of options, containing 'key' and 'iv' values
      * @throws Exception
      */
-    public function initAes($options = array()) {
+     public function initAes($options = array()) {
         if (empty($options) && Session::has('aes_key') && Session::has('aes_iv')) {
             $options = array(
                 'key'   => Session::get('aes_key'),
                 'iv'    => Session::get('aes_iv'),
-                );
+            );
         }
-
-        if (!(isset($options['key']) && isset($options['iv']))) {
-            Log::error("Either key or iv not set");
-            throw new Exception("Either key or iv not set");
+        if (!isset($options['key'])) {
+            Log::error("Key not set");
+            throw new Exception("Key not set");
         }
+        if (!isset($options['iv'])) {
+            Log::error("Key not set");
+            throw new Exception("Iv not set");
+        }
+        // if (!(isset($options['key']) && isset($options['iv']))) {
+        //     Log::error("Either key or iv not set");
+        //     throw new Exception("Either key or iv not set");
+        // }
 
         Session::put('aes_key', $options['key']);
         Session::put('aes_iv', $options['iv']);

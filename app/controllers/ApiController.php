@@ -14,6 +14,11 @@ class ApiController extends BaseController {
         $this->afterFilter('cryptOut', array('except'   => 'postInit'));
     }
 
+    public function showHome()
+    {
+        return View::make('home');
+    }
+
     public function postInit() {
         if (!(Input::has('key') && Input::has('iv'))) {
             return 'ERROR 1';

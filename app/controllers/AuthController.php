@@ -1,7 +1,7 @@
 <?php
 
 use Yatzhee\Cryptography\Cryptography;
-class AuthController extends ApiController {
+class AuthController extends BaseController {
 
 	public function getLogin()
 	{

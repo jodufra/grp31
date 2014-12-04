@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-    'debug' => false,
+    'debug' => true,
 
     /*
 	|--------------------------------------------------------------------------
@@ -82,7 +82,7 @@ return array(
 
     'cipher' => MCRYPT_RIJNDAEL_128,
 
-    'privateKey' => 'private.key',
+    'privateKey' => 'server.key',
 
     /*
 	|--------------------------------------------------------------------------
