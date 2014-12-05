@@ -2,7 +2,7 @@
 
 /* App Module */
 
-var app = angular.module('app', ['appControllers']);
+var app = angular.module('app', ['ngRoute', 'appControllers']);
 app.config(function($interpolateProvider) {
 	//
 	$interpolateProvider.startSymbol('[[');
@@ -38,8 +38,7 @@ app.config(function($routeProvider) {
 		resolve:{  
 			//players : function(GameService){ return GameService.getPlayers(:gameid); }  
 		}
-	})
-	.otherwise({ redirectTo: '/login' });
+	});
 });
 
 app.factory("GameService", function($http) {

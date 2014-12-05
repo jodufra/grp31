@@ -139,7 +139,8 @@
 
    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+   <script src="//code.angularjs.org/1.3.5/angular.min.js"></script>
+   <script src="//code.angularjs.org/1.3.5/angular-route.min.js"></script>
    {{ HTML::script('js/datepicker.js'); }}
    {{ HTML::script('js/datepickerAtivate.js'); }}
    {{ HTML::script('js/scripts.js'); }}
