@@ -122,11 +122,8 @@
                 </div>
             </div>
         </div>
-        <div class="sidebar" id="sidebar">
-            @yield('sidebar')
-        </div>
         <div class="container">
-            <div ng-view class="row">
+            <div class="row">
                 @yield('body')
             </div>
         </div>
@@ -135,14 +132,19 @@
 
     <!--Scripts -->
 
-    {{ HTML::script('apisjs/jquery-2.1.0.min.js'); }}
-    {{ HTML::script('apisjs/bootstrap.min.js'); }}
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
-    {{ HTML::script('js/scripts.js'); }}
-    {{ HTML::script('js/controllers.js'); }}
-    {{ HTML::script('js/app.js'); }}
-    {{ HTML::script('js/datepicker.js'); }}
-    {{ HTML::script('js/datepickerAtivate.js'); }}
+   <!--  For the days were everything else fails --><!--
+   {{ HTML::script('apisjs/jquery-2.1.0.min.js'); }}
+   {{ HTML::script('apisjs/bootstrap.min.js'); }}
+   {{ HTML::script('apisjs/angular.min.js'); }}  -->
+
+   <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+   {{ HTML::script('js/datepicker.js'); }}
+   {{ HTML::script('js/datepickerAtivate.js'); }}
+   {{ HTML::script('js/scripts.js'); }}
+   {{ HTML::script('js/controllers.js'); }}
+   {{ HTML::script('js/app.js'); }}
 
 
 </body>

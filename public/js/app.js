@@ -21,25 +21,25 @@ app.config(function($routeProvider) {
 		templateUrl: 'partials/game/lobby.html',
 		controller: 'GameLobbyController',
 		resolve:{  
-			currentGames : function(GameService){ return GameService.getCurrentGames(); }  
+			//currentGames : function(GameService){ return GameService.getCurrentGames(); }  
 		}
-	});
-	$routeProvider.when('/game/:gameid/room', {
+	})
+	.when('/game/:gameid/room', {
 		templateUrl: 'partials/game/room.html',
-		controller: 'GameRoomController'
+		controller: 'GameRoomController',
 		resolve:{  
-			players : function(GameService){ return GameService.getPlayers(:gameid); 
-			friends : function(FriendListService){ return FriendListService.get(); }  
+			//players : function(GameService){ return GameService.getPlayers(:gameid); }
+			//friends : function(FriendListService){ return FriendListService.get(); }  
 		}
-	});
-	$routeProvider.when('/game/:gameid/play', {
+	})
+	.when('/game/:gameid/play', {
 		templateUrl: 'partials/game/play.html',
 		controller: 'GamePlayController',
 		resolve:{  
-			players : function(GameService){ return GameService.getPlayers(:gameid); }  
+			//players : function(GameService){ return GameService.getPlayers(:gameid); }  
 		}
-	});
-	$routeProvider.otherwise({ redirectTo: '/login' });
+	})
+	.otherwise({ redirectTo: '/login' });
 });
 
 app.factory("GameService", function($http) {
@@ -48,13 +48,13 @@ app.factory("GameService", function($http) {
 			return $http.get('/game/json/currentGames');
 		},
 		getPlayers: function(gameid) {
-			return $http.get('/game/json/'.gameid.'/players');
+			return $http.get('/game/json/'+gameid+'/players');
 		},
 		getLastMoves: function(gameid) {
-			return $http.get('/game/json/'.gameid.'/lastmoves');
+			return $http.get('/game/json/'+gameid+'/lastmoves');
 		},
 		getAllMoves: function(gameid) {
-			return $http.get('/game/json/'.gameid.'/allmoves');
+			return $http.get('/game/json/'+gameid+'/allmoves');
 		}
 	};
 });
