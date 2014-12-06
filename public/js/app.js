@@ -15,56 +15,25 @@ app.config(function($interpolateProvider) {
 * /game/:gameid -> Jogo
 */
 app.config(function($routeProvider) {
-
-	// Routes //
-	$routeProvider.when('/game', {
+	$routeProvider.when('#/', {
+		templateUrl: 'partials/home.html',
+		controller: 'HomeController'
+	})
+	// Game //
+	.when('#/game', {
 		templateUrl: 'partials/game/lobby.html',
-		controller: 'GameLobbyController',
-		resolve:{  
-			//currentGames : function(GameService){ return GameService.getCurrentGames(); }  
-		}
+		controller: 'GameLobbyController'
 	})
-	.when('/game/:gameid/room', {
+	.when('#/game/:gameid/room', {
 		templateUrl: 'partials/game/room.html',
-		controller: 'GameRoomController',
-		resolve:{  
-			//players : function(GameService){ return GameService.getPlayers(:gameid); }
-			//friends : function(FriendListService){ return FriendListService.get(); }  
-		}
+		controller: 'GameRoomController'
 	})
-	.when('/game/:gameid/play', {
+	.when('#/game/:gameid/play', {
 		templateUrl: 'partials/game/play.html',
-		controller: 'GamePlayController',
-		resolve:{  
-			//players : function(GameService){ return GameService.getPlayers(:gameid); }  
-		}
+		controller: 'GamePlayController'
 	});
 });
-
-app.factory("GameService", function($http) {
-	return {
-		getCurrentGames: function() {
-			return $http.get('/game/json/currentGames');
-		},
-		getPlayers: function(gameid) {
-			return $http.get('/game/json/'+gameid+'/players');
-		},
-		getLastMoves: function(gameid) {
-			return $http.get('/game/json/'+gameid+'/lastmoves');
-		},
-		getAllMoves: function(gameid) {
-			return $http.get('/game/json/'+gameid+'/allmoves');
-		}
-	};
-});
-app.factory("FriendListService", function($http) {
-	return {
-		get: function() {
-			return $http.get('/user/json/friendlist');
-		}
-	};
-});
-
-app.controller('GameLobbyController', function($scope, currentGames){});
-app.controller('GameRoomController', function($scope, players, friends){});
-app.controller('GamePlayController', function($scope, players){});
+app.controller('HomeController', function($scope){});
+app.controller('GameLobbyController', function($scope){});
+app.controller('GameRoomController', function($scope, $routeParams){});
+app.controller('GamePlayController', function($scope, $routeParams){});

@@ -1,3 +1,9 @@
+body{
+    background-color: #f0f0f0;
+}
+.background{
+    background-color: white;
+}
 input[type='number'] {
     -moz-appearance:textfield;
 }
@@ -6,7 +12,7 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
-.sidebar {
+/*sidebar {
     width: 190px;
     float: left;
     position: absolute;
@@ -18,7 +24,7 @@ input::-webkit-inner-spin-button {
     color: black;    
     text-decoration: none;
 }
-.sidebar:before {
+sidebar:before {
     content: "";
     display: block;
     width: 190px;
@@ -30,4 +36,4 @@ input::-webkit-inner-spin-button {
     color: black;    
     border: 1px solid #ccc;
     border-width: 0 0 0 0;
-}
+}*/

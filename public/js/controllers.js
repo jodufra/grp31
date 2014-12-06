@@ -29,3 +29,10 @@ appControllers.controller('DicesController', ['$scope', function($scope){
 		};
 	};
 }]);
+
+appControllers.controller('SidebarController', ['$scope', function($scope){
+	$scope.updateActive = function(id) {
+		$('.sidebar .list-group-item').removeClass('active');
+		$('.sidebar #list-group-item-'+id).addClass('active');
+	};
+}]);

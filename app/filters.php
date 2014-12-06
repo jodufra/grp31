@@ -20,6 +20,11 @@ App::after(function ($request, $response) {
     //
 });
 
+App::missing(function($exception)
+{
+    return Redirect::route('home')->with('warning', '404 > Sorry. We couldn\'t find '.Request::url());
+});
+
 /*
 |--------------------------------------------------------------------------
 | Authentication Filters
@@ -36,7 +41,7 @@ Route::filter('auth', function () {
         if (Request::ajax()) {
             return Response::make('Unauthorized', 401);
         } else {
-            return Redirect::guest('login')->with('warning','You have to login first.');
+            return Redirect::guest('login')->with('warning','401 > You have to login first.');
         }
     }
 });
@@ -59,7 +64,7 @@ Route::filter('auth.basic', function () {
 
 Route::filter('guest', function () {
     if (Auth::check())
-        return Redirect::route('home')->with('warning','You are logged in. We are pretty sure you don\'t want to go there');
+        return Redirect::route('home')->with('warning','401 > You are logged in. We are pretty sure you don\'t want to go there');
 });
 
 /*
@@ -75,8 +80,7 @@ Route::filter('guest', function () {
 
 Route::filter('csrf', function () {
     if (Session::token() != Input::get('_token')) {
-        return Redirect::route('home')->with('danger','You have been Hacked!!');
-        throw new Illuminate\Session\TokenMismatchException;
+        return Redirect::route('home')->with('danger','You have been exposed to a Cross-Site Request Forgery, for more information click <a href="http://en.wikipedia.org/wiki/Cross-site_request_forgery">here</a>');
     }
 });
 
@@ -84,14 +88,3 @@ Route::filter('csrf', function () {
 Route::filter('not.supported', function () {
     return Redirect::route('home')->with('info', 'We are still working on this functionality');
 });
-
-
-/*
-|--------------------------------------------------------------------------
-| Cipher Protection Filter
-|--------------------------------------------------------------------------
-|
-| The Cipher filter is responsible for protecting critical user information (passwords, email)
-|
-*/
-Route::filter('cryptOut', 'Yatzhee\Filters\OutgoingCryptFilter');

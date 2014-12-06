@@ -12,15 +12,6 @@
 
 Route::get('/', array('as' => 'home', 'uses' => 'HomeController@showHome'));
 
-//Route::get('/', array('as' => 'home', 'uses' => 'ApiController@showHome'));
-Route::controller('api', 'ApiController');
-
-
-
-
-
-
-
 
 Route::group(array('before' => 'guest'), function () {
     // Only Guests
@@ -36,12 +27,11 @@ Route::group(array('before' => 'guest'), function () {
 
 Route::group(array('before' => 'auth'), function () {
     // Only Users
-    Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@logout'));
-    Route::get('user/show', array('as' => 'user.show', 'uses' => 'UsersController@show'));
-    Route::group(array('prefix' => 'game'), function(){
-        //Route::any('/','GameController@scoreCalculator');
-        Route::get('getDices','GameController@getDices');
+    Route::group(array('prefix' => 'user'), function(){
+        Route::get('show', array('as' => 'user.show', 'uses' => 'UsersController@show'));
     });
+    Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@logout'));
+    Route::controller('game','GameController');
 });
 
 Route::group(array('before' => 'not.supported'), function () {
