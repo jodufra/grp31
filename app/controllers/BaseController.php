@@ -1,6 +1,14 @@
 <?php
 
 class BaseController extends Controller {
+	
+    /**
+     * Instantiate a new BaseController instance.
+     */
+    public function __construct()
+    {
+    	$this->beforeFilter('csrf', array('on' => 'post'));
+    }
 
 	/**
 	 * Setup the layout used by the controller.

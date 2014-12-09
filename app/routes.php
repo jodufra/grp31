@@ -10,34 +10,38 @@
 |
 */
 
-Route::get('/', array('as' => 'home', 'uses' => 'HomeController@showHome'));
+Route::get('/', array('uses' => 'HomeController@showHome', 'as' => 'home'));
 
-
+// Only Guests
 Route::group(array('before' => 'guest'), function () {
-    // Only Guests
-    Route::group(array('prefix' => 'user'), function(){
-        Route::get('create', array('as' => 'user.create', 'uses' => 'UsersController@create'));
-        Route::post('store', array('as' => 'user.store', 'before' => 'csrf', 'uses' => 'UsersController@store'));
-    });
-
+    // User
+    Route::get('user/create', array('uses' => 'UsersController@create', 'as' => 'user.create'));
+    Route::post('user/store', array('uses' => 'UsersController@store', 'as' => 'user.store'));
+    // Auth
     Route::get('login', array('uses' => 'AuthController@getLogin'));
-    Route::post('/', array('as'=>'login', 'before' => 'csrf', 'uses' => 'AuthController@postLogin'));
+    Route::post('/', array('uses' => 'AuthController@postLogin', 'as'=>'login'));
+    // Pass Reminder
     Route::controller('password', 'RemindersController');
 });
 
+// Only Users
 Route::group(array('before' => 'auth'), function () {
-    // Only Users
-    Route::group(array('prefix' => 'user'), function(){
-        Route::get('show', array('as' => 'user.show', 'uses' => 'UsersController@show'));
-    });
-    Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@logout'));
+    // User
+    Route::get('user/show', array('uses' => 'UsersController@show', 'as' => 'user.show'));
+    // Auth
+    Route::get('logout', array('uses' => 'AuthController@getLogout', 'as' => 'logout'));
+    // Game
     Route::controller('game','GameController');
 });
 
-Route::group(array('before' => 'not.supported'), function () {
-    // Not Supported
-    Route::get('user/edit', array('as' => 'user.edit', 'uses' => 'UsersController@edit'));
-    Route::put('user/update', array('as' => 'user.update', 'uses' => 'UsersController@update'));
-    Route::delete('user/delete', array('as' => 'user.delete', 'uses' => 'UsersController@delete'));
+// Not Finished Yet
+Route::group(array('before' => 'not.finished'), function () {
+    Route::resource('tournament','TournamentController');
+    Route::resource('replay','ReplayController');
+    Route::resource('calendar','CalendarController');
+    Route::resource('ranking','RankingController');
+    Route::get('user/edit', array('uses' => 'UsersController@edit', 'as' => 'user.edit'));
+    Route::put('user/update', array('uses' => 'UsersController@update', 'as' => 'user.update'));
+    Route::delete('user/delete', array('uses' => 'UsersController@delete', 'as' => 'user.delete'));
 
 });

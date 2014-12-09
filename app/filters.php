@@ -85,6 +85,6 @@ Route::filter('csrf', function () {
 });
 
 
-Route::filter('not.supported', function () {
+Route::filter('not.finished', function () {
     return Redirect::route('home')->with('info', 'We are still working on this functionality');
 });

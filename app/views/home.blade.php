@@ -29,7 +29,13 @@
 </div>
 @endsection
 @section('body')
-<div @if(Auth::check()) ng-view @endif>
-    Some Content that appears whatever Auth you have
+<div class="row">
+  <div class="col-md-12">
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+  </div>
 </div>
 @endsection
