@@ -17,8 +17,7 @@ input::-webkit-inner-spin-button {
 }
 
 .fade-appear,
-.fade-disapear
-{
+.fade-disapear{
     -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
     -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
     -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
@@ -44,18 +43,18 @@ input::-webkit-inner-spin-button {
 }
 
 .btn-navigation{
-    background-color: #444;
+    background-color: #008CBA;
     color:#CCC;
+    font-size: 10px;
     height: 20px;
     width: 20px;
-    text-align: center;
-    border-radius: 5px;
-    border-width: 2px;
-    border-color: #CCC;
-    box-shadow: 0 0 0 2px #CCC;
+    border-radius: 14px;
+    border-width: 1px;
+    border-color: #008CBA;
+    border-style: solid;
     cursor: pointer;
 }
 .btn-navigation:hover{
-    color:white;
-    border-color: white;
+    color:#DDD;
+    border-color: #DDD;
 }
