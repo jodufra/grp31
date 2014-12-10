@@ -44,7 +44,7 @@ input::-webkit-inner-spin-button {
 
 .btn-navigation{
     background-color: #008CBA;
-    color:#CCC;
+    color:#DDD;
     font-size: 10px;
     height: 20px;
     width: 20px;
@@ -55,6 +55,6 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
 }
 .btn-navigation:hover{
-    color:#DDD;
-    border-color: #DDD;
+    color:#f8f8f8;
+    border-color: #f8f8f8;
 }
