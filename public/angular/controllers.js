@@ -29,26 +29,26 @@ appControllers.controller('GamePlayController', function($scope, Players){
 	$scope.players=Players;
 	$scope.dices = [];
 
-	//Current Score
-	$scope.currentScorePlayerNum = $scope.players[0].num;
-	$scope.currentScorePlayerName = $scope.players[$scope.currentScorePlayerNum].name;
-	$scope.currentScore = function(){
-		return $scope.players[$scope.currentScorePlayerNum].score;
-	};
+	//Current Score Snall Table
+	$scope.currentScorePlayerNum = 0;
+	$scope.currentScorePlayer = $scope.players[$scope.currentScorePlayerNum];
 	$scope.previousCurrentScore = function(){
 		$scope.currentScorePlayerNum--;
 		if($scope.currentScorePlayerNum < 0){
 			$scope.currentScorePlayerNum = $scope.players.length-1;
 		}
-		$scope.currentScorePlayerName = $scope.players[$scope.currentScorePlayerNum].name;
+		updateSmallScoreTable();
 	};
 	$scope.nextCurrentScore = function(){
 		$scope.currentScorePlayerNum++;
 		if($scope.currentScorePlayerNum >= $scope.players.length ){
 			$scope.currentScorePlayerNum = 0;
 		}
-		$scope.currentScorePlayerName = $scope.players[$scope.currentScorePlayerNum].name;
-	};
+		updateSmallScoreTable();
+	};	
+	function updateSmallScoreTable(){
+		$scope.currentScorePlayer = $scope.players[$scope.currentScorePlayerNum];
+	}
 
 	//Current Player Scores
 	$scope.currentPlayerNum = 0;
@@ -69,6 +69,8 @@ appControllers.controller('GamePlayController', function($scope, Players){
 		$scope.currentPlayer.rollsAvailable--;	
 	}
 	function updateScore(){
+		var score_indices = ['','ones','twos','threes','fours','fives','sixes'];
+		
 		var dices_amount = {
 			1:diceCount(1),
 			2:diceCount(2),
@@ -98,7 +100,7 @@ appControllers.controller('GamePlayController', function($scope, Players){
 		if(!$scope.currentPlayer.r_score['sum']){
 			var sum = 0;
 			for(var i = 1; i<=6; i++) {
-				sum += dices_amount[i]*i;
+				sum += $scope.currentPlayer.score[score_indices[i]];
 			}
 			$scope.currentPlayer.score['sum'] = sum;
 		}

@@ -3,6 +3,9 @@
 <div ng-controller="GamePlayController">
 	<div class="col-md-7 col-md-offset-1">
 		<div class="row">
+			<span>Current Player:&nbsp;<span ng-bind="currentPlayer.name"></span></span>
+		</div>
+		<div class="row">
 			<div class="well">
 				<img style="display:none;" src="{{asset('img/dice1.png')}}" />
 				<img style="display:none;" src="{{asset('img/dice2.png')}}" />
@@ -29,7 +32,7 @@
 						<th>Score Table</th>
 						<th>
 							<span class="btn btn-xs btn-primary" ng-click="previousCurrentScore()"><</span>
-							<span ng-bind="currentScorePlayerName"></span>
+							<span ng-bind="currentScorePlayer.name"></span>
 							<span class="btn btn-xs btn-primary" ng-click="nextCurrentScore()">></span>
 						</th>
 					</tr>
@@ -37,67 +40,67 @@
 				<tbody>
 					<tr id="ones">
 						<th>Ones</th>
-						<td ng-bind="currentScore()['ones']"></td>
+						<td ng-bind="currentScorePlayer.score['ones']"></td>
 					</tr>
 					<tr id="twos">
 						<th>Twos</th>
-						<td ng-bind="currentScore()['twos']"></td>
+						<td ng-bind="currentScorePlayer.score['twos']"></td>
 					</tr>
 					<tr id="threes">
 						<th>Threes</th>
-						<td ng-bind="currentScore()['threes']"></td>
+						<td ng-bind="currentScorePlayer.score['threes']"></td>
 					</tr>
 					<tr id="fours">
 						<th>Fours</th>
-						<td ng-bind="currentScore()['fours']"></td>
+						<td ng-bind="currentScorePlayer.score['fours']"></td>
 					</tr>
 					<tr id="fives">
 						<th>Fives</th>
-						<td ng-bind="currentScore()['fives']"></td>
+						<td ng-bind="currentScorePlayer.score['fives']"></td>
 					</tr>
 					<tr id="sixes">
 						<th>Sixes</th>
-						<td ng-bind="currentScore()['sixes']"></td>
+						<td ng-bind="currentScorePlayer.score['sixes']"></td>
 					</tr>
 					<tr id="sum" class="info">
 						<th>Sum</th>
-						<td ng-bind="currentScore()['sum']"></td>
+						<td ng-bind="currentScorePlayer.score['sum']"></td>
 					</tr>
 					<tr id="bonus" class="success" style="border-bottom: solid 2px #333">
 						<th>Bonus</th>
-						<td ng-bind="currentScore()['bonus']"></td>
+						<td ng-bind="currentScorePlayer.score['bonus']"></td>
 					</tr>
 					<tr id="three-of-a-kind">
 						<th>Three of a kind</th>
-						<td ng-bind="currentScore()['threeKind']"></td>
+						<td ng-bind="currentScorePlayer.score['threeKind']"></td>
 					</tr>
 					<tr id="four-of-a-kind">
 						<th>Four of a kind</th>
-						<td ng-bind="currentScore()['fourKind']"></td>
+						<td ng-bind="currentScorePlayer.score['fourKind']"></td>
 					</tr>
 					<tr id="full-house">
 						<th>Full House</th>
-						<td ng-bind="currentScore()['house']"></td>
+						<td ng-bind="currentScorePlayer.score['house']"></td>
 					</tr>
 					<tr id="small-straight">
 						<th>Small straight</th>
-						<td ng-bind="currentScore()['small_s']"></td>
+						<td ng-bind="currentScorePlayer.score['small_s']"></td>
 					</tr>
 					<tr id="large-straight">
 						<th>Large straight</th>
-						<td ng-bind="currentScore()['large_s']"></td>
+						<td ng-bind="currentScorePlayer.score['large_s']"></td>
 					</tr>
 					<tr id="chance">
 						<th>Chance</th>
-						<td ng-bind="currentScore()['chance']"></td>
+						<td ng-bind="currentScorePlayer.score['chance']"></td>
 					</tr>
 					<tr id="yahtzee" class="info" style="border-bottom: solid 2px #333">
 						<th>YAHTZEE</th>
-						<td ng-bind="currentScore()['yahtzee']"></td>
+						<td ng-bind="currentScorePlayer.score['yahtzee']"></td>
 					</tr>
 					<tr id="total-score" class="success" >
 						<th>TOTAL SCORE</th>
-						<td ng-bind="currentScore()['total']"></td>
+						<td ng-bind="currentScorePlayer.score['total']"></td>
 					</tr>
 				</tbody>
 			</table>

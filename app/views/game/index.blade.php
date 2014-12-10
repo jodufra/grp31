@@ -29,13 +29,13 @@
 </div>
 @endsection
 @section('body')
-<div class="col-md-4">
+<div class="row row-item">
   <a href="/game/game/0" class="list-group-item">
     <h4 class="list-group-item-heading">Play</h4>
     <p class="list-group-item-text">Some kind of description</p>
   </a>
 </div>
-<div class="col-md-4 ">
+<div class="row row-item">
   <a href="/game/game/0" class="list-group-item">
     <h4 class="list-group-item-heading">Play</h4>
     <p class="list-group-item-text">Some kind of description</p>
