@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreatePersonsTable extends Migration
+class CreatePeopleTable extends Migration
 {
     /**
 	 * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePersonsTable extends Migration
     public function up()
     {
         Schema::create('people', function (Blueprint $table) {
-            $table->increments('idperson');
+            $table->increments('id');
             $table->string('name');
             $table->blob('photo')->nullable();
             $table->date('birthdate');

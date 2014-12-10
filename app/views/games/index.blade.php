@@ -1,0 +1,1 @@
+/var/www/html/laravel/app/views/games/index.blade.php

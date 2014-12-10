@@ -1,0 +1,1 @@
+/var/www/html/laravel/app/views/players/index.blade.php
