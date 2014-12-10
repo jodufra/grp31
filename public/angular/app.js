@@ -2,7 +2,7 @@
 
 /* App Module */
 
-var app = angular.module('app', ['btford.socket-io', 'appControllers']);
+var app = angular.module('app', ['btford.socket-io', 'appControllers', 'appServices']);
 app.config(function($interpolateProvider) {
 	$interpolateProvider.startSymbol('[[');
 	$interpolateProvider.endSymbol(']]');

@@ -1,49 +1,22 @@
-@extends('layouts.scaffold_sidebar')
-
-@section('sidebar')
-<div class="list-group">
-  <a href="/" class="list-group-item">
-    <h4 class="list-group-item-heading">Home</h4>
-    <p class="list-group-item-text">Some kind of description</p>
-  </a>
-  <a href="/game" class="list-group-item active">
-    <h4 class="list-group-item-heading">Games</h4>
-    <p class="list-group-item-text">Some kind of description</p>
-  </a>
-  <a href="/tournament" class="list-group-item">
-    <h4 class="list-group-item-heading">Tournaments</h4>
-    <p class="list-group-item-text">Some kind of description</p>
-  </a>
-  <a href="/replay" class="list-group-item">
-    <h4 class="list-group-item-heading">Replays</h4>
-    <p class="list-group-item-text">Some kind of description</p>
-  </a>
-  <a href="/calendar" class="list-group-item">
-    <h4 class="list-group-item-heading">Calendar</h4>
-    <p class="list-group-item-text">Some kind of description</p>
-  </a>
-  <a href="/ranking" class="list-group-item">
-    <h4 class="list-group-item-heading">Ranking</h4>
-    <p class="list-group-item-text">Some kind of description</p>
-  </a>
-</div>
-@endsection
+@extends('layouts.scaffold')
 @section('body')
-<div ng-controller="DicesController">
-	<div class="col-md-1"></div>
-	<div class="col-md-7">
-		<div>
-			<img style="display:none;" src="{{asset('img/dice1.png')}}" />
-			<img style="display:none;" src="{{asset('img/dice2.png')}}" />
-			<img style="display:none;" src="{{asset('img/dice3.png')}}" />
-			<img style="display:none;" src="{{asset('img/dice4.png')}}" />
-			<img style="display:none;" src="{{asset('img/dice5.png')}}" />
-			<img style="display:none;" src="{{asset('img/dice6.png')}}" />
-			<div >
-				<img ng-repeat="dice in dices" src="{{asset('img/dice[[dice.val]].png')}}" />
+<div ng-controller="GamePlayController">
+	<div class="col-md-7 col-md-offset-1">
+		<div class="row">
+			<div class="well">
+				<img style="display:none;" src="{{asset('img/dice1.png')}}" />
+				<img style="display:none;" src="{{asset('img/dice2.png')}}" />
+				<img style="display:none;" src="{{asset('img/dice3.png')}}" />
+				<img style="display:none;" src="{{asset('img/dice4.png')}}" />
+				<img style="display:none;" src="{{asset('img/dice5.png')}}" />
+				<img style="display:none;" src="{{asset('img/dice6.png')}}" />
+				<div>
+					<img ng-repeat="dice in dices" ng-show="dices" src="{{asset('img/dice[[dice.val]].png')}}" />
+				</div>
 			</div>
-			<button ng-click="randomize()">Roll</button>
-
+		</div>
+		<div class="row">
+			<button ng-click="roll()">Roll</button>
 		</div>
 	</div>
 
@@ -54,90 +27,77 @@
 				<thead>
 					<tr>
 						<th>Score Table</th>
-						<th>You</th>
-						<th>Opponent</th>
+						<th>
+							<span class="btn btn-xs btn-primary" ng-click="previousCurrentScore()"><</span>
+							<span ng-bind="currentScorePlayerName"></span>
+							<span class="btn btn-xs btn-primary" ng-click="nextCurrentScore()">></span>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr id="ones">
 						<th>Ones</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['ones']"></td>
 					</tr>
 					<tr id="twos">
 						<th>Twos</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['twos']"></td>
 					</tr>
 					<tr id="threes">
 						<th>Threes</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['threes']"></td>
 					</tr>
 					<tr id="fours">
 						<th>Fours</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['fours']"></td>
 					</tr>
 					<tr id="fives">
 						<th>Fives</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['fives']"></td>
 					</tr>
-					<tr id="sixes" class="info" style="border-bottom: solid 2px #333">
+					<tr id="sixes">
 						<th>Sixes</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['sixes']"></td>
 					</tr>
-					<tr id="sum">
+					<tr id="sum" class="info">
 						<th>Sum</th>
-						<td ng-bind="result['sum']()"></td>
-						<td></td>
+						<td ng-bind="currentScore()['sum']"></td>
 					</tr>
-					<tr id="bonus" class="info" style="border-bottom: solid 2px #333">
+					<tr id="bonus" class="success" style="border-bottom: solid 2px #333">
 						<th>Bonus</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['bonus']"></td>
 					</tr>
 					<tr id="three-of-a-kind">
 						<th>Three of a kind</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['threeKind']"></td>
 					</tr>
 					<tr id="four-of-a-kind">
 						<th>Four of a kind</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['fourKind']"></td>
 					</tr>
 					<tr id="full-house">
 						<th>Full House</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['house']"></td>
 					</tr>
 					<tr id="small-straight">
 						<th>Small straight</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['small_s']"></td>
 					</tr>
 					<tr id="large-straight">
 						<th>Large straight</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['large_s']"></td>
 					</tr>
 					<tr id="chance">
 						<th>Chance</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['chance']"></td>
 					</tr>
 					<tr id="yahtzee" class="info" style="border-bottom: solid 2px #333">
 						<th>YAHTZEE</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['yahtzee']"></td>
 					</tr>
-					<tr id="total-score">
+					<tr id="total-score" class="success" >
 						<th>TOTAL SCORE</th>
-						<td></td>
-						<td></td>
+						<td ng-bind="currentScore()['total']"></td>
 					</tr>
 				</tbody>
 			</table>

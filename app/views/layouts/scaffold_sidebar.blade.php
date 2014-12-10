@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.1.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.js"></script>
     <script src="//code.angularjs.org/1.3.5/angular.js"></script>
     <script src="//code.angularjs.org/1.3.5/angular-route.js"></script>
     {{ HTML::style('css/bootstrap-yeti.min.css'); }}
@@ -26,12 +26,15 @@
         </div>
     </div>
 
-    <!--Scripts -->
+    <!-- Yatzhee Scripts -->
     {{ HTML::script('js/datepicker.js'); }}
     {{ HTML::script('js/datepickerAtivate.js'); }}
     {{ HTML::script('js/scripts.js'); }}
-    {{ HTML::script('js/services.js'); }}
-    {{ HTML::script('js/controllers.js'); }}
-    {{ HTML::script('js/app.js'); }}
+
+    <!-- Angular Scripts -->
+    {{ HTML::script('angular/angular_modules/angular-socket-io/socket.js'); }}
+    {{ HTML::script('angular/services.js'); }}
+    {{ HTML::script('angular/controllers.js'); }}
+    {{ HTML::script('angular/app.js'); }}
 </body>
 </html>
