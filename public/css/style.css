@@ -42,3 +42,20 @@ input::-webkit-inner-spin-button {
     padding: inherit !important;
     margin: inherit !important;
 }
+
+.btn-navigation{
+    background-color: #444;
+    color:#CCC;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: #CCC;
+    box-shadow: 0 0 0 2px #CCC;
+    cursor: pointer;
+}
+.btn-navigation:hover{
+    color:white;
+    border-color: white;
+}

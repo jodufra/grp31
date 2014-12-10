@@ -33,7 +33,7 @@ Route::group(array('before' => 'auth'), function () {
     // Auth
     Route::get('logout', array('uses' => 'AuthController@getLogout', 'as' => 'logout'));
     // Game
-    Route::controller('game','GameController');
+    Route::resource('game','GamesController');
 });
 
 // Not Finished Yet
