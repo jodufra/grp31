@@ -60,14 +60,21 @@ appControllers.controller('GamePlayController', function($scope, Players){
 			updateScore();		
 		}
 	};
+
 	function getNewDices(){
-		$scope.dices = [];
-		var max = 5 - $scope.dices.length;
-		for (var i = 0; i < max; i++) {
-			$scope.dices.push({val:(Math.ceil(Math.random()*6)),saved:false});
-		};
-		$scope.currentPlayer.rollsAvailable--;	
+            $scope.dices = [];
+            var max = 5 - $scope.dices.length;
+            for (var i = 0; i < max; i++) {
+                $scope.dices.push({val:(Math.ceil(Math.random()*6)),saved:false});
+            }
+		$scope.currentPlayer.rollsAvailable--;
+
+        Dices.getDices().then(function(data)
+        {
+            $scope.dices=data;
+        });
 	}
+
 	function updateScore(){
 		var score_indices = ['','ones','twos','threes','fours','fives','sixes'];
 		
@@ -110,36 +117,11 @@ appControllers.controller('GamePlayController', function($scope, Players){
 	}
 	function diceCount(value){
 		var val = 0;
-		for (var i in $scope.dices) {
-			val += $scope.dices[i].val == value ? 1 : 0;
-		}
+		$scope.dices.forEach(function (element) {
+            val += element.val == value ? 1 : 0;
+        });
 		return val;
 	}
 
 
 });
-
-appControllers.controller('DicesController', ['$scope', function($scope){
-	$scope.result = [];
-	$scope.dices = [{val:1,saved:false},
-	{val:1,saved:false},
-	{val:1,saved:false},
-	{val:1,saved:false},
-	{val:1,saved:false}];
-
-	$scope.result['sum'] = function(){
-		var val = 0;
-		for (var i in $scope.dices) {
-			val += $scope.dices[i].val;
-		}
-		return val;
-	};
-
-	$scope.randomize = function() {
-		$scope.dices = [];
-		var max = 5 - $scope.dices.length;
-		for (var i = 0; i < max; i++) {
-			$scope.dices.push({val:(Math.ceil(Math.random()*6)),saved:false});
-		};
-	};
-}]);

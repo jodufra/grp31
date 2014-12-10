@@ -17,25 +17,11 @@ class GamesController extends \BaseController {
 
     public function getDices()
     {
-        $result = array(
-            array(
-                "dice" => rand(1,6)
-                ),
-            array(
-                "dice" => rand(1,6)
-                ),
-            array(
-                "dice" => rand(1,6)
-                ),
-            array(
-                "dice" => rand(1,6)
-                ),
-            array(
-                "dice" => rand(1,6)
-                ),
-            );
-        $teste = array(array(rand(1,6)),array(rand(1,6)),array(rand(1,6)),array(rand(1,6)),array(rand(1,6)));
-        return Response::json($teste);
+	    $dices = [];
+	    for ($i = 0; $i < 5; $i++) {
+		    $dices[$i] = array('val'=>rand(1,6),'saved'=>false);
+		}
+        return Response::json($dices);
     }
 
 
