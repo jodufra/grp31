@@ -40,7 +40,7 @@ appServices.provider('Players', function PlayersProvider() {
 	this.$get = function PlayersFactory() {
 		var players=[];
 		for(var i=0; i<players_count; i++){
-			players.push(new Player(i));
+			players[i] = new Player(i);
 		}
 		return players;
 	};
@@ -48,7 +48,6 @@ appServices.provider('Players', function PlayersProvider() {
 
 function Player(player_num){
 	this.id = player_num;
-	this.num = player_num;
 	this.name = 'Player '+player_num;
 	this.rollsAvailable = 3;
 	this.score = {

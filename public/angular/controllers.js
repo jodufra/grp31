@@ -62,17 +62,17 @@ appControllers.controller('GamePlayController', function($scope, Players){
 	};
 
 	function getNewDices(){
-            $scope.dices = [];
-            var max = 5 - $scope.dices.length;
-            for (var i = 0; i < max; i++) {
-                $scope.dices.push({val:(Math.ceil(Math.random()*6)),saved:false});
-            }
+		$scope.dices = [];
+		var max = 5 - $scope.dices.length;
+		for (var i = 0; i < max; i++) {
+			$scope.dices.push({val:(Math.ceil(Math.random()*6)),saved:false});
+		}
 		$scope.currentPlayer.rollsAvailable--;
 
-        Dices.getDices().then(function(data)
-        {
-            $scope.dices=data;
-        });
+		// Dices.getDices().then(function(data)
+		// {
+		// 	$scope.dices=data;
+		// });
 	}
 
 	function updateScore(){
@@ -118,8 +118,8 @@ appControllers.controller('GamePlayController', function($scope, Players){
 	function diceCount(value){
 		var val = 0;
 		$scope.dices.forEach(function (element) {
-            val += element.val == value ? 1 : 0;
-        });
+			val += element.val == value ? 1 : 0;
+		});
 		return val;
 	}
 
