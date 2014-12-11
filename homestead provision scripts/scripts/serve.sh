@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 block="server {
-  listen 80;
-  server_name $1;
-  return 301 https://$1 $request_uri;
+    listen 80;
+    server_name $1;
+    return 301 https://$1 $request_uri;
 }
  
 

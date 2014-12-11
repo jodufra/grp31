@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
 
-block="server {
+block="
+server {
     listen 80;
     server_name $1;
+    return 301 https://$1 $request_uri;
+}
+ 
+server {
+    listen 443 ssl;
+    server_name $1;
     root $2;
+
+    ssl on;
+    ssl_certificate /home/vagrant/grp31/site/app/keys/server.crt;
+    ssl_certificate_key /home/vagrant/grp31/site/app/keys/server.key;
 
     index index.html index.htm index.php;
 
@@ -25,9 +36,8 @@ block="server {
 
     location ~ \.php$ {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
         fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME \$document_root$fastcgi_script_name;
         include fastcgi_params;
     }
 
