@@ -9,6 +9,7 @@
     <script src="//code.angularjs.org/1.3.5/angular-route.js"></script>
     {{ HTML::style('css/bootstrap-yeti.min.css'); }}
     {{ HTML::style('css/bootstrap-datepicker.css'); }}
+    {{ HTML::style('css/font-awesome.min.css'); }}
     {{ HTML::style('css/style.css'); }}
     <title>Yahtzee</title>
 </head>

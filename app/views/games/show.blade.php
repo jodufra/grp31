@@ -28,10 +28,10 @@
 				<thead>
 					<tr>
 						<th>Score Table</th>
-						<th>
-							<button class="btn-navigation" ng-click="previousCurrentScore()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+						<th style="position:relative">
+							<i ng-click="previousCurrentScore()" class="fa fa-chevron-left btn-navigation btn-navigation-score btn-navigation-left"></i>
 							<span ng-bind="currentScorePlayer.name"></span>
-							<button class="btn-navigation" ng-click="nextCurrentScore()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+							<i ng-click="nextCurrentScore()" class="fa fa-chevron-right text-right btn-navigation btn-navigation-score btn-navigation-right"></i>
 						</th>
 					</tr>
 				</thead>
