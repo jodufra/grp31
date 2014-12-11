@@ -115,21 +115,53 @@ class YahtzeeCombinationCalculator
         }
         return 0;
     }
-    public function getSmallStraightScore($values)
-    {
 
-        if(($values[1]==1 && $values[2]==1 &&  $values[3]==1 &&  $values[4]==1)||( $values[2]==1 &&  $values[3]==1 &&  $values[4]==1 &&  $values[5]==1)||( $values[3]==1 &&  $values[4]==1 &&  $values[5]==1 &&  $values[6]==1)) {
-            return 30;
-        }
-        return 0;
-    }
-    public function getLargeStraightScore($values)
-    {
-        if(($values[1]==1 && $values[2]==1 && $values[3]==1 && $values[4]==1 && $values[5]==1)||($values[2]==1 && $values[3]==1 && $values[4]==1 && $values[5]==1 && $values[6]==1)) {
-            return 40;
-        }
-        return 0;
-    }
+	public function getLargeStraightScore($values)
+	{
+		$dif = 0;
+		$som = 0;
+		for ($i = 1;$i < 7 && $som < 6; $i++) {
+			if ($dif == 0 && $som == 5) {
+				return 40;
+			}
+			if ($values[$i] == 1) {
+				$som++;
+			}
+		}
+		return 0;
+	}
+
+
+ public function getSmallStraightScore($values)
+{
+	$dif = 0;
+	$som = 0;
+	for ($i = 1; $i < 7 && $som < 5; $i++) {
+		if ($dif == 0 && $som == 4) {
+			return 30;
+		}
+		if ($values[$i] == 1) {
+			$som++;
+		}
+	}
+	return 0;
+}
+//    public function getSmallStraightScore($values)
+//    {
+//
+//        if(($values[1]==1 && $values[2]==1 &&  $values[3]==1 &&  $values[4]==1)||( $values[2]==1 &&  $values[3]==1 &&  $values[4]==1 &&  $values[5]==1)||( $values[3]==1 &&  $values[4]==1 &&  $values[5]==1 &&  $values[6]==1)) {
+//            return 30;
+//        }
+//        return 0;
+//    }
+
+//    public function getLargeStraightScore($values)
+//    {
+//        if(($values[1]==1 && $values[2]==1 && $values[3]==1 && $values[4]==1 && $values[5]==1)||($values[2]==1 && $values[3]==1 && $values[4]==1 && $values[5]==1 && $values[6]==1)) {
+//            return 40;
+//        }
+//        return 0;
+//    }
     public function getChanceScore($dices)
     {
         $total=0;
