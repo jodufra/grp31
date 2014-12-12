@@ -25,13 +25,21 @@ appControllers.controller('GameLobbyController', function($scope){});
 
 appControllers.controller('CreateGameController', function($scope){
 	$scope.players=[
-	{id:1,name:'username 1',img:"../img/yatzhee.png"},
+	{id:1,name:'username 1',img:"../img/yahtzee.png"},
 	{id:2,name:'username 2',img:"invalid url"}
 	];
 	$scope.addRobot = function(){
 		var _num = $scope.players.length + 1
 		var _name = "Robot "+_num;
-		$scope.players.push({id:_num,name:_name,img:"../img/robot.png"});
+		$scope.players.push({id:_num,name:_name,img:"../img/bot.png"});
+	}
+	$scope.addPlayer = function(){
+		var player = {id:1,name:'username 1',img:"../img/yahtzee.png"};
+		$.get(player.img).done(function() { 
+
+		}).fail(function() { 
+
+		});
 	}
 });
 

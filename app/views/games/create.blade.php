@@ -7,12 +7,13 @@
 	<div class="row">
 		<div class="col-md-7">
 			<div class="row row-item">
-				<div class="media clearfix" ng-repeat="player in players">
-					<div class="media-left media-middle">
-						<img class="portrait portrait-xs" alt="" src="[[player.img]]">
-					</div>
-					<div class="media-body media-middle">
-						<h4 class="media-heading">[[player.name]]</h4>
+
+				<div class="list-group">
+					<div class="list-group-item" style="padding:0" ng-repeat="player in players">
+						<span style="display:table-row">
+							<img style="display:table-cell" class="portrait portrait-s" alt="" src="[[player.img]]">&nbsp;
+							<h5 style="display:table-cell" class="media-heading">[[player.name]]</h5>
+						</span>
 					</div>
 				</div>
 				
