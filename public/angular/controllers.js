@@ -23,7 +23,17 @@ appControllers.controller('HomeController', function($scope){});
 
 appControllers.controller('GameLobbyController', function($scope){});
 
-appControllers.controller('GameRoomController', function($scope, $routeParams){});
+appControllers.controller('CreateGameController', function($scope){
+	$scope.players=[
+	{id:1,name:'username 1',img:"../img/yatzhee.png"},
+	{id:2,name:'username 2',img:"invalid url"}
+	];
+	$scope.addRobot = function(){
+		var _num = $scope.players.length + 1
+		var _name = "Robot "+_num;
+		$scope.players.push({id:_num,name:_name,img:"../img/robot.png"});
+	}
+});
 
 appControllers.controller('GamePlayController', function($scope, Players){
 	$scope.players=Players;
@@ -73,55 +83,55 @@ appControllers.controller('GamePlayController', function($scope, Players){
 		// {
 		// 	$scope.dices=data;
 		// });
-	}
+}
 
-	function updateScore(){
-		var score_indices = ['','ones','twos','threes','fours','fives','sixes'];
-		
-		var dices_amount = {
-			1:diceCount(1),
-			2:diceCount(2),
-			3:diceCount(3),
-			4:diceCount(4),
-			5:diceCount(5),
-			6:diceCount(6)
-		};
-		if(!$scope.currentPlayer.r_score['ones']){
-			$scope.currentPlayer.score['ones'] = dices_amount[1];
-		}
-		if(!$scope.currentPlayer.r_score['twos']){
-			$scope.currentPlayer.score['twos'] = dices_amount[2]*2;
-		}
-		if(!$scope.currentPlayer.r_score['threes']){
-			$scope.currentPlayer.score['threes'] = dices_amount[3]*3;
-		}
-		if(!$scope.currentPlayer.r_score['fours']){
-			$scope.currentPlayer.score['fours'] = dices_amount[4]*4;
-		}
-		if(!$scope.currentPlayer.r_score['fives']){
-			$scope.currentPlayer.score['fives'] = dices_amount[5]*5;
-		}
-		if(!$scope.currentPlayer.r_score['sixes']){
-			$scope.currentPlayer.score['sixes'] = dices_amount[6]*6;
-		}
-		if(!$scope.currentPlayer.r_score['sum']){
-			var sum = 0;
-			for(var i = 1; i<=6; i++) {
-				sum += $scope.currentPlayer.score[score_indices[i]];
-			}
-			$scope.currentPlayer.score['sum'] = sum;
-		}
-		if(!$scope.currentPlayer.r_score['bonus']){
-			$scope.currentPlayer.score['bonus'] = $scope.currentPlayer.score['sum']>63 ? 35 : 0;
-		}
+function updateScore(){
+	var score_indices = ['','ones','twos','threes','fours','fives','sixes'];
+
+	var dices_amount = {
+		1:diceCount(1),
+		2:diceCount(2),
+		3:diceCount(3),
+		4:diceCount(4),
+		5:diceCount(5),
+		6:diceCount(6)
+	};
+	if(!$scope.currentPlayer.r_score['ones']){
+		$scope.currentPlayer.score['ones'] = dices_amount[1];
 	}
-	function diceCount(value){
-		var val = 0;
-		$scope.dices.forEach(function (element) {
-			val += element.val == value ? 1 : 0;
-		});
-		return val;
+	if(!$scope.currentPlayer.r_score['twos']){
+		$scope.currentPlayer.score['twos'] = dices_amount[2]*2;
 	}
+	if(!$scope.currentPlayer.r_score['threes']){
+		$scope.currentPlayer.score['threes'] = dices_amount[3]*3;
+	}
+	if(!$scope.currentPlayer.r_score['fours']){
+		$scope.currentPlayer.score['fours'] = dices_amount[4]*4;
+	}
+	if(!$scope.currentPlayer.r_score['fives']){
+		$scope.currentPlayer.score['fives'] = dices_amount[5]*5;
+	}
+	if(!$scope.currentPlayer.r_score['sixes']){
+		$scope.currentPlayer.score['sixes'] = dices_amount[6]*6;
+	}
+	if(!$scope.currentPlayer.r_score['sum']){
+		var sum = 0;
+		for(var i = 1; i<=6; i++) {
+			sum += $scope.currentPlayer.score[score_indices[i]];
+		}
+		$scope.currentPlayer.score['sum'] = sum;
+	}
+	if(!$scope.currentPlayer.r_score['bonus']){
+		$scope.currentPlayer.score['bonus'] = $scope.currentPlayer.score['sum']>63 ? 35 : 0;
+	}
+}
+function diceCount(value){
+	var val = 0;
+	$scope.dices.forEach(function (element) {
+		val += element.val == value ? 1 : 0;
+	});
+	return val;
+}
 
 
 });

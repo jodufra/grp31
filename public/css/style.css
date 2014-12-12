@@ -56,3 +56,22 @@ input::-webkit-inner-spin-button {
 .btn-navigation:hover{
     color:#008CCB;
 }
+
+.portrait{
+    background-image: url('../img/default.png');
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+    border:none;
+    width:150px;
+    height:150px;
+}
+.portrait.portrait-s{
+    background-size: 50px 50px;
+    width:50px;
+    height:50px;
+}
+.portrait.portrait-xs{
+    background-size: 30px 30px;
+    width:30px;
+    height:30px;
+}

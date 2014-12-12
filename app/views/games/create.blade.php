@@ -2,47 +2,29 @@
 
 @section('body')
 
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-8 col-md-offset-2" ng-controller="CreateGameController">
 	<h1>Create Game</h1>
 	<div class="row">
 		<div class="col-md-7">
 			<div class="row row-item">
-				<div class="media">
-					<a class="media-left media-middle" href="">
-						<span ng-hide="userHavePicture()" class="fa-stack fa-lg text-muted">
-							<i class="fa fa-user fa-stack-1x"></i>
-							<i class="fa fa-square-o fa-stack-2x"></i>
-						</span>
-						<img class="hidden" alt="" src="...">
-					</a>
-					<div class="media-body">
-						<h4 class="media-heading">Media heading</h4>
+				<div class="media clearfix" ng-repeat="player in players">
+					<div class="media-left media-middle">
+						<img class="portrait portrait-xs" alt="" src="[[player.img]]">
+					</div>
+					<div class="media-body media-middle">
+						<h4 class="media-heading">[[player.name]]</h4>
 					</div>
 				</div>
-				<div class="media">
-					<a class="media-left media-middle" href="">
-						<span ng-hide="userHavePicture()" class="fa-stack fa-lg text-muted">
-							<i class="fa fa-user fa-stack-1x"></i>
-							<i class="fa fa-square-o fa-stack-2x"></i>
-						</span>
-						<img class="hidden" alt="" src="...">
-					</a>
-					<div class="media-body">
-						<h4 class="media-heading">Media heading</h4>
+				
+				<div class="media pull-right" style="cursor:pointer" ng-click="addRobot()">
+					<div class="media-left">
+						<i class="fa fa-plus"></i>
 					</div>
-				</div>	
-				<div class="media">
-					<a class="media-left media-middle" href="">
-						<span ng-hide="userHavePicture()" class="fa-stack fa-lg text-muted">
-							<i class="fa fa-user fa-stack-1x"></i>
-							<i class="fa fa-square-o fa-stack-2x"></i>
-						</span>
-						<img class="hidden" alt="" src="...">
-					</a>
 					<div class="media-body">
-						<h4 class="media-heading">Media heading</h4>
+						<span class="media-heading">Add Robot</span>
 					</div>
-				</div>		
+				</div>
+
 			</div>					
 		</div>
 		<div class="col-md-4 col-md-offset-1">
