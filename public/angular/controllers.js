@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-var appControllers = angular.module('appControllers', []);
+var appControllers = angular.module('appControllers', ['ngSanitize']);
 
 
 appControllers.controller('TestingNodeController', function($scope,$socket){
@@ -23,28 +23,47 @@ appControllers.controller('HomeController', function($scope){});
 
 appControllers.controller('GameLobbyController', function($scope){});
 
-appControllers.controller('CreateGameController', function($scope){
-	$scope.players=[
-	{id:1,name:'username 1',img:"../img/yahtzee.png"},
-	{id:2,name:'username 2',img:"invalid url"}
-	];
-	$scope.addRobot = function(){
-		var _num = $scope.players.length + 1
-		var _name = "Robot "+_num;
-		$scope.players.push({id:_num,name:_name,img:"../img/bot.png"});
-	}
-	$scope.addPlayer = function(){
-		var player = {id:1,name:'username 1',img:"../img/yahtzee.png"};
-		$.get(player.img).done(function() { 
-
-		}).fail(function() { 
-
+appControllers.controller('CreateGameController', function($scope,CurrentUser){
+	var currentUser = CurrentUser.getUser();
+	$scope.players=[];
+	$scope.getPlayers = function(){
+		if($scope.players.length == 0){
+			$scope.addCurrentUserAsPlayer();
+		}
+		var players = "";
+		$scope.players.forEach(function(player){
+			var template = ''+
+			'<div class="list-group-item clearfix" style="padding:0">'+
+			'<div class="pull-left text-left">'+
+			'<img class="portrait portrait-s" alt="" src="'+player.img+'">'+
+			'<span>'+player.name+'</span><div class="pull-right">';
+			if(player.user != null && player.user == currentUser.id){
+				template += '<span class="glyphicon glyphicon-user text-info" aria-hidden="true"></span>';
+			}
+			if(player.id == $scope.players[0].id){
+				template += '<span class="glyphicon glyphicon-flag text-success" aria-hidden="true"></span>';
+			}
+			template += '</div></div></div>';
+			players += template;
 		});
+		return players;
 	}
+	$scope.addPlayer = function(player_id, user_id, user_name, user_portrait){
+		$scope.players.push({id:player_id, user:user_id, name:user_name, img:user_portrait});
+	}
+	$scope.addCurrentUserAsPlayer = function(){
+		$scope.addPlayer(1,currentUser.id,currentUser.username,"invalid url");
+	}
+	$scope.addRobot = function(){
+		var id = $scope.players.length + 1
+		var name = "Robot "+id;
+		$scope.addPlayer(id,null,name,"../img/bot.png");
+	}
+
 });
 
-appControllers.controller('GamePlayController', function($scope, Players){
-	$scope.players=Players;
+appControllers.controller('GamePlayController', function($scope, GamePlayPlayers){
+	$scope.players=GamePlayPlayers;
 	$scope.dices = [];
 
 	//Current Score Snall Table

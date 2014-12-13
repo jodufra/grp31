@@ -5,6 +5,15 @@
 var appServices = angular.module('appServices', []);
 
 // GameService
+appServices.factory("CurrentUser", function($http) {
+	return {
+		getUser: function() {
+			return $http.get('/user/getCurrentUser');
+		}
+	};
+});
+
+// GameService
 appServices.factory("GameService", function($http) {
 	return {
 		getCurrentGames: function() {
@@ -25,28 +34,31 @@ appServices.factory("GameService", function($http) {
 // FriendListService
 appServices.factory("FriendListService", function($http) {
 	return {
-		get: function() {
-			return $http.get('/user/json/friendlist');
+		getAll: function() {
+			return $http.get('/user/friendlist/all');
+		},
+		getOnline: function() {
+			return $http.get('/user/friendlist/online');
 		}
 	};
 });
 
-appServices.provider('Players', function PlayersProvider() {
+appServices.provider('GamePlayPlayers', function GamePlayPlayersProvider() {
 	var players_count = 10;
 	this.players_count = function(count) {
 		players_count = count;
 	};
 
-	this.$get = function PlayersFactory() {
+	this.$get = function GamePlayPlayersFactory() {
 		var players=[];
 		for(var i=0; i<players_count; i++){
-			players[i] = new Player(i);
+			players[i] = new GamePlayPlayer(i);
 		}
 		return players;
 	};
 });
 
-function Player(player_num){
+function GamePlayPlayer(player_num){
 	this.id = player_num;
 	this.name = 'Player '+player_num;
 	this.rollsAvailable = 3;

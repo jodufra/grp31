@@ -8,15 +8,9 @@
 		<div class="col-md-7">
 			<div class="row row-item">
 
-				<div class="list-group">
-					<div class="list-group-item" style="padding:0" ng-repeat="player in players">
-						<span style="display:table-row">
-							<img style="display:table-cell" class="portrait portrait-s" alt="" src="[[player.img]]">&nbsp;
-							<h5 style="display:table-cell" class="media-heading">[[player.name]]</h5>
-						</span>
-					</div>
+				<div class="list-group" ng-bind-html="getPlayers()">
+					
 				</div>
-				
 				<div class="media pull-right" style="cursor:pointer" ng-click="addRobot()">
 					<div class="media-left">
 						<i class="fa fa-plus"></i>

@@ -7,6 +7,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.js"></script>
     <script src="//code.angularjs.org/1.3.5/angular.js"></script>
     <script src="//code.angularjs.org/1.3.5/angular-route.js"></script>
+    <script src="//code.angularjs.org/1.3.5/angular-sanitize.js"></script>
     {{ HTML::style('css/bootstrap-yeti.min.css'); }}
     {{ HTML::style('css/bootstrap-datepicker.css'); }}
     {{ HTML::style('css/font-awesome.min.css'); }}
