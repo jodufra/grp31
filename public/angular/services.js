@@ -19,18 +19,6 @@ appServices.factory("CurrentUser", function($q, $http) {
 		return d.promise;
 	};
 
-	self.getDices = function()
-	{
-		var d = $q.defer();
-		$http.get( '/game/getDices' ).
-		success(function (data)
-		{
-			d.resolve(data);
-		}
-		);
-		return d.promise.value;
-	};
-
 	return self;
 });
 
