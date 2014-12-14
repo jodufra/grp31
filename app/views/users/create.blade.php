@@ -2,7 +2,7 @@
 
 @section('body')
 <div class="col-md-8 col-md-offset-2">
-  <h2>Register here</h2>
+  <div class="page-header"><h1>Register</h1></div>
   @if ($errors->any())
   <div class="alert alert-danger">
    <ul>

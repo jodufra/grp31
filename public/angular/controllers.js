@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-var appControllers = angular.module('appControllers', ['ngSanitize']);
+var appControllers = angular.module('appControllers', ['ngSanitize','appConstants']);
 
 
 appControllers.controller('TestingNodeController', function($scope,$socket){
@@ -24,44 +24,99 @@ appControllers.controller('HomeController', function($scope){});
 appControllers.controller('GameLobbyController', function($scope){});
 
 appControllers.controller('CreateGameController', function($scope,CurrentUser){
-	$scope.currentUser = CurrentUser.getUser();
-
 	$scope.players=[];
-	$scope.getPlayers = function(){
-		console.debug($scope.currentUser);
-		if($scope.players.length == 0){
-			$scope.addCurrentUserAsPlayer();
-		}
-		var players = "";
+	$scope.bots=[];
+	$scope.userIsLeader = function(){
+		var leader = false
+		if($scope.players.length == 0) return leader;
 		$scope.players.forEach(function(player){
-			var template = ''+
-			'<div class="list-group-item clearfix" style="padding:0">'+
-			'<div class="pull-left text-left">'+
-			'<img class="portrait portrait-s" alt="" src="'+player.img+'">'+
-			'<span>'+player.name+'</span><div class="pull-right">';
-			if(player.user != null && player.user == $scope.currentUser.user_id){
-				template += '<span class="glyphicon glyphicon-user text-info" aria-hidden="true"></span>';
+			if(player.user_id == CurrentUser.user_id && player.is_leader){
+				leader = true;
+				return;
 			}
-			if(player.id == $scope.players[0].id){
-				template += '<span class="glyphicon glyphicon-flag text-success" aria-hidden="true"></span>';
+		})
+		return leader;
+	}
+	$scope.roomIsFull = function(){
+		return !($scope.players.length < 10);
+	}
+	$scope.havePlayers = function(){
+		//get Players if foreign room 
+		if($scope.players.length != 0) return true;
+		if(!playersContainCurrentUser()){
+			if($scope.players.length < 10){
+				addPlayer(CurrentUser.player_id, CurrentUser.user_id, CurrentUser.username, CurrentUser.img_src);
+			}else{
+				// Throw room is full
 			}
-			template += '</div></div></div>';
-			players += template;
+		}
+		return true;
+	}
+	$scope.getPlayers = function(){
+		var players = [];
+		$scope.players.forEach(function(player){
+			players.push(player);
+		});
+		$scope.bots.forEach(function(bot){
+			players.push(bot);
 		});
 		return players;
 	}
-	$scope.addPlayer = function(player_id, user_id, user_name, user_portrait){
-		$scope.players.push({id:player_id, user:user_id, name:user_name, img:user_portrait});
-	}
-	$scope.addCurrentUserAsPlayer = function(){
-		$scope.addPlayer(1,$scope.currentUser.user_id, $scope.currentUser.username, "invalid url");
-	}
 	$scope.addRobot = function(){
-		var id = $scope.players.length + 1
-		var name = "Robot "+id;
-		$scope.addPlayer(id,null,name,"../img/bot.png");
+		if($scope.userIsLeader() && $scope.players.length != 0 && ($scope.players.length + $scope.bots.length) < 10){
+			var bot_id = $scope.bots.length + 1
+			var username = "Robot "+bot_id;
+			$scope.bots.push({
+				player_id:bot_id,
+				user_id:null,
+				username:username,
+				img_src:"../img/bot.png",
+				is_user:false,
+				is_leader:false
+			});
+		}
+	}
+	$scope.removeAllRobots = function(){
+		while($scope.bots.length != 0){
+			removeRobot();
+		}
+	}
+	function removeRobot(){
+		if($scope.userIsLeader() && $scope.bots.length != 0){
+			$scope.bots.splice($scope.bots.length - 1, 1);
+		}
 	}
 
+	function playersContainCurrentUser(){
+		if($scope.players.length == 0) return false;
+		$scope.players.forEach(function(player){
+			if(player.user_id == CurrentUser.user_id) return true;
+		});
+		return false;
+	}
+
+	function addPlayer(player_id, user_id, username, img_src){
+		if(($scope.players.length + $scope.bots.length) == 10){
+			if($scope.bots.length>0){
+				removeRobot();
+			}else{
+				return; // Throw room is full
+			}
+		}
+
+		var isPlayer = user_id != null && user_id == CurrentUser.user_id;
+		var isLeader = $scope.players.length == 0 || $scope.players[0].player_id == player_id;
+		$scope.players.push({
+			player_id:player_id,
+			user_id:user_id,
+			username:username,
+			img_src:img_src,
+			is_user:isPlayer,
+			is_leader:isLeader
+		});
+	}
+
+	
 });
 
 appControllers.controller('GamePlayController', function($scope, GamePlayPlayers){

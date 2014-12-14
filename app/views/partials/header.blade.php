@@ -1,6 +1,7 @@
-<div class="container">
-   <!-- <h1 class=""><img alt="Yahtzee" width="150px" alt="Yahtzee" src="{{asset('img/yahtzee.png')}}"/></h1>-->
-    <nav class="navbar navbar-inverse" role="navigation">
+
+<!-- <h1 class=""><img alt="Yahtzee" width="150px" alt="Yahtzee" src="{{asset('img/yahtzee.png')}}"/></h1>-->
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapseable-navbar-header">
                 <span class="sr-only">Toggle navigation</span>
@@ -36,8 +37,8 @@
                 @endif
             </ul>
         </div><!-- /.navbar-collapse -->
-    </nav>
-</div>
+    </div>
+</nav>
 <!-- Modal -->
 <div class="modal fade" id="rules-modal" tabindex="-1" role="dialog" aria-labelledby="rules-modal-label" aria-hidden="true">
     <div class="modal-dialog">

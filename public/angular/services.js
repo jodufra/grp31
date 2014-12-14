@@ -5,24 +5,6 @@
 var appServices = angular.module('appServices', []);
 
 // GameService
-appServices.factory("CurrentUser", function($q, $http) {
-
-	var self = {};
-
-	self.getUser = function(dices)
-	{
-		var d = $q.defer();
-		$http.get( '/user/getCurrentUser' ).
-		success(function (data){
-			d.resolve(data);
-		});
-		return d.promise;
-	};
-
-	return self;
-});
-
-// GameService
 appServices.factory("GameService", function($http) {
 	return {
 		getCurrentGames: function() {
