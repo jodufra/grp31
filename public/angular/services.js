@@ -5,12 +5,33 @@
 var appServices = angular.module('appServices', []);
 
 // GameService
-appServices.factory("CurrentUser", function($http) {
-	return {
-		getUser: function() {
-			return $http.get('/user/getCurrentUser');
-		}
+appServices.factory("CurrentUser", function($q, $http) {
+
+	var self = {};
+
+	self.getUser = function(dices)
+	{
+		var d = $q.defer();
+		$http.get( '/user/getCurrentUser' ).
+		success(function (data){
+			d.resolve(data);
+		});
+		return d.promise;
 	};
+
+	self.getDices = function()
+	{
+		var d = $q.defer();
+		$http.get( '/game/getDices' ).
+		success(function (data)
+		{
+			d.resolve(data);
+		}
+		);
+		return d.promise.value;
+	};
+
+	return self;
 });
 
 // GameService

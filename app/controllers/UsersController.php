@@ -17,7 +17,7 @@ class UsersController extends BaseController
     public function getCurrentUser()
     {
         if(Auth::check()){
-            return Response::json(array('id' => Auth::user()->id, 'username' => Auth::user()->username));
+            return Response::json(array('user_id' => Auth::user()->id, 'username' => Auth::user()->username));
         }
         
     }

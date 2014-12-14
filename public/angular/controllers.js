@@ -24,9 +24,11 @@ appControllers.controller('HomeController', function($scope){});
 appControllers.controller('GameLobbyController', function($scope){});
 
 appControllers.controller('CreateGameController', function($scope,CurrentUser){
-	var currentUser = CurrentUser.getUser();
+	$scope.currentUser = CurrentUser.getUser();
+
 	$scope.players=[];
 	$scope.getPlayers = function(){
+		console.debug($scope.currentUser);
 		if($scope.players.length == 0){
 			$scope.addCurrentUserAsPlayer();
 		}
@@ -37,7 +39,7 @@ appControllers.controller('CreateGameController', function($scope,CurrentUser){
 			'<div class="pull-left text-left">'+
 			'<img class="portrait portrait-s" alt="" src="'+player.img+'">'+
 			'<span>'+player.name+'</span><div class="pull-right">';
-			if(player.user != null && player.user == currentUser.id){
+			if(player.user != null && player.user == $scope.currentUser.user_id){
 				template += '<span class="glyphicon glyphicon-user text-info" aria-hidden="true"></span>';
 			}
 			if(player.id == $scope.players[0].id){
@@ -52,7 +54,7 @@ appControllers.controller('CreateGameController', function($scope,CurrentUser){
 		$scope.players.push({id:player_id, user:user_id, name:user_name, img:user_portrait});
 	}
 	$scope.addCurrentUserAsPlayer = function(){
-		$scope.addPlayer(1,currentUser.id,currentUser.username,"invalid url");
+		$scope.addPlayer(1,$scope.currentUser.user_id, $scope.currentUser.username, "invalid url");
 	}
 	$scope.addRobot = function(){
 		var id = $scope.players.length + 1
