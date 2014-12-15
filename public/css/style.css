@@ -4,8 +4,8 @@ body{
 .content .row-item{
     background-color: white;
     border: 1px solid #DDD;
-    margin-bottom: 5px;
-    padding: 10px 15px;
+    padding: 10px;
+    margin:0 0 10px;
 }
 input[type='number'] {
     -moz-appearance:textfield;
@@ -14,32 +14,6 @@ input[type='number'] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
-}
-
-.fade-appear,
-.fade-disapear{
-    -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -o-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all; 
-    position: relative;
-    display: block;
-    overflow: hidden;
-    text-overflow: clip;
-    white-space:nowrap;
-}
-.fade-disapear {
-    opacity: 0 !important;
-    height: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-.fade-appear{
-    opacity: inherit !important;
-    height: inherit !important;
-    padding: inherit !important;
-    margin: inherit !important;
 }
 
 .btn-navigation{
@@ -55,4 +29,30 @@ input::-webkit-inner-spin-button {
 }
 .btn-navigation:hover{
     color:#008CCB;
+}
+
+.portrait.portrait-xs{
+    background-size: 30px 30px;
+    width:30px;
+    height:30px;
+}
+.portrait.portrait-s{
+    background-size: 50px 50px;
+    width:50px;
+    height:50px;
+}
+.portrait, .portrait.portrait-m{
+    background-size: 75px 75px;
+    width:75px;
+    height:75px;
+}
+.portrait.portrait-l{
+    background-size: 100px 100px;
+    width:100px;
+    height:100px;
+}
+.portrait.portrait-xl{
+    background-size: 150px 150px;
+    width:150px;
+    height:150px;
 }

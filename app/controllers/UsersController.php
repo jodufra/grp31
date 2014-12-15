@@ -14,6 +14,14 @@ class UsersController extends BaseController
         $this->user = $user;
     }
 
+    public function getCurrentUser()
+    {
+        if(Auth::check()){
+            return Response::json(array('user_id' => Auth::user()->id, 'username' => Auth::user()->username));
+        }
+        
+    }
+
     /**
 	 * Show the form for creating a new resource.
 	 * GET /users/create

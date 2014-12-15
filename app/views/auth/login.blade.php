@@ -1,9 +1,9 @@
 @extends('layouts.scaffold')
 @section('body')
 <div class="col-md-8 col-md-offset-2">
+	<div class="page-header"><h1>Login</h1></div>
+	
 	<div class="row row-item">
-		<h1>Login</h1>
-
 		@if ($errors->any())
 		<div class="alert alert-danger">
 			<ul>

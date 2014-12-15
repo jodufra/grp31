@@ -1,5 +1,8 @@
 $(function(){
-	setTimeout(function(){ $('.alert-success').addClass( "fade-disapear")}, 5000);
-	setTimeout(function(){ $('.alert-info').addClass( "fade-disapear")}, 5000);
-	setTimeout(function(){ $('.alert-warning').addClass( "fade-disapear")}, 7500);
+	setTimeout(function(){ $('.alert-success').slideUp("slow")}, 5000);
+	setTimeout(function(){ $('.alert-info').slideUp("slow")}, 5000);
+	setTimeout(function(){ $('.alert-warning').slideUp("slow")}, 7500);
+	$( ".portrait" ).error(function() {
+		 $(this).attr( "src", "../img/default.png" );
+	});
 });

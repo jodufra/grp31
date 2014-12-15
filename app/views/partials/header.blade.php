@@ -1,3 +1,5 @@
+
+<!-- <h1 class=""><img alt="Yahtzee" width="150px" alt="Yahtzee" src="{{asset('img/yahtzee.png')}}"/></h1>-->
 <nav class="navbar navbar-inverse" role="navigation">
     <div class="container">
         <div class="navbar-header">
@@ -35,7 +37,7 @@
                 @endif
             </ul>
         </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+    </div>
 </nav>
 <!-- Modal -->
 <div class="modal fade" id="rules-modal" tabindex="-1" role="dialog" aria-labelledby="rules-modal-label" aria-hidden="true">
