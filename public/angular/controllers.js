@@ -81,6 +81,24 @@ appControllers.controller('CreateGameController', function($scope,CurrentUser){
 			removeRobot();
 		}
 	}
+	$scope.removePlayerOrBot = function(player_id){
+		if (player_id<10) {
+			var num_bots = $scope.bots.length-1;
+			$scope.removeAllRobots();
+			for(;num_bots>0;num_bots--){
+				$scope.addRobot();
+			}
+		}else{
+			if(confirm("Are you sure you want to remove this Player?")){
+				for(var i = 0;i<$scope.players.length;i++){
+					if($scope.players[i].player_id == player_id){
+						$scope.players.splice(i, 1);
+						return;
+					}
+				}
+			}
+		}
+	}
 	function removeRobot(){
 		if($scope.userIsLeader() && $scope.bots.length != 0){
 			$scope.bots.splice($scope.bots.length - 1, 1);
