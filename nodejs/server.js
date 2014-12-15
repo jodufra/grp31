@@ -3,8 +3,10 @@ var express = require('express'),
     fs = require('fs');
 
 var options = {
-  key: fs.readFileSync('/home/vagrant/grp31/site/app/keys/server.key'),
-  cert: fs.readFileSync('/home/vagrant/grp31/site/app/keys/server.crt')
+  // key: fs.readFileSync('/home/vagrant/grp31/site/app/keys/server.key'),
+  // cert: fs.readFileSync('/home/vagrant/grp31/site/app/keys/server.crt')
+  key: fs.readFileSync('/var/www/html/laravel/app/keys/server.key'),
+  cert: fs.readFileSync('/var/www/html/laravel/app/keys/server.crt')
 };
 
 var server = https.createServer(options, app);
@@ -20,8 +22,6 @@ console.log("Listening.....");
 
 io.listen(server).on('connection', function(client) {
     const redisClient = redis.createClient();
-
-    redisClient.subscribe('users.update');
 
     console.log("Redis server running.....");
 

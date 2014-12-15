@@ -107,74 +107,75 @@
 </div>
 
 
-                 <div class="chat" ng-app="chatApp">
+<div class="chat" ng-app="app">
 
-                        <div id="messages_box">
-                        <ul id="messages"></ul>
-                      </div>
+	<div id="messages_box">
+		<ul id="messages"></ul>
+	</div>
 
-                       <div class="user_box" ng-controller="SubmitController" ng-init="username='blabla';gameid='1'">
-                                                <form  class="user_box_items" ng-submit="sendMessage()">
-                                                  <input id="m"  class="user_box_items" autocomplete="off" ng-model="msg"/>
-                                                  <button class="user_box_items">Send</button>
-                                                </form>
-                                              </div>
-                                              <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-                                              <script>
-                                               var socket = io('http://localhost:5555/');
+	<div class="user_box" ng-controller="SubmitController" ng-init="username='blabla';gameid='1'">
+		<form  class="user_box_items" ng-submit="sendMessage()">
+			<input id="m"  class="user_box_items" autocomplete="off" ng-model="msg"/>
+			<button class="user_box_items">Send</button>
+		</form>
+	</div>
 
-                                               function getUsername(msg){
-                                                   return msg.split(':')[0];
-                                               }
-                                               socket.on('connect', function(){
+	{{ HTML::script('js/socket.io-1.2.0.js'); }}
+	<script>
+	var socket = io('https://grp31.dad:5555/');
 
-                                                   socket.on('chat-msg1', function(msg){
-                                                                      var list = $('#messages');
-                                                                      var li = $('<li>');
-                                                                      if(getUsername(msg)!= 'blabla'){
-                                                                          li.css({
-                                                                               'background':'#eee'
-                                                                          });
-                                                                      }
-                                                                      list.append(li.text(msg));
-                                                                      list.animate({
-                                                                          scrollTop : li.offset().top
-                                                                      }, 'slow');
-                                                                  });
-                                                   socket.on('roll1', function(msg){
-                                                       alert(msg);
-                                                   });
+	function getUsername(msg){
+		return msg.split(':')[0];
+	}
+	socket.on('connect', function(){
 
-                                                   socket.on('disconnect', function(){
-                                                       alert('Chat server have shutting down the connection');
-                                                   });
+		socket.on('chat-msg1', function(msg){
+			var list = $('#messages');
+			var li = $('<li>');
+			if(getUsername(msg)!= 'blabla'){
+				li.css({
+					'background':'#eee'
+				});
+			}
+			list.append(li.text(msg));
+			list.animate({
+				scrollTop : li.offset().top
+			}, 'slow');
+		});
+		socket.on('roll1', function(msg){
+			alert(msg);
+		});
 
-                                               });
+		socket.on('disconnect', function(){
+			alert('Chat server have shutting down the connection');
+		});
 
-                                               socket.on('connect_failed', function(){
-                                                   alert('Connection to chat server have failed!');
-                                               });
+	});
 
-
-												var chatApp = angular.module('chatApp',[]);
-                                              var SEPARATOR = "$?$?";
-
-                                              chatApp.controller('SubmitController', ['$scope', function ($scope) {
-                                                      $scope.sendMessage = function () {
-                                                          var msg = $scope.msg;
-                                                          if(msg){
-                                                              socket.emit('chat-msg', $scope.gameid + SEPARATOR + $scope.username + ": " + msg);
-                                                              $scope.msg = '';
-                                                          }
-                                                          return false;
-                                                      };
-                                                   }]);
-
-                                              </script>
+	socket.on('connect_failed', function(){
+		alert('Connection to chat server have failed!');
+	});
 
 
+	var chatApp = angular.module('chatApp',[]);
+	var SEPARATOR = "$?$?";
 
-                 </div>
+	chatApp.controller('SubmitController', ['$scope', function ($scope) {
+		$scope.sendMessage = function () {
+			var msg = $scope.msg;
+			if(msg){
+				socket.emit('chat-msg', $scope.gameid + SEPARATOR + $scope.username + ": " + msg);
+				$scope.msg = '';
+			}
+			return false;
+		};
+	}]);
+
+	</script>
+
+
+
+</div>
 
 
 @endsection
