@@ -1,13 +1,24 @@
 <?php
 
-class PlayersController extends \BaseController {
+class PlayersController extends BaseController {
+
+
+	function getCurrentuser(){
+		return array(
+			'player_id'=>10, 
+			'user_id'=>Auth::user()->id,
+			'username'=>Auth::user()->username, 
+			'img_src'=>'invalid url'
+			);
+	}
+
 
 	/**
 	 * Display a listing of players
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function getIndex()
 	{
 		$players = Player::all();
 
@@ -19,7 +30,7 @@ class PlayersController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function getCreate()
 	{
 		return View::make('players.create');
 	}
@@ -29,7 +40,7 @@ class PlayersController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function postStore()
 	{
 		$validator = Validator::make($data = Input::all(), Player::$rules);
 
@@ -49,7 +60,7 @@ class PlayersController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function getShow($id)
 	{
 		$player = Player::findOrFail($id);
 
@@ -62,7 +73,7 @@ class PlayersController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function getEdit($id)
 	{
 		$player = Player::find($id);
 
@@ -75,7 +86,7 @@ class PlayersController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function postUpdate($id)
 	{
 		$player = Player::findOrFail($id);
 
@@ -97,7 +108,7 @@ class PlayersController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function postDestroy($id)
 	{
 		Player::destroy($id);
 

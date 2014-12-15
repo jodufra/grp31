@@ -76,7 +76,7 @@
 				<tbody>
 					<td>
 						<div class="media">
-							<a class="media-left media-middle" href="">
+							<a class="media-left media-middle" ng-click="inviteFriend()">
 								<i class="fa fa-plus"></i>
 							</a>
 							<div class="media-body">

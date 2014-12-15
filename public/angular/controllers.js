@@ -44,7 +44,7 @@ appControllers.controller('CreateGameController', function($scope,CurrentUser){
 		//get Players if foreign room 
 		if($scope.players.length != 0) return true;
 		if(!playersContainCurrentUser()){
-			if($scope.players.length < 10){
+			if($scope.players.length < 10 && CurrentUser.user_id != undefined){
 				addPlayer(CurrentUser.player_id, CurrentUser.user_id, CurrentUser.username, CurrentUser.img_src);
 			}else{
 				// Throw room is full
@@ -132,7 +132,12 @@ appControllers.controller('CreateGameController', function($scope,CurrentUser){
 			is_user:isPlayer,
 			is_leader:isLeader
 		});
+		$scope.$apply();
+		fixPortraits();
 	}
+
+
+	$scope.inviteFriend = function(){};
 
 	
 });

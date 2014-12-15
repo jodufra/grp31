@@ -28,9 +28,8 @@ Route::group(array('before' => 'guest'), function () {
 Route::group(array('before' => 'auth'), function () {
     // User
     Route::get('user/show', array('uses' => 'UsersController@show', 'as' => 'user.show'));
-    Route::get('user/getCurrentUser', array('uses' => 'UsersController@getCurrentUser'));
     // Player
-    Route::resource('players', 'PlayersController');
+    Route::controller('player', 'PlayersController');
     // Auth
     Route::get('logout', array('uses' => 'AuthController@getLogout', 'as' => 'logout'));
     // Game

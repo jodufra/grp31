@@ -7,13 +7,3 @@
 var appConstants = angular.module('appConstants',[]);
 appConstants.constant('CSRF_TOKEN', '{{csrf_token()}}' );
 </script>
-@if(Auth::check())
-<script>
-appConstants.constant('CurrentUser', { 
-	player_id: 10,
-	user_id: {{Auth::user()->id}},
-	username: '{{Auth::user()->username}}',
-	img_src:'invalid url'
-});
-</script>
-@endif

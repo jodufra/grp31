@@ -4,6 +4,28 @@
 
 var appServices = angular.module('appServices', []);
 
+appServices.factory('CurrentUser', function ($http)
+{
+	var self = {};
+	self.player_id;
+	self.user_id;
+	self.username;
+	self.img_src;
+
+	var user = {};
+	$http.get( '/player/currentuser' ).
+	success(function(data, status, headers, config) {
+		self.player_id = data.player_id;
+		self.user_id = parseInt(data.user_id);
+		self.username = data.username;
+		self.img_src = data.img_src;
+	}).
+	error(function(data, status, headers, config) {
+		alert("Server did not respond, please try again");
+	});
+	return self;
+});
+
 // GameService
 appServices.factory("GameService", function($http) {
 	return {
