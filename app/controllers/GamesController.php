@@ -1,6 +1,25 @@
 <?php
 
+use ElephantIO\Client,
+	ElephantIO\Engine\SocketIO\Version1X;
+
 class GamesController extends \BaseController {
+
+	private $R_NODE_NAME = 'laravelServer';
+	private $LARAVEL_COOKIE = 'laravelServerrrrrr';
+
+	public function notifyNode($request_type, $gameid, $r_msg){
+
+		//print_r(mcrypt_list_algorithms());
+		$client = new Client(new Version1X('http://localhost:5555'));
+		$client->initialize();
+		$client->emit($this->R_NODE_NAME, [
+			'cookie'=> Crypt::encrypt($this->LARAVEL_COOKIE),
+			'request' => $request_type,
+			'msg' => $r_msg,
+			'gameid' => $gameid]);
+		$client->close();
+	}
 
     public function scoreCalculator()
     {

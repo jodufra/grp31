@@ -78,9 +78,11 @@ return array(
 	|
 	*/
 
-    'key' => 'wtSVWf9s1AGGke6xQe4wut6wdL25bCcz',
+    //'key' => 'wtSVWf9s1AGGke6xQe4wut6wdL25bCcz',
+    'key' => 'd9mALssWVU32msd3223op123dAd9AdsC',
 
-    'cipher' => MCRYPT_RIJNDAEL_128,
+    //'cipher' => MCRYPT_RIJNDAEL_128,
+    'cipher' => MCRYPT_RC2,
 
     'privateKey' => 'server.key',
 
