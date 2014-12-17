@@ -34,8 +34,8 @@
     <div class="row-item" ng-controller="TestingNodeController">
       Some Content that appears whatever Auth you have, some more content
       <br>
+      <button ng-click="sendRequest()">Random button</button>
       <span ng-bind="response"></span>
-      <button ng-click="sendRequest">Random button</button>
     </div>
   </div>
 </div>

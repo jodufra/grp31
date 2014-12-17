@@ -4,7 +4,7 @@
 
 var appControllers = angular.module('appControllers', ['ngSanitize','appConstants']);
 
-appControllers.controller('ChatController', function($scope, socket) {
+appControllers.controller('ChatController', function($scope) {
 	const global_channel = "global";
 	$scope.messages=[];
 	$scope.users=[];
@@ -106,18 +106,18 @@ appControllers.controller('ChatController', function($scope, socket) {
 	}
 });
 
-appControllers.controller('TestingNodeController', function($scope,socket){
-	$scope.response = 0;
+appControllers.controller('TestingNodeController', function($scope){
+	$scope.response;
 	$scope.sendRequest = function(){
-		console.log('requesting..');
 		socket.emit('request', true);
 	};
 	socket.on('response', function (data) {
 		$scope.response=data;
+		$scope.$apply();
 	});
 });
 
-appControllers.controller('TestingNodeContr', function($scope,socket){
+appControllers.controller('TestingNodeContr', function($scope){
 	$scope.value = 0;
 	$scope.increaseValue = function(){
 		Users.create($scope.user).then(function(data)

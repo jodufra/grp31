@@ -1,13 +1,13 @@
 'use strict';
 
 /* Services */
-var appServices = angular.module('appServices', ['btford.socket-io']);
+var appServices = angular.module('appServices', [/*'btford.socket-io'*/]);
 
-appServices.factory('socket', function (socketFactory) {
-	return socketFactory({
-		ioSocket: io.connect('https://grp31.dad:3000')
-	});
-});
+// appServices.factory('socket', function (socketFactory) {
+// 	return socketFactory({
+// 		ioSocket: io.connect('https://grp31.dad:3000')
+// 	});
+// });
 
 appServices.factory('CurrentUser', function ($http){
 	var self = {};
