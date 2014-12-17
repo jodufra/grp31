@@ -5,7 +5,7 @@
 var appControllers = angular.module('appControllers', ['ngSanitize','appConstants']);
 
 appControllers.controller('ChatController', function($scope) {
-	const global_channel = "global";
+	var global_channel = "global";
 	$scope.messages=[];
 	$scope.users=[];
 	$scope.unreadedMessages = 0;
