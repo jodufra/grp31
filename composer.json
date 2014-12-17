@@ -10,7 +10,8 @@
         "way/generators": "2.6.1",
         "twitter/bootstrap": "*",
         "phpunit/phpunit":"4.3.*",
-        "wisembly/elephant.io": "~3.0"
+        "wisembly/elephant.io": "~3.0",
+		"barryvdh/laravel-cors": "0.2.x"
         },
         "autoload": { 
             "classmap": [

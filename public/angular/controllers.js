@@ -107,6 +107,17 @@ appControllers.controller('ChatController', function($scope, socket) {
 });
 
 appControllers.controller('TestingNodeController', function($scope,socket){
+	$scope.response = 0;
+	$scope.sendRequest = function(){
+		console.log('requesting..');
+		socket.emit('request', true);
+	};
+	socket.on('response', function (data) {
+		$scope.response=data;
+	});
+});
+
+appControllers.controller('TestingNodeContr', function($scope,socket){
 	$scope.value = 0;
 	$scope.increaseValue = function(){
 		Users.create($scope.user).then(function(data)

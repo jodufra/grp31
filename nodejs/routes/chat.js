@@ -1,13 +1,15 @@
+/* CHAT MODULE */
+console.log("Loading Chat Module");
+
 //var io = require('../public').io;
-var CHAT_BUFFER_SIZE = 3;
-var SOCKETIO_CHAT_EVENT = 'chat:chat';
-var SOCKETIO_START_EVENT = 'chat:start';
-var SOCKETIO_STOP_EVENT = 'chat:stop';
+const SOCKETIO_CHAT_EVENT = 'chat:chat';
+const SOCKETIO_START_EVENT = 'chat:start';
+const SOCKETIO_STOP_EVENT = 'chat:stop';
+const CHAT_GLOBAL_CHANNEL = 'global';
+const CHAT_BUFFER_SIZE = 3;
+
 var nbOpenSockets = 0;
 var isFirstConnectionToChat = true;
-
-console.log("Loading chat module...");
-
 var oldChatBuffer = [];
 
 
@@ -17,8 +19,7 @@ var oldChatBuffer = [];
 
 // 	if (nbOpenSockets <= 0) {
 // 		nbOpenSockets = 0;
-// 		console.log("No active client. Stop streaming from Twitter");
-// 		stream.stop();
+// 		console.log("No active clients.");
 // 	}
 // };
 
@@ -28,29 +29,30 @@ var oldChatBuffer = [];
 		
 // 		if (nbOpenSockets <= 0) {
 // 			nbOpenSockets = 0;
-// 			console.log('First active client. Start streaming from Twitter');
-// 			stream.start();
+// 			console.log('First active client.');
 // 		}
 
 // 		nbOpenSockets++;
 
 		
-// 		if (oldTweetsBuffer != null && oldTweetsBuffer.length != 0) {
-// 			socket.emit(SOCKETIO_TWEETS_EVENT, oldTweetsBuffer);
+// 		if (oldChatBuffer != null && oldChatBuffer.length != 0) {
+// 			socket.emit(SOCKETIO_CHAT_EVENT, oldChatBuffer);
 // 		}
 // 	}
 // };
 
-// io.sockets.on('connection', function(socket) {
+module.exports = function(io) {
+// 	io.sockets.on('connection', function(socket) {
 
-// 	socket.on(SOCKETIO_START_EVENT, function(data) {
-// 		handleClient(data, socket);
+// 		socket.on(SOCKETIO_START_EVENT, function(data) {
+// 			handleClient(data, socket);
+// 		});
+
+// 		socket.on(SOCKETIO_STOP_EVENT, discardClient);
+
+// 		socket.on('disconnect', discardClient);
 // 	});
-
-// 	socket.on(SOCKETIO_STOP_EVENT, discardClient);
-
-// 	socket.on('disconnect', discardClient);
-// });
+}
 
 
 
@@ -76,7 +78,7 @@ var oldChatBuffer = [];
 // 		return ;
 // 	}
 
-	
+
 // 	var msg = {};
 // 	msg.text = tweet.text;
 // 	msg.location = tweet.place.full_name;
@@ -86,7 +88,7 @@ var oldChatBuffer = [];
 // 	};
 
 
-	
+
 // 	tweetsBuffer.push(msg);
 
 // 	broadcastTweets();
@@ -95,12 +97,12 @@ var oldChatBuffer = [];
 // var broadcastTweets = function() {
 	
 // 	if (tweetsBuffer.length >= TWEETS_BUFFER_SIZE) {
-		
+
 // 		io.sockets.emit(SOCKETIO_TWEETS_EVENT, tweetsBuffer);
-		
-// 		oldTweetsBuffer = tweetsBuffer;
+
+// 		oldChatBuffer = tweetsBuffer;
 // 		tweetsBuffer = [];
 // 	}
 // }
 
-//console.log("Listening for chat messages");
+console.log("Listening for chat requests");

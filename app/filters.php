@@ -13,13 +13,8 @@
 
 App::before(function($request)
 {
-    if(!Request::secure()) return Redirect::secure(Request::path(),'307');
-    $headers = array(
-        'Access-Control-Allow-Origin'=>'*',
-        'Access-Control-Allow-Methods'=>'GET, POST, DELETE, PUT',
-        'Access-Control-Allow-Headers'=>'X-Requested-With, Content-Type'
-        );
-    View::share('headers', $headers);
+   if(!Request::secure()) return Redirect::secure(Request::path(),'307');
+
 });
 
 App::after(function ($request, $response) {
