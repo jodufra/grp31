@@ -1,11 +1,33 @@
 'use strict';
 
 /* Services */
+var appServices = angular.module('appServices', ['btford.socket-io']);
 
-var appServices = angular.module('appServices', []);
+appServices.factory('socket', function ($rootScope) {
+	var socket = io.connect("https://grp31.dad:30000");
+	return {
+		on: function (eventName, callback) {
+			socket.on(eventName, function () {  
+				var args = arguments;
+				$rootScope.$apply(function () {
+					callback.apply(socket, args);
+				});
+			});
+		},
+		emit: function (eventName, data, callback) {
+			socket.emit(eventName, data, function () {
+				var args = arguments;
+				$rootScope.$apply(function () {
+					if (callback) {
+						callback.apply(socket, args);
+					}
+				});
+			})
+		}
+	};
+});
 
-appServices.factory('CurrentUser', function ($http)
-{
+appServices.factory('CurrentUser', function ($http){
 	var self = {};
 	self.player_id;
 	self.user_id;

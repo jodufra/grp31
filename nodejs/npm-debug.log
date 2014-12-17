@@ -1,10 +1,10 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install', 'https' ]
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install', 'server.js' ]
 2 info using npm@1.4.28
 3 info using node@v0.10.32
 4 verbose node symlink /usr/bin/node
-5 verbose cache add [ 'https', null ]
-6 verbose cache add name=undefined spec="https" args=["https",null]
+5 verbose cache add [ 'server.js', null ]
+6 verbose cache add name=undefined spec="server.js" args=["server.js",null]
 7 verbose parsed url { protocol: null,
 7 verbose parsed url   slashes: null,
 7 verbose parsed url   auth: null,
@@ -14,70 +14,82 @@
 7 verbose parsed url   hash: null,
 7 verbose parsed url   search: null,
 7 verbose parsed url   query: null,
-7 verbose parsed url   pathname: 'https',
-7 verbose parsed url   path: 'https',
-7 verbose parsed url   href: 'https' }
-8 silly lockFile c3437dbc-https https
-9 verbose lock https /home/vagrant/.npm/c3437dbc-https.lock
-10 silly lockFile c3437dbc-https https
-11 silly lockFile c3437dbc-https https
-12 verbose addNamed [ 'https', '' ]
-13 verbose addNamed [ null, '*' ]
-14 silly lockFile 421d451a-https https@
-15 verbose lock https@ /home/vagrant/.npm/421d451a-https.lock
-16 silly addNameRange { name: 'https', range: '*', hasData: false }
-17 verbose request where is /https
-18 verbose request registry https://registry.npmjs.org/
-19 verbose request id 5d406f76d061d985
-20 verbose url raw /https
-21 verbose url resolving [ 'https://registry.npmjs.org/', './https' ]
-22 verbose url resolved https://registry.npmjs.org/https
-23 verbose request where is https://registry.npmjs.org/https
-24 info trying registry request attempt 1 at 21:27:00
-25 http GET https://registry.npmjs.org/https
-26 http 404 https://registry.npmjs.org/https
-27 verbose headers { date: 'Mon, 08 Dec 2014 21:27:01 GMT',
-27 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-27 verbose headers   'content-type': 'application/json',
-27 verbose headers   'cache-control': 'max-age=0',
-27 verbose headers   'content-length': '52',
-27 verbose headers   'accept-ranges': 'bytes',
-27 verbose headers   via: '1.1 varnish',
-27 verbose headers   age: '0',
-27 verbose headers   'x-served-by': 'cache-lcy1128-LCY',
-27 verbose headers   'x-cache': 'MISS',
-27 verbose headers   'x-cache-hits': '0',
-27 verbose headers   'x-timer': 'S1418074021.408942,VS0,VE88',
-27 verbose headers   'keep-alive': 'timeout=10, max=50',
-27 verbose headers   connection: 'Keep-Alive' }
-28 silly registry.get cb [ 404,
-28 silly registry.get   { date: 'Mon, 08 Dec 2014 21:27:01 GMT',
-28 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-28 silly registry.get     'content-type': 'application/json',
-28 silly registry.get     'cache-control': 'max-age=0',
-28 silly registry.get     'content-length': '52',
-28 silly registry.get     'accept-ranges': 'bytes',
-28 silly registry.get     via: '1.1 varnish',
-28 silly registry.get     age: '0',
-28 silly registry.get     'x-served-by': 'cache-lcy1128-LCY',
-28 silly registry.get     'x-cache': 'MISS',
-28 silly registry.get     'x-cache-hits': '0',
-28 silly registry.get     'x-timer': 'S1418074021.408942,VS0,VE88',
-28 silly registry.get     'keep-alive': 'timeout=10, max=50',
-28 silly registry.get     connection: 'Keep-Alive' } ]
-29 silly lockFile 421d451a-https https@
-30 silly lockFile 421d451a-https https@
-31 error 404 404 Not Found: https
-31 error 404
-31 error 404 'https' is not in the npm registry.
-31 error 404 You should bug the author to publish it
-31 error 404
-31 error 404 Note that you can also install from a
-31 error 404 tarball, folder, or http url, or git url.
-32 error System Linux 3.13.0-30-generic
-33 error command "/usr/bin/node" "/usr/bin/npm" "install" "https"
-34 error cwd /home/vagrant/grp31/site/nodejs
-35 error node -v v0.10.32
-36 error npm -v 1.4.28
-37 error code E404
-38 verbose exit [ 1, true ]
+7 verbose parsed url   pathname: 'server.js',
+7 verbose parsed url   path: 'server.js',
+7 verbose parsed url   href: 'server.js' }
+8 silly lockFile dc60ea9e-server-js server.js
+9 verbose lock server.js /home/vagrant/.npm/dc60ea9e-server-js.lock
+10 verbose chmod /tmp/npm-3724-R4odqcWy/1418788625039-0.7991017494350672/tmp.tgz 644
+11 verbose tar unpack /tmp/npm-3724-R4odqcWy/1418788625039-0.7991017494350672/tmp.tgz
+12 silly lockFile 6136044d--7991017494350672-tmp-tgz-unpack tar:///tmp/npm-3724-R4odqcWy/1418788625039-0.7991017494350672/tmp.tgz-unpack
+13 verbose lock tar:///tmp/npm-3724-R4odqcWy/1418788625039-0.7991017494350672/tmp.tgz-unpack /home/vagrant/.npm/6136044d--7991017494350672-tmp-tgz-unpack.lock
+14 silly lockFile 8a91ab96-25039-0-7991017494350672-tmp-tgz tar:///tmp/npm-3724-R4odqcWy/1418788625039-0.7991017494350672/tmp.tgz
+15 verbose lock tar:///tmp/npm-3724-R4odqcWy/1418788625039-0.7991017494350672/tmp.tgz /home/vagrant/.npm/8a91ab96-25039-0-7991017494350672-tmp-tgz.lock
+16 silly gunzTarPerm modes [ '755', '644' ]
+17 error not a package /tmp/npm-3724-R4odqcWy/1418788625039-0.7991017494350672/tmp.tgz
+18 silly lockFile 6136044d--7991017494350672-tmp-tgz-unpack tar:///tmp/npm-3724-R4odqcWy/1418788625039-0.7991017494350672/tmp.tgz-unpack
+19 silly lockFile 6136044d--7991017494350672-tmp-tgz-unpack tar:///tmp/npm-3724-R4odqcWy/1418788625039-0.7991017494350672/tmp.tgz-unpack
+20 silly lockFile 8a91ab96-25039-0-7991017494350672-tmp-tgz tar:///tmp/npm-3724-R4odqcWy/1418788625039-0.7991017494350672/tmp.tgz
+21 silly lockFile 8a91ab96-25039-0-7991017494350672-tmp-tgz tar:///tmp/npm-3724-R4odqcWy/1418788625039-0.7991017494350672/tmp.tgz
+22 silly lockFile dc60ea9e-server-js server.js
+23 silly lockFile dc60ea9e-server-js server.js
+24 verbose addNamed [ 'server.js', '' ]
+25 verbose addNamed [ null, '*' ]
+26 silly lockFile a88d15b6-server-js server.js@
+27 verbose lock server.js@ /home/vagrant/.npm/a88d15b6-server-js.lock
+28 silly addNameRange { name: 'server.js', range: '*', hasData: false }
+29 verbose request where is /server.js
+30 verbose request registry https://registry.npmjs.org/
+31 verbose request id 8d5d88b7a3afcffa
+32 verbose url raw /server.js
+33 verbose url resolving [ 'https://registry.npmjs.org/', './server.js' ]
+34 verbose url resolved https://registry.npmjs.org/server.js
+35 verbose request where is https://registry.npmjs.org/server.js
+36 info trying registry request attempt 1 at 03:57:05
+37 http GET https://registry.npmjs.org/server.js
+38 http 404 https://registry.npmjs.org/server.js
+39 verbose headers { date: 'Wed, 17 Dec 2014 03:57:08 GMT',
+39 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+39 verbose headers   'content-type': 'application/json',
+39 verbose headers   'cache-control': 'max-age=0',
+39 verbose headers   'content-length': '52',
+39 verbose headers   'accept-ranges': 'bytes',
+39 verbose headers   via: '1.1 varnish',
+39 verbose headers   'x-served-by': 'cache-lcy1134-LCY',
+39 verbose headers   'x-cache': 'MISS',
+39 verbose headers   'x-cache-hits': '0',
+39 verbose headers   'x-timer': 'S1418788628.312571,VS0,VE641',
+39 verbose headers   'keep-alive': 'timeout=10, max=50',
+39 verbose headers   connection: 'Keep-Alive' }
+40 silly registry.get cb [ 404,
+40 silly registry.get   { date: 'Wed, 17 Dec 2014 03:57:08 GMT',
+40 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+40 silly registry.get     'content-type': 'application/json',
+40 silly registry.get     'cache-control': 'max-age=0',
+40 silly registry.get     'content-length': '52',
+40 silly registry.get     'accept-ranges': 'bytes',
+40 silly registry.get     via: '1.1 varnish',
+40 silly registry.get     'x-served-by': 'cache-lcy1134-LCY',
+40 silly registry.get     'x-cache': 'MISS',
+40 silly registry.get     'x-cache-hits': '0',
+40 silly registry.get     'x-timer': 'S1418788628.312571,VS0,VE641',
+40 silly registry.get     'keep-alive': 'timeout=10, max=50',
+40 silly registry.get     connection: 'Keep-Alive' } ]
+41 silly lockFile a88d15b6-server-js server.js@
+42 silly lockFile a88d15b6-server-js server.js@
+43 error 404 404 Not Found: server.js
+43 error 404
+43 error 404 'server.js' is not in the npm registry.
+43 error 404 You should bug the author to publish it
+43 error 404
+43 error 404 Maybe try 'npm search server'
+43 error 404
+43 error 404 Note that you can also install from a
+43 error 404 tarball, folder, or http url, or git url.
+44 error System Linux 3.13.0-30-generic
+45 error command "/usr/bin/node" "/usr/bin/npm" "install" "server.js"
+46 error cwd /home/vagrant/grp31/site/nodejs
+47 error node -v v0.10.32
+48 error npm -v 1.4.28
+49 error code E404
+50 verbose exit [ 1, true ]

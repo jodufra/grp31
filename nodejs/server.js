@@ -1,36 +1,27 @@
-var express = require('express'),
-    https = require('https')
-    fs = require('fs');
-
-var options = {
-  // key: fs.readFileSync('/home/vagrant/grp31/site/app/keys/server.key'),
-  // cert: fs.readFileSync('/home/vagrant/grp31/site/app/keys/server.crt')
-  key: fs.readFileSync('/var/www/html/laravel/app/keys/server.key'),
-  cert: fs.readFileSync('/var/www/html/laravel/app/keys/server.crt')
-};
-
-var server = https.createServer(options, app);
-
+var express = require('express');
+var bodyparser = require('body-parser');
+var morgan = require('morgan');
 var app = express();
+var server = app.listen(3000);
+var io = require('socket.io').listen(server);
+var redis = require('socket.io-redis');
+io.adapter(redis({ host: 'localhost', port: 6379 }));
 
-const redis =   require('redis');
-const io =      require('socket.io');
-const client =  redis.createClient();
+exports.io = io;
 
-server.listen(3000, 'localhost');
-console.log("Listening.....");
+console.log('Yahtzee started on port ' + server.address().port);
 
-io.listen(server).on('connection', function(client) {
-    const redisClient = redis.createClient();
 
-    console.log("Redis server running.....");
+app.use(bodyparser);
+app.use(morgan);
 
-    redisClient.on("message", function(channel, message) {
-        console.log(message);
-        client.emit(channel, message);
-    });
-
-    client.on('disconnect', function() {
-        redisClient.quit();
-    });
+app.all('*', function(req, res, next) {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
+    res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
+    if ('OPTIONS' == req.method) return res.send(200);
+    next();
 });
+
+
+var chat = require('./config/chat');

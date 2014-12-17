@@ -4,8 +4,109 @@
 
 var appControllers = angular.module('appControllers', ['ngSanitize','appConstants']);
 
+appControllers.controller('ChatController', function($scope, socket) {
+	const global_channel = "global";
+	$scope.messages=[];
+	$scope.users=[];
+	$scope.unreadedMessages = 0;
+	$scope.name = '';
+	$scope.channel = global_channel;
 
-appControllers.controller('TestingNodeController', function($scope,$socket){
+	$scope.setChatState = function(state){
+		$scope.chatState = state;
+		if(state){
+			$('#chat').removeClass('minimized');
+			if($scope.name != ''){
+				$('#chat .setuser').addClass('hidden');
+			}
+		}else{
+			$('#chat').addClass('minimized');
+			if($scope.name == ''){
+				$('#chat .setuser').removeClass('hidden');
+			}
+		}
+		return state;
+	}
+
+	$scope.chatState = $scope.setChatState(true);
+
+	//	Socket Listeners
+	socket.on('chat:'+$scope.channel+':message:send', function (message) {
+		$scope.messages.push(message);
+	});
+
+	socket.on('chat:'+$scope.channel+':user:join', function (data) {
+		addMessage({
+			user: 'chatroom',
+			text: 'User ' + data.name + ' has joined.'
+		});
+		$scope.users.push(data.name);
+	});
+
+	socket.on('chat:'+$scope.channel+':user:left', function (data) {
+		addMessage({
+			user: 'chatroom',
+			text: 'User ' + data.name + ' has left.'
+		});
+		var i, user;
+		for (i = 0; i < $scope.users.length; i++) {
+			user = $scope.users[i];
+			if (user === data.name) {
+				$scope.users.splice(i, 1);
+				break;
+			}
+		}
+	});
+
+	$scope.joinChat = function(){
+		if (typeof game_id !== 'undefined') {
+			$scope.channel = game_id;
+		}
+
+		socket.emit('chat:'+$scope.channel+':user:join', {
+			name: $scope.name
+		});
+
+		$('#chat .setuser').addClass('hidden');
+	}
+
+	$scope.sendMessage = function () {
+		socket.emit('chat:'+$scope.channel+':message:send', {
+			user: $scope.name,
+			message: $scope.message
+		});
+		addMessage({
+			user: $scope.name,
+			text: $scope.message
+		});
+
+		$scope.message = '';
+	};
+
+	$scope.stringToColour = function(str) {
+		var colour;
+		for (var i = 0, hash = 0; i < str.length; ){
+			hash = str.charCodeAt(i++) + ((hash << 5) - hash)
+		}
+
+		for (var i = 0, colour = "#"; i < 3; ){
+			colour += ("00" + ((hash >> i++ * 8) & 0xFF).toString(16)).slice(-2)
+		}
+
+		return colour;
+	}
+
+	function addMessage(message){
+		$scope.messages.push(message);
+		if($scope.chatState){
+			$scope.unreadedMessages = 0;
+		}else{
+			$scope.unreadedMessages++;
+		}
+	}
+});
+
+appControllers.controller('TestingNodeController', function($scope,socket){
 	$scope.value = 0;
 	$scope.increaseValue = function(){
 		Users.create($scope.user).then(function(data)
@@ -136,10 +237,7 @@ appControllers.controller('CreateGameController', function($scope,CurrentUser){
 		fixPortraits();
 	}
 
-
 	$scope.inviteFriend = function(){};
-
-	
 });
 
 appControllers.controller('GamePlayController', function($scope, GamePlayPlayers){

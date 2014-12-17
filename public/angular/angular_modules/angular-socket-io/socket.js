@@ -5,14 +5,13 @@
  * License: MIT
  */
 
-angular.module('btford.socket-io', []).
-  provider('socketFactory', function () {
+ angular.module('btford.socket-io', []).provider('socketFactory', function () {
 
-    'use strict';
+  'use strict';
 
     // when forwarding events, prefix the event name
     var defaultPrefix = 'socket:',
-      ioSocket;
+    ioSocket;
 
     // expose to provider
     this.$get = ['$rootScope', '$timeout', function ($rootScope, $timeout) {

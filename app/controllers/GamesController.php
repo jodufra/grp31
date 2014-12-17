@@ -43,9 +43,6 @@ class GamesController extends \BaseController {
         return Response::json($dices);
     }
 
-
-
-
 	/**
 	 * Display a listing of games
 	 *
@@ -100,7 +97,7 @@ class GamesController extends \BaseController {
 		//$game = Game::findOrFail($id);
 
 		//return View::make('games.show', compact('game'));
-		return View::make('games.show');
+		return View::make('games.show', array("game_id"=>$id));
 	}
 
 	/**

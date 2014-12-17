@@ -4,6 +4,7 @@
 {{ HTML::script('js/scripts.js'); }}
 
 <!-- Angular Scripts -->
+{{ HTML::script('angular/angular_modules/angular-socket-io/mock/socket-io.js'); }}
 {{ HTML::script('angular/angular_modules/angular-socket-io/socket.js'); }}
 {{ HTML::script('angular/services.js'); }}
 {{ HTML::script('angular/controllers.js'); }}
