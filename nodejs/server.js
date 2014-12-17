@@ -1,5 +1,4 @@
 var app = require('express')();
-var https = require('https');
 var fs = require('fs');
 var options = {
 	//	key: fs.readFileSync('/home/vagrant/grp31/site/app/keys/server.key'),
@@ -7,7 +6,7 @@ var options = {
 	key: fs.readFileSync('/var/www/html/laravel/app/keys/server.key'),
 	cert: fs.readFileSync('/var/www/html/laravel/app/keys/server.crt')
 };
-var https = https.Server(options, app);
+var https = require('https').Server(options, app);
 
 var io = require('socket.io')(https);
 //var redis = require('socket.io-redis');
