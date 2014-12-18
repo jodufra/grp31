@@ -9,14 +9,12 @@
 	</div>
 	<div class="body">
 		<div class="messageslist">
-			<table class="table">
-				<tr ng-repeat="msg in messages">
-					<td style="box-shadow: inset 0 0 5px [[stringToColour(msg.user)]]">
-						<span class="author">[[msg.user]]:&nbsp;</span>
-						<span class="message">[[msg.message]]</span>
-					</td>
-				</tr>
-			</table>
+			<div ng-repeat="msg in messages">
+				<div style="box-shadow: inset 0 0 6px 2px [[stringToColour(msg.user)]]" class="message">
+					<span class="author">[[msg.user]]:&nbsp;</span>
+					<pre class="message"><code class="message">[[msg.message]]</code></pre>
+				</div>
+			</div>
 		</div>
 		<div class="messagetyper">
 			<form ng-submit="sendMessage()">

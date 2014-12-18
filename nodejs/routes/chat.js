@@ -22,12 +22,12 @@ module.exports = function(io, socket) {
 	socket.on('chat:innit', function(data){
 		if(!data.user || data.user == ''){
 			guestCount++
-			data.user = 'Guest'+guestCount;
+			data.user = 'Guest '+guestCount;
 		}
-		socket.emit('chat:innit', {user: data.user, channel: data.channel});
 		if(chatBuffer[data.channel]){
 			socket.emit('chat:message:buffer', chatBuffer[data.channel]);
 		}
+		socket.emit('chat:innit', {user: data.user, channel: data.channel});
 		socket.broadcast.emit('chat:user:join', {user:data.user, channel:data.channel});
 
 		users[socket.id] = {user:data.user,channel:data.channel};

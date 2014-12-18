@@ -46,6 +46,7 @@ appControllers.controller('ChatController', function($scope) {
 		$scope.name = data.user;
 		$scope.channel = data.channel;
 		$('#chat .setuser').addClass('hidden');
+		addMessage({user:'ChatRoom',message:'You joined the chat!'});
 		$scope.$apply();
 	});
 
@@ -53,7 +54,6 @@ appControllers.controller('ChatController', function($scope) {
 		messages.forEach(function(msg){
 			addMessage(msg);
 		});
-		addMessage({user:'ChatRoom',message:'You joined the chat!'});
 		$scope.$apply();
 	});
 
@@ -109,7 +109,12 @@ appControllers.controller('ChatController', function($scope) {
 	}
 
 	function addMessage(message){
-		$scope.messages.push(message);
+		if($scope.messages.length > 0 && message.user == $scope.messages[$scope.messages.length -1].user){
+			$scope.messages[$scope.messages.length -1].message += "\n"+ message.message;
+		}else{
+			$scope.messages.push(message);
+		}
+
 		if($scope.chatState){
 			$scope.unreadedMessages = 0;
 		}else{

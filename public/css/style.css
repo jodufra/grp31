@@ -91,7 +91,7 @@ input::-webkit-inner-spin-button {
     background-color: #D9EDF7;
     border: 1px solid #007196;
     color: black;
-    padding: 15px;
+    padding: 5px;
 }
 #chat .body .messageslist{
     background-color: white;
@@ -101,6 +101,27 @@ input::-webkit-inner-spin-button {
     overflow-y: scroll; 
     word-break: break-all;
 }
+#chat .body .message{
+    padding: 5px;
+}
+#chat .body .message .author{
+    text-align: left;
+    font-size: 16px;
+}
+#chat .body .message .message{
+    font-size: 13px;
+}
+#chat .body .messageslist .message{
+    text-align: right;
+    background:none;
+    color: black;
+    border: none !important;
+    padding:none !important;
+    margin:none !important;
+    width:auto !important;
+    height:auto !important;
+}
+
 
 #chat .body .messagetyper input{
     width: 100%;
