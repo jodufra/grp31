@@ -15,9 +15,24 @@ var io = require('socket.io')(https);
 console.log('Yahtzee RT Server started ... Loading Modules:');
 exports.io = io;
 
-var chat = require('./routes/chat')(io);
-var test = require('./routes/test')(io);
+var firstClient = true;
+io.on('connection', function(socket) {
+	if (firstClient) {
+		console.log('First Client Connected! - '+ socket.id);
+		console.log('Loading Modules');
+		firstClient = false;
+	}else{
+		console.log('Client Connected! - '+ socket.id);
+	}
+
+	require('./routes/test')(io, socket);
+	require('./routes/chat')(io, socket);
+
+	socket.on('disconnect', function() {
+		console.log('Client Disconnected! - '+ socket.id);
+	});
+});
 
 https.listen(3000, function(){
-	console.log("Modules loaded. Listening on *:3000");
+	console.log("Listening on *:3000");
 })

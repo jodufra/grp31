@@ -1,4 +1,4 @@
-<div id="chat" class="col-md-6" ng-controller="ChatController">
+<div id="chat" class="col-md-3 col-md-offset-9" ng-controller="ChatController">
 	<div class="head clearfix">
 		<div class="title pull-left">
 			<span class="glyphicon glyphicon-comment" aria-hidden="true"></span><span class="name">&nbsp;Yahtzee Chat - [[channel]]</span>
@@ -13,7 +13,7 @@
 				<tr ng-repeat="msg in messages">
 					<td style="box-shadow: inset 0 0 5px [[stringToColour(msg.user)]]">
 						<span class="author">[[msg.user]]:&nbsp;</span>
-						<span class="message">[[msg.text]]</span>
+						<span class="message">[[msg.message]]</span>
 					</td>
 				</tr>
 			</table>
@@ -35,6 +35,9 @@
 		</div>
 	</div>
 	<div class="smallcounter" ng-click="setChatState(true)">
-		<span><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>&nbsp;<span class="badge">[[unreadedMessages]]</span></span>
+		<span>
+			<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>&nbsp;
+			<span class="badge">[[unreadedMessages]]</span>
+		</span>
 	</div>
 </div>

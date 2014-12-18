@@ -6,10 +6,9 @@ var appControllers = angular.module('appControllers', ['ngSanitize','appConstant
 
 appControllers.controller('ChatController', function($scope) {
 	var global_channel = "global";
-	$scope.messages=[];
-	$scope.users=[];
-	$scope.unreadedMessages = 0;
 	$scope.name = '';
+	$scope.messages=[];
+	$scope.unreadedMessages = 0;
 	$scope.channel = global_channel;
 
 	$scope.setChatState = function(state){
@@ -19,6 +18,7 @@ appControllers.controller('ChatController', function($scope) {
 			if($scope.name != ''){
 				$('#chat .setuser').addClass('hidden');
 			}
+			$scope.unreadedMessages = 0;
 		}else{
 			$('#chat').addClass('minimized');
 			if($scope.name == ''){
@@ -30,54 +30,66 @@ appControllers.controller('ChatController', function($scope) {
 
 	$scope.chatState = $scope.setChatState(true);
 
-	//	Socket Listeners
-	socket.on('chat:'+$scope.channel+':message:send', function (message) {
-		$scope.messages.push(message);
-	});
-
-	socket.on('chat:'+$scope.channel+':user:join', function (data) {
-		addMessage({
-			user: 'chatroom',
-			text: 'User ' + data.name + ' has joined.'
-		});
-		$scope.users.push(data.name);
-	});
-
-	socket.on('chat:'+$scope.channel+':user:left', function (data) {
-		addMessage({
-			user: 'chatroom',
-			text: 'User ' + data.name + ' has left.'
-		});
-		var i, user;
-		for (i = 0; i < $scope.users.length; i++) {
-			user = $scope.users[i];
-			if (user === data.name) {
-				$scope.users.splice(i, 1);
-				break;
-			}
-		}
-	});
-
 	$scope.joinChat = function(){
 		if (typeof game_id !== 'undefined') {
 			$scope.channel = game_id;
 		}
 
-		socket.emit('chat:'+$scope.channel+':user:join', {
-			name: $scope.name
+		socket.emit('chat:innit', {
+			user: $scope.name,
+			channel: $scope.channel
 		});
 
-		$('#chat .setuser').addClass('hidden');
 	}
 
+	socket.on('chat:innit', function (data) {
+		$scope.name = data.user;
+		$scope.channel = data.channel;
+		$('#chat .setuser').addClass('hidden');
+		$scope.$apply();
+	});
+
+	socket.on('chat:message:buffer', function (messages) {
+		messages.forEach(function(msg){
+			addMessage(msg);
+		});
+		addMessage({user:'ChatRoom',message:'You joined the chat!'});
+		$scope.$apply();
+	});
+
+	socket.on('chat:message:send', function (message) {
+		if(message.channel == $scope.channel) addMessage(message);
+		$scope.$apply();
+	});
+
+	socket.on('chat:user:join', function (data) {
+		if(data.channel == $scope.channel){
+			addMessage({
+				user: 'ChatRoom',
+				message: 'User ' + data.user + ' has joined.'
+			});
+		}
+		$scope.$apply();
+	});
+
+	socket.on('chat:user:left', function (data) {
+		addMessage({
+			user: 'ChatRoom',
+			message: 'User ' + data.user + ' has left.'
+		});
+		$scope.$apply();
+	});
+	
+
 	$scope.sendMessage = function () {
-		socket.emit('chat:'+$scope.channel+':message:send', {
+		socket.emit('chat:message:send', {
 			user: $scope.name,
+			channel: $scope.channel,
 			message: $scope.message
 		});
 		addMessage({
 			user: $scope.name,
-			text: $scope.message
+			message: $scope.message
 		});
 
 		$scope.message = '';
@@ -86,11 +98,11 @@ appControllers.controller('ChatController', function($scope) {
 	$scope.stringToColour = function(str) {
 		var colour;
 		for (var i = 0, hash = 0; i < str.length; ){
-			hash = str.charCodeAt(i++) + ((hash << 5) - hash)
+			hash = str.charCodeAt(i++) + ((hash << 5) - hash);
 		}
 
 		for (var i = 0, colour = "#"; i < 3; ){
-			colour += ("00" + ((hash >> i++ * 8) & 0xFF).toString(16)).slice(-2)
+			colour += ("00" + ((hash >> i++ * 8) & 0xFF).toString(16)).slice(-2);
 		}
 
 		return colour;

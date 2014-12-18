@@ -97,7 +97,7 @@ input::-webkit-inner-spin-button {
     background-color: white;
     color: black;
     border: 1px solid silver;
-    height: 200px;
+    height: 250px;
     overflow-y: scroll; 
     word-break: break-all;
 }
@@ -127,6 +127,10 @@ input::-webkit-inner-spin-button {
 
 #chat .smallcounter .glyphicon{
     color: #D9EDF7;
+}
+
+#chat .smallcounter .badge{
+    color: black;
 }
 
 #chat.minimized{

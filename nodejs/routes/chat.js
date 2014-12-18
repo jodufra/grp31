@@ -1,63 +1,105 @@
 /* CHAT MODULE */
-console.log("Loading Chat Module");
+function log(str){
+	console.log("Chat | "+str);
+}
+log("Loading Chat Module");
 
 //var io = require('../public').io;
 const SOCKETIO_CHAT_EVENT = 'chat:chat';
 const SOCKETIO_START_EVENT = 'chat:start';
 const SOCKETIO_STOP_EVENT = 'chat:stop';
 const CHAT_GLOBAL_CHANNEL = 'global';
-const CHAT_BUFFER_SIZE = 3;
+const CHAT_BUFFER_SIZE = 5;
 
-var nbOpenSockets = 0;
-var isFirstConnectionToChat = true;
-var oldChatBuffer = [];
+
+var chatBuffer = [];
+
+var message = {author:'', msg:'', channel:''};
+var guestCount = 0;
+var users = [];
+
+module.exports = function(io, socket) {
+	socket.on('chat:innit', function(data){
+		if(!data.user || data.user == ''){
+			guestCount++
+			data.user = 'Guest'+guestCount;
+		}
+		socket.emit('chat:innit', {user: data.user, channel: data.channel});
+		if(chatBuffer[data.channel]){
+			socket.emit('chat:message:buffer', chatBuffer[data.channel]);
+		}
+		socket.broadcast.emit('chat:user:join', {user:data.user, channel:data.channel});
+
+		users[socket.id] = {user:data.user,channel:data.channel};
+	});
+
+	socket.on('chat:message:send',function(msg){
+		var channel = msg.channel;
+		if(typeof chatBuffer[channel] === 'undefined') chatBuffer[channel] = [];
+		chatBuffer[channel].push(msg);
+		var length = chatBuffer[channel].length 
+		if(length >= CHAT_BUFFER_SIZE){
+			newBuffer = [];
+			for(var i = length-CHAT_BUFFER_SIZE; i<CHAT_BUFFER_SIZE;i++){
+				newBuffer.push(chatBuffer[channel][i]);
+			}
+			chatBuffer[channel] = newBuffer;
+		}
+
+		socket.broadcast.emit('chat:message:send', msg);
+	});
+
+	socket.on('disconnect', function() {
+		if(!(typeof users[socket.id] === 'undefined')){
+			var user = users[socket.id].user;
+			var channel = users[socket.id].channel;
+
+			socket.broadcast.emit('chat:user:left', user, channel);
+
+			delete users[socket.id];
+		}
+	});
+
+}
+
+
+
 
 
 // var discardClient = function() {
-// 	console.log('Client disconnected !');
+// 	log('Client disconnected !');
 // 	nbOpenSockets--;
 
 // 	if (nbOpenSockets <= 0) {
 // 		nbOpenSockets = 0;
-// 		console.log("No active clients.");
+// 		log("No active clients.");
 // 	}
 // };
 
 // var handleClient = function(data, socket) {
 // 	if (data == true) {
-// 		console.log('Client connected !');
-		
+// 		log('Client connected !');
+
 // 		if (nbOpenSockets <= 0) {
 // 			nbOpenSockets = 0;
-// 			console.log('First active client.');
+// 			log('First active client.');
 // 		}
 
 // 		nbOpenSockets++;
 
-		
+
 // 		if (oldChatBuffer != null && oldChatBuffer.length != 0) {
 // 			socket.emit(SOCKETIO_CHAT_EVENT, oldChatBuffer);
 // 		}
 // 	}
 // };
 
-module.exports = function(io) {
-// 	io.sockets.on('connection', function(socket) {
 
-// 		socket.on(SOCKETIO_START_EVENT, function(data) {
-// 			handleClient(data, socket);
-// 		});
-
-// 		socket.on(SOCKETIO_STOP_EVENT, discardClient);
-
-// 		socket.on('disconnect', discardClient);
-// 	});
-}
 
 
 
 // stream.on('connect', function(request) {
-// 	console.log('Connected to Twitter API');
+// 	log('Connected to Twitter API');
 
 // 	if (isFirstConnectionToTwitter) {
 // 		isFirstConnectionToTwitter = false;
@@ -66,11 +108,11 @@ module.exports = function(io) {
 // });
 
 // stream.on('disconnect', function(message) {
-// 	console.log('Disconnected from Twitter API. Message: ' + message);
+// 	log('Disconnected from Twitter API. Message: ' + message);
 // });
 
 // stream.on('reconnect', function (request, response, connectInterval) {
-//   	console.log('Trying to reconnect to Twitter API in ' + connectInterval + ' ms');
+//   	log('Trying to reconnect to Twitter API in ' + connectInterval + ' ms');
 // });
 
 // stream.on('tweet', function(tweet) {
@@ -105,4 +147,4 @@ module.exports = function(io) {
 // 	}
 // }
 
-console.log("Listening for chat requests");
+log("Listening for requests");

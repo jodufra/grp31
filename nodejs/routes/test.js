@@ -6,20 +6,12 @@ function log(str){
 log("Loading Module");
 var request_count = 0;
 
-module.exports = function(io) {
+module.exports = function(io, socket) {
 	'use strict';
-	io.on('connection', function(socket) {
-		log('client connected');
-
-		socket.on('request', function(request) {
-			log('Recieved request: '+socket.id);
-			request_count++;
-			io.sockets.emit('response', request_count);
-		});
-
-		socket.on('disconnect', function() {
-			log('client disconnected!');
-		});
+	socket.on('request', function(request) {
+		log('Recieved request: '+socket.id);
+		request_count++;
+		io.sockets.emit('response', request_count);
 	});
 };
 
