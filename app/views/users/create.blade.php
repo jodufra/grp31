@@ -17,16 +17,16 @@
   <fieldset>
     <legend><small>Account Information</small></legend>
     <div class="form-group">
-      {{Form::label('username','Username', array('class'=>'col-md-3 control-label text-right','min'=>'5','size' => '24','required'))}}
+      {{Form::label('username','Username', array('class'=>'col-md-3 control-label text-right'))}}
       <div class="col-md-6">
-        {{Form::text('username', null,array('class' => 'form-control'))}}
+        {{Form::text('username', null,array('class' => 'form-control','min'=>'5','size' => '24','required','placeholder' => 'myusername'))}}
       </div>
     </div>
 
     <div class="form-group">
       {{Form::label('email','Email', array('class'=>'col-md-3 control-label text-right'))}}
       <div class="col-md-6">
-        {{Form::email('email', null,array('class' => 'form-control','min'=>'5','size' => '24','required'))}}
+        {{Form::email('email', null,array('class' => 'form-control','min'=>'5','size' => '24','required','placeholder' => 'myemail@example.com'))}}
       </div>
     </div>
     <div class="form-group">
@@ -66,9 +66,9 @@
     </div>
 
     <div id="date" class="form-group date">
-      {{Form::label('birthDate','Birth Date', array('class'=>'col-md-3 control-label text-right'))}}
+      {{Form::label('birth_date','Birth Date', array('class'=>'col-md-3 control-label text-right'))}}
       <div class="col-md-6">
-        <input type="date" id="birth_date" name="birth_date" class="form-control">
+        {{ Form::text('birth_date', null, array('type' => 'text', 'class' => 'form-control datepicker','placeholder' => '31/12/1900')) }}
       </div>
     </div>
     <div class="form-group">
@@ -105,13 +105,13 @@
     <div class="form-group">
       {{Form::label('credit_card_titular','Credit Card Titular', array('class'=>'col-md-3 control-label text-right'));}}
       <div class="col-md-6">
-        {{Form::text('credit_card_titular', null,array('class' => 'form-control'))}}
+        {{Form::text('credit_card_titular', null,array('class' => 'form-control','placeholder' => 'Credit Card Titular'))}}
       </div>
     </div>
     <div class="form-group">
       {{Form::label('credit_card_num','Credit Card Number', array('class'=>'col-md-3 control-label text-right'));}}
       <div class="col-md-6">
-        {{Form::number('credit_card_num', null,array('class' => 'form-control'))}}
+        {{Form::number('credit_card_num', null,array('class' => 'form-control','placeholder' => 'Credit Card Number'))}}
       </div>
     </div>
     <div class="form-group">
@@ -145,7 +145,7 @@
     <div class="form-group">
       {{Form::label('credit_card_cvc','CVC', array('class'=>'col-md-3 control-label text-right'));}}
       <div class="col-md-6">
-        {{Form::number('credit_card_cvc', null,array('class' => 'form-control'))}}
+        {{Form::number('credit_card_cvc', null,array('class' => 'form-control','placeholder' => 'Credit Card CVC'))}}
         <img src="{{asset('img/cvc2.png')}}" alt="CVC">
       </div>
     </div>

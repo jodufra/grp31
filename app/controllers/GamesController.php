@@ -5,6 +5,18 @@ use ElephantIO\Client,
 
 class GamesController extends \BaseController {
 
+    /**
+     * User Repository
+     *
+     * @var user
+     */
+    protected $game;
+
+    public function __construct(Game $game)
+    {
+        $this->game = $game;
+    }
+
 	private $R_NODE_NAME = 'laravelServer';
 	private $LARAVEL_COOKIE = 'laravelServerrrrrr';
 
@@ -75,15 +87,14 @@ class GamesController extends \BaseController {
 	public function store()
 	{
 		$validator = Validator::make($data = Input::all(), Game::$rules);
-
 		if ($validator->fails())
 		{
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
-		Game::create($data);
+		$this->game = Game::create($data);
 
-		return Redirect::route('games.index');
+		return show($this->game->id);
 	}
 
 	/**

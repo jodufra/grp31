@@ -15,8 +15,8 @@ class CreateSpectatorsTable extends Migration {
 		Schema::create('spectators', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->foreign('game_id')->references('id')->on('games');
-			$table->foreign('player_id')->references('id')->on('players')->nullable();
+			$table->integer('game_id')->unsigned();
+			$table->integer('player_id')->unsigned();
 		});
 	}
 
@@ -28,10 +28,6 @@ class CreateSpectatorsTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('spectators', function ($table) {
-           $table->dropForeign('spectators_game_id_foreign');
-           $table->dropForeign('spectators_player_id_foreign');
-        });
 		Schema::drop('spectators');
 	}
 

@@ -13,18 +13,21 @@ class Person extends Eloquent
 
     // Add your validation rules here
     public static $rules = [
-    'name'=>'required|min:5',
-    'birthdate'=>'required',
+    'first_name'=>'required|min:2',
+    'last_name'=>'required|min:2',
+    'birth_date'=>'required',
     'country'=>'required',
     'address'=>'min:12',
     'phone'=>'min:9',
     'credit_card_titular'=>'required|min:6',
     'credit_card_num'=>'required|min:13',
-    'credit_card_valid'=>'required',
+    'credit_card_valid_month'=>'required',
+    'credit_card_valid_year'=>'required',
     ];
 
     protected $fillable = [
     'name',
+    'photo',
     'birthdate',
     'country',
     'address',

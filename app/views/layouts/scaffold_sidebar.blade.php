@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    @include('partials.scripts_bload')
-    {{ HTML::style('css/bootstrap-yeti.min.css'); }}
-    {{ HTML::style('css/bootstrap-datepicker.css'); }}
-    {{ HTML::style('css/font-awesome.min.css'); }}
-    {{ HTML::style('css/style.css'); }}
+    @include('partials.includes_bload')
     <title>Yahtzee</title>
 </head>
 <body>
@@ -23,6 +19,6 @@
             </div>
         </div>
     </div>
-    @include('partials.scripts_aload')
+    @include('partials.includes_aload')
 </body>
 </html>

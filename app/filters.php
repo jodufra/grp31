@@ -38,6 +38,7 @@ App::missing(function($exception)
 */
 
 Route::filter('auth', function () {
+    return;
     if (Auth::guest()) {
         if (Request::ajax()) {
             return Response::make('Unauthorized', 401);

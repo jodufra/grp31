@@ -22,7 +22,7 @@ module.exports = function(io, socket) {
 	socket.on('chat:innit', function(data){
 		if(!data.user || data.user == ''){
 			guestCount++
-			data.user = 'Guest '+guestCount;
+			data.user = 'Guest'+guestCount;
 		}
 		if(chatBuffer[data.channel]){
 			socket.emit('chat:message:buffer', chatBuffer[data.channel]);

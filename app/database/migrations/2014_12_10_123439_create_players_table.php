@@ -15,7 +15,7 @@ class CreatePlayersTable extends Migration {
 		Schema::create('players', function(Blueprint $table)
 		{
 			$table->increments('id');
-            $table->foreign('user_id')->references('id')->on('users')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
 			$table->timestamps();
 		});
 	}
@@ -28,9 +28,6 @@ class CreatePlayersTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('players', function ($table) {
-           $table->dropForeign('players_user_id_foreign');
-        });
 		Schema::drop('players');
 	}
 

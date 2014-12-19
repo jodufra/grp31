@@ -14,14 +14,10 @@ class CreateGamesHavePlayersTable extends Migration {
 	{
 		Schema::create('games_have_players', function(Blueprint $table)
 		{
-			$table->foreign('game_id')->references('id')->on('games');
-			$table->foreign('player_id')->references('id')->on('players');
+			$table->integer('game_id')->unsigned();
+			$table->integer('player_id')->unsigned();
 			$table->increments('player_num');
 		});
-        Schema::table('games_have_players', function ($table) {
-           $table->dropPrimary('games_have_players_player_num_primary');
-           $table->primary(array('player_num', 'game_id', 'player_id'));
-        });
 	}
 
 
@@ -32,10 +28,6 @@ class CreateGamesHavePlayersTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('games_have_players', function ($table) {
-           $table->dropForeign('games_have_players_game_id_foreign');
-           $table->dropForeign('games_have_players_player_id_foreign');
-        });
 		Schema::drop('games_have_players');
 	}
 

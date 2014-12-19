@@ -59,12 +59,14 @@ class UsersController extends BaseController
                 throw new Exception();
             }
         }catch(Exception $e){
-            return Redirect::route('user.create')->withErrors("Error Processing Request. Please try again.")->withInput();
+            return Redirect::route('user.create')->withErrors($e->getMessage())->withInput();
+            return Redirect::route('user.create')->withErrors($e->getMessage() + "Error Processing Request. Please try again.")->withInput();
         }
 
         try{
-            $data['birth_date'] = date('d/m/y', strtotime($data['birth_date']));
-            Debugbar::info($this->user);
+            $data['name'] = $data['first_name'] + " " + $data['last_name'];
+            $data['credit_card_valid'] = $data['credit_card_valid_month'] + "/" + $data['credit_card_valid_year'];
+            $data['birthdate'] = strtotime($data['birth_date']);
             $data['user_id'] = $this->user->id;
             $this->user->person()->create($data);
             if(! $this->user->person()){
@@ -72,7 +74,8 @@ class UsersController extends BaseController
             }
         }catch(Exception $e){
             $this->user->delete();
-            return Redirect::route('user.create')->withErrors("Error Processing Request. Please try again.")->withInput();
+            return Redirect::route('user.create')->withErrors($e->getMessage())->withInput();
+            return Redirect::route('user.create')->withErrors($e->getMessage() + "Error Processing Request. Please try again.")->withInput();
         }
 
         Auth::login($this->user);

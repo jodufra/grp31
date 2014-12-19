@@ -2,7 +2,7 @@
 
 
 
-class SeedUsersTableTableSeeder extends Seeder {
+class UsersTableSeeder extends Seeder {
 
 	public function run()
 	{

@@ -1,20 +1,21 @@
 <?php
 
 // Composer: "fzaninotto/faker": "v1.3.0"
-use Faker\Factory as Faker;
+// use Faker\Factory as Faker;
 
 class PlayersTableSeeder extends Seeder {
 
 	public function run()
 	{
-		$faker = Faker::create();
+		// $faker = Faker::create();
 
-		foreach(range(1, 10) as $index)
+		// Criar os 9 bots
+		foreach(range(0, 9) as $index)
 		{
-			Player::create([
-
-			]);
+			Player::create([]);
 		}
+
+
 	}
 
 }

@@ -12,9 +12,15 @@
 			<button ng-disabled="[[haveBots()]]" ng-click="removeAllRobots()" type="button" class="btn btn-warning btn-sm pull-left">
 				<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;Remove All Robots
 			</button>
-			<button class="btn btn-primary btn-sm pull-right">
+			{{Form::open(array('action' => 'GamesController@store', 'method' => 'post'))}}
+			<div ng-repeat="player in getPlayers()">
+				<input type="hidden" name="[[$index]]" value="[[player.player_id]]">
+			</div>
+			<button type="submit" class="btn btn-primary btn-sm pull-right">
 				<span class="glyphicon glyphicon-play" aria-hidden="true"></span>&nbsp;Start Game
 			</button>
+			{{Form::close()}}
+
 			<button class="btn btn-danger btn-sm pull-right">
 				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Quit
 			</button>
