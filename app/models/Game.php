@@ -1,15 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Schmeisk
- * Date: 30/10/2014
- * Time: 20:24
- */
 
 class Game extends Eloquent{
-	 // Add your validation rules here
-	public static $rules = [
+
+	public static $rules = [];
 	
-	];
+	protected $fillable = [];
+
 
 } 

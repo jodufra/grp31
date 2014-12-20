@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Schmeisk
- * Date: 30/10/2014
- * Time: 19:02
- */
 
 class YahtzeeCombinationCalculator
 {

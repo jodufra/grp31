@@ -86,6 +86,9 @@ class GamesController extends \BaseController {
 	 */
 	public function store()
 	{
+		
+
+		
 		$validator = Validator::make($data = Input::all(), Game::$rules);
 		if ($validator->fails())
 		{
