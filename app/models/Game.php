@@ -6,5 +6,10 @@ class Game extends Eloquent{
 	
 	protected $fillable = [];
 
+	protected $guarded = ['*'];
 
+	public function players()
+	{
+		return $this->hasMany('GameHavePlayer', 'game_id');
+	}
 } 

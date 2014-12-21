@@ -8,10 +8,15 @@ class Player extends Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = ['user_id'];
 
     public function user()
     {
         return $this->belongsTo('User');
     }
+
+    public function games()
+	{
+		return $this->hasMany('GameHavePlayer', 'player_id');
+	}
 }

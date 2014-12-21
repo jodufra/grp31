@@ -16,7 +16,7 @@ class CreateGamesHavePlayersTable extends Migration {
 		{
 			$table->integer('game_id')->unsigned();
 			$table->integer('player_id')->unsigned();
-			$table->increments('player_num');
+			$table->integer('player_num')->unsigned();
 		});
 	}
 

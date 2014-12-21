@@ -1,7 +1,7 @@
 <?php
 
 use ElephantIO\Client,
-	ElephantIO\Engine\SocketIO\Version1X;
+ElephantIO\Engine\SocketIO\Version1X;
 
 class GamesController extends \BaseController {
 
@@ -14,45 +14,45 @@ class GamesController extends \BaseController {
 
     public function __construct(Game $game)
     {
-        $this->game = $game;
+    	$this->game = $game;
     }
 
-	private $R_NODE_NAME = 'laravelServer';
-	private $LARAVEL_COOKIE = 'laravelServerrrrrr';
+    private $R_NODE_NAME = 'laravelServer';
+    private $LARAVEL_COOKIE = 'laravelServerrrrrr';
 
-	public function notifyNode($request_type, $gameid, $r_msg){
+    public function notifyNode($request_type, $gameid, $r_msg){
 
 		//print_r(mcrypt_list_algorithms());
-		$client = new Client(new Version1X('http://localhost:5555'));
-		$client->initialize();
-		$client->emit($this->R_NODE_NAME, [
-			'cookie'=> Crypt::encrypt($this->LARAVEL_COOKIE),
-			'request' => $request_type,
-			'msg' => $r_msg,
-			'gameid' => $gameid]);
-		$client->close();
-	}
+    	$client = new Client(new Version1X('http://localhost:5555'));
+    	$client->initialize();
+    	$client->emit($this->R_NODE_NAME, [
+    		'cookie'=> Crypt::encrypt($this->LARAVEL_COOKIE),
+    		'request' => $request_type,
+    		'msg' => $r_msg,
+    		'gameid' => $gameid]);
+    	$client->close();
+    }
 
     public function scoreCalculator()
     {
-        $dices=array();
-        $dices[0]=Input::get('1',0);
-        $dices[1]=Input::get('2',0);
-        $dices[2]=Input::get('3',0);
-        $dices[3]=Input::get('4',0);
-        $dices[4]=Input::get('5',0);
-        $calculator = new YahtzeeCombinationCalculator();
-        $result=$calculator->getScore($dices);
-        return View::make('game.index')->with('result', $result);
+    	$dices=array();
+    	$dices[0]=Input::get('1',0);
+    	$dices[1]=Input::get('2',0);
+    	$dices[2]=Input::get('3',0);
+    	$dices[3]=Input::get('4',0);
+    	$dices[4]=Input::get('5',0);
+    	$calculator = new YahtzeeCombinationCalculator();
+    	$result=$calculator->getScore($dices);
+    	return View::make('game.index')->with('result', $result);
     }
 
     public function getDices()
     {
-	    $dices = [];
-	    for ($i = 0; $i < 5; $i++) {
-		    $dices[$i] = array('val'=>rand(1,6),'saved'=>false);
-		}
-        return Response::json($dices);
+    	$dices = [];
+    	for ($i = 0; $i < 5; $i++) {
+    		$dices[$i] = array('val'=>rand(1,6),'saved'=>false);
+    	}
+    	return Response::json($dices);
     }
 
 	/**
@@ -86,10 +86,29 @@ class GamesController extends \BaseController {
 	 */
 	public function store()
 	{
+		$data = Input::all();
+		$players = [];
+		$player_nums = [];
+		for ($i=0; $i < 10; $i++, $player_nums[$i] = 0);
+		for ($i=0; $i < 10; $i++) { 
+			if(Input::has(''+$i)){
+				$player_nums[$i]++;
+				if ($player_nums[$i] >= 2)
+				{
+					return Redirect::back()->with('danger', 'There are repeated players in this room.');
+				}
+
+				$players[$i] = ['player_id' => Input::get(''+$i), 'player_num' => $i];
+				$validator = Validator::make($players[$i], GameHavePlayer::$rules);
+				if ($validator->fails())
+				{
+					return Redirect::back()->withErrors($validator)->withInput();
+				}
+			}
+		}
 		
 
-		
-		$validator = Validator::make($data = Input::all(), Game::$rules);
+		$validator = Validator::make($data, Game::$rules);
 		if ($validator->fails())
 		{
 			return Redirect::back()->withErrors($validator)->withInput();
