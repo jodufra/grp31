@@ -19,9 +19,9 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if (Auth::check())
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->username}}<span class="caret"></span></a>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->person()->first()->name}}<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/user/show">My profile</a></li>
+                        <li><a href="/user/{{Auth::user()->username}}">My profile</a></li>
                         <li class="divider"></li>
                         <li><a href="/logout">Logout</a></li>
                     </ul>

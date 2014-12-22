@@ -2,21 +2,8 @@
 @section('body')
 <div class="col-md-8 col-md-offset-2">
 	<div class="page-header"><h1>Recover Password</h1></div>
+	@include('partials.session_messages')
 	<div class="row row-item">
-		@if ($errors->any())
-		<div class="alert alert-danger">
-			<ul>
-				{{ implode('', $errors->all('<li class="error">:message</li>')) }}
-			</ul>
-		</div>
-		@endif
-		@if (isset($status))
-		<div class="alert alert-success">
-			<ul>
-				<li class="success">{{$status}}</li>
-			</ul>
-		</div>
-		@endif
 		{{ Form::open(array('action' => 'RemindersController@postRemind', 'method' => 'post', 'class' => 'form-horizontal'))}}
 		<div class="form-group">
 			{{Form::label('email','Email:', array('class'=>'col-md-2 control-label text-right'))}}

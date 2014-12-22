@@ -4,7 +4,7 @@ class PlayersController extends BaseController {
 	
 	function getCurrentuser(){
 		return array(
-			'id'=>10, 
+			'id'=>Auth::user()->player()->first()->id, 
 			'user_id'=>Auth::user()->id,
 			'name'=>Auth::user()->username, 
 			'img_src'=>Auth::user()->person()->first()->photo

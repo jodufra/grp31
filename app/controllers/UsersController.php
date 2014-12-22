@@ -59,8 +59,7 @@ class UsersController extends BaseController
                 throw new Exception();
             }
         }catch(Exception $e){
-            return Redirect::route('user.create')->withErrors($e->getMessage())->withInput();
-            return Redirect::route('user.create')->withErrors($e->getMessage() + "Error Processing Request. Please try again.")->withInput();
+            return Redirect::route('user.create')->withErrors("Error Processing Request. Please try again.")->withInput();
         }
 
         try{
@@ -74,8 +73,18 @@ class UsersController extends BaseController
             }
         }catch(Exception $e){
             $this->user->delete();
-            return Redirect::route('user.create')->withErrors($e->getMessage())->withInput();
-            return Redirect::route('user.create')->withErrors($e->getMessage() + "Error Processing Request. Please try again.")->withInput();
+            return Redirect::route('user.create')->withErrors("Error Processing Request. Please try again.")->withInput();
+        }
+
+        try {
+            $this->user->player()->create($data);
+            if(! $this->user->player()){
+                throw new Exception();
+            }
+        } catch (Exception $e) {
+            $this->user->person()->delete();
+            $this->user->delete();
+            return Redirect::route('user.create')->withErrors("Error Processing Request. Please try again.")->withInput();            
         }
 
         Auth::login($this->user);

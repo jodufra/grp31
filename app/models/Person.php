@@ -2,6 +2,9 @@
 
 class Person extends Eloquent
 {
+    protected $attributes = array(
+        'photo' => '/img/default.png',
+     );
 
     /**
      * The database table used by the model.
@@ -47,11 +50,6 @@ class Person extends Eloquent
     public function user()
     {
         return $this->belongsTo('User');
-    }
-
-    public function photo()
-    {
-        return $this->photo;
     }
 
 }

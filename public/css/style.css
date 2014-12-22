@@ -1,6 +1,13 @@
 body{
     background-color: #f8f8f8;
 }
+
+form.form-horizontal .form-group label.required:after{
+    content: '*';
+    color: red;
+}
+
+
 .content .row-item{
     background-color: white;
     border: 1px solid #DDD;

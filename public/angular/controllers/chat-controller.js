@@ -1,21 +1,34 @@
-appControllers.controller('ChatController', function($scope) {
+appControllers.controller('ChatController', function($scope, currentUser) {
 	var global_channel = "global";
+	$scope.canJoin = false;
+	$scope.hasJoined = false;
+
 	$scope.name = '';
+	$scope.channel;
+
 	$scope.messages=[];
 	$scope.unreadedMessages = 0;
-	$scope.channel = global_channel;
+
+	currentUser.success(function(data){
+		$scope.name = data.name;
+		$scope.canJoin = true;
+	}).error(function(data){
+		$scope.name = '';
+		$scope.canJoin = true;
+	});
+
 
 	$scope.setChatState = function(state){
 		$scope.chatState = state;
 		if(state){
 			$('#chat').removeClass('minimized');
-			if($scope.name != ''){
+			if($scope.canJoin && typeof $scope.channel !== 'undefined'){
 				$('#chat .setuser').addClass('hidden');
 			}
 			$scope.unreadedMessages = 0;
 		}else{
 			$('#chat').addClass('minimized');
-			if($scope.name == ''){
+			if(!$scope.canJoin || typeof $scope.channel === 'undefined'){
 				$('#chat .setuser').removeClass('hidden');
 			}
 		}
@@ -24,58 +37,71 @@ appControllers.controller('ChatController', function($scope) {
 
 	$scope.chatState = $scope.setChatState(true);
 
+
+
 	$scope.joinChat = function(){
-		if (typeof game_id !== 'undefined') {
-			$scope.channel = "Game "+game_id;
+		if($scope.canJoin){
+			if (typeof game_id !== 'undefined') {
+				$scope.channel = "Game "+game_id;
+			}else{
+				$scope.channel = global_channel;
+			}
+			socket.emit('chat:innit', {
+				user: $scope.name,
+				channel: $scope.channel
+			});
 		}
-
-		socket.emit('chat:innit', {
-			user: $scope.name,
-			channel: $scope.channel
-		});
-
 	}
+
+	socket.on('reconnect', function () {
+		if($scope.canJoin && typeof $scope.channel !== 'undefined'){
+			addMessage({user:'Yahtzee Chat',message:'You were reconnected!'});
+			$scope.joinChat();
+		}
+	});
 
 	socket.on('chat:innit', function (data) {
 		$scope.name = data.user;
 		$scope.channel = data.channel;
 		$('#chat .setuser').addClass('hidden');
-		addMessage({user:'ChatRoom',message:'You joined the chat!'});
-		$scope.$apply();
+		addMessage({user:'Yahtzee Chat',message:'You joined the chat!'});
 	});
 
 	socket.on('chat:message:buffer', function (messages) {
 		messages.forEach(function(msg){
 			addMessage(msg);
 		});
-		$scope.$apply();
 	});
 
 	socket.on('chat:message:send', function (message) {
-		if(message.channel == $scope.channel) addMessage(message);
-		$scope.$apply();
+		if(message.channel == $scope.channel){
+			addMessage(message);
+		} 		
 	});
 
 	socket.on('chat:user:join', function (data) {
 		if(data.channel == $scope.channel){
 			addMessage({
-				user: 'ChatRoom',
+				user: 'Yahtzee Chat',
 				message: 'User ' + data.user + ' has joined.'
 			});
 		}
-		$scope.$apply();
 	});
 
 	socket.on('chat:user:left', function (data) {
 		if(data.channel == $scope.channel){
 			addMessage({
-				user: 'ChatRoom',
+				user: 'Yahtzee Chat',
 				message: 'User ' + data.user + ' has left.'
 			});
 		}
-		$scope.$apply();
 	});
 	
+	socket.on('disconnect', function (data) {
+		if($scope.canJoin && typeof $scope.channel !== 'undefined'){
+			addMessage({user:'Yahtzee Chat',message:'You were disconnected!'});
+		}
+	});
 
 	$scope.sendMessage = function () {
 		socket.emit('chat:message:send', {
@@ -83,11 +109,6 @@ appControllers.controller('ChatController', function($scope) {
 			channel: $scope.channel,
 			message: $scope.message
 		});
-		addMessage({
-			user: $scope.name,
-			message: $scope.message
-		});
-
 		$scope.message = '';
 	};
 
@@ -116,5 +137,6 @@ appControllers.controller('ChatController', function($scope) {
 		}else{
 			$scope.unreadedMessages++;
 		}
+		$scope.$apply();
 	}
 });
