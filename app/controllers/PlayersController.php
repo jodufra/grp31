@@ -1,20 +1,19 @@
 <?php
 
 class PlayersController extends BaseController {
-
-
+	
 	function getCurrentuser(){
 		return array(
-			'player_id'=>10, 
+			'id'=>10, 
 			'user_id'=>Auth::user()->id,
-			'username'=>Auth::user()->username, 
-			'img_src'=>'invalid url'
+			'name'=>Auth::user()->username, 
+			'img_src'=>Auth::user()->person()->first()->photo
 			);
 	}
 
 
 	/**
-	 * Display a listing of players
+	 * Display a listing of playe->first()rs
 	 *
 	 * @return Response
 	 */

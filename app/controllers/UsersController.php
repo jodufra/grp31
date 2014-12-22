@@ -64,8 +64,8 @@ class UsersController extends BaseController
         }
 
         try{
-            $data['name'] = $data['first_name'] + " " + $data['last_name'];
-            $data['credit_card_valid'] = $data['credit_card_valid_month'] + "/" + $data['credit_card_valid_year'];
+            $data['name'] = $data['first_name'] . " " . $data['last_name'];
+            $data['credit_card_valid'] = $data['credit_card_valid_month'] . "/" . $data['credit_card_valid_year'];
             $data['birthdate'] = strtotime($data['birth_date']);
             $data['user_id'] = $this->user->id;
             $this->user->person()->create($data);

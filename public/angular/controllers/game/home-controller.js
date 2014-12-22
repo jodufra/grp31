@@ -1,0 +1,1 @@
+appControllers.controller('GameHomeController', function($scope){});

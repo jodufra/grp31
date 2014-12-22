@@ -2,19 +2,19 @@
 
 @section('body')
 
-<div ng-controller="CreateGameController">
+<div ng-controller="GameCreateController">
 	<div class="page-header"><h1>Create Game</h1></div>
 	<div ng-show="userIsLeader()">
 		<div class="clearfix" >
-			<button ng-disabled="[[roomIsFull()]]" ng-click="addRobot()" type="button" class="btn btn-success btn-sm pull-left">
+			<button ng-click="addRobot()" type="button" class="btn btn-success btn-sm pull-left">
 				<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Robot
 			</button>
-			<button ng-disabled="[[haveBots()]]" ng-click="removeAllRobots()" type="button" class="btn btn-warning btn-sm pull-left">
+			<button ng-click="removeAllRobots()" type="button" class="btn btn-warning btn-sm pull-left">
 				<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;Remove All Robots
 			</button>
 			{{Form::open(array('action' => 'GamesController@store', 'method' => 'post'))}}
 			<div ng-repeat="player in getPlayers()">
-				<input type="hidden" name="[[$index]]" value="[[player.player_id]]">
+				<input type="hidden" name="[[$index]]" value="[[player.id]]">
 			</div>
 			<button type="submit" class="btn btn-primary btn-sm pull-right">
 				<span class="glyphicon glyphicon-play" aria-hidden="true"></span>&nbsp;Start Game
@@ -33,10 +33,10 @@
 				<div class="list-group-item col-md-6 clearfix" ng-repeat="player in getPlayers()">
 					<div class="pull-left text-left">
 						<img class="portrait portrait-s" alt="" src="[[player.img_src]]">
-						<span>[[player.username]]</span>
+						<span>[[player.name]]</span>
 						<span ng-show="player.is_user" class="glyphicon glyphicon-user text-info" aria-hidden="true" data-toggle="tooltip" title="Yep!! Thats you!"></span>
 						<span ng-show="player.is_leader" class="glyphicon glyphicon-flag text-success" aria-hidden="true" data-toggle="tooltip" title="The Room Leader"></span>
-						<span ng-hide="player.is_leader || player.is_user || !userIsLeader()" ng-click="removePlayerOrBot([[player.player_id]])" class="glyphicon glyphicon-remove" aria-hidden="true" style="position: absolute;top:5px;right:5px;cursor:pointer;"></span>
+						<span ng-hide="player.is_leader || player.is_user || !userIsLeader()" ng-click="removePlayerOrBot([[player.id]])" class="glyphicon glyphicon-remove" aria-hidden="true" style="position: absolute;top:5px;right:5px;cursor:pointer;"></span>
 					</div>
 				</div>
 			</div>

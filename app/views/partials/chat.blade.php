@@ -20,7 +20,7 @@
 		</div>
 		<div class="messagetyper">
 			<form ng-submit="sendMessage()">
-				<input class="form-input" autocomplete="off" placeholder="Type here and press Enter" ng-model="message"/>
+				<input class="form-input" autocomplete="off" placeholder="[[name]]: Type and press Enter" ng-model="message"/>
 			</form>
 		</div>
 		<div class="setuser text-center" >

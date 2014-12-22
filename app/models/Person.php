@@ -49,4 +49,9 @@ class Person extends Eloquent
         return $this->belongsTo('User');
     }
 
+    public function photo()
+    {
+        return $this->photo;
+    }
+
 }

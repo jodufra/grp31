@@ -16,7 +16,7 @@ class GamesPlayersRelation extends Migration {
 			$table->foreign('game_id')->references('id')->on('games');
 			$table->foreign('player_id')->references('id')->on('players');
 		});
-		DB::statement('ALTER TABLE  `games_have_players` DROP PRIMARY KEY , ADD PRIMARY KEY (  `player_num` ,  `game_id` ,  `player_id` ) ;');
+		DB::statement('ALTER TABLE  `games_have_players` ADD PRIMARY KEY (  `player_num` ,  `game_id` ,  `player_id` ) ;');
 	}
 
 	/**

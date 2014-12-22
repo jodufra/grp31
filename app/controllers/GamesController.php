@@ -89,7 +89,10 @@ class GamesController extends \BaseController {
 		$data = Input::all();
 		$players = [];
 		$player_nums = [];
-		for ($i=0; $i < 10; $i++, $player_nums[$i] = 0);
+		for ($i=0; $i < 10; $i++){
+			$player_nums[$i] = 0;
+		}
+
 		for ($i=0; $i < 10; $i++) { 
 			if(Input::has(''+$i)){
 				$player_nums[$i]++;
@@ -106,7 +109,7 @@ class GamesController extends \BaseController {
 				}
 			}
 		}
-		
+
 
 		$validator = Validator::make($data, Game::$rules);
 		if ($validator->fails())
@@ -114,7 +117,7 @@ class GamesController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
-		$this->game = Game::create($data);
+		$this->game = Game::create([]);
 
 		return show($this->game->id);
 	}

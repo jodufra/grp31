@@ -16,7 +16,7 @@ class CreatePeopleTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('name');
-            $table->string('photo')->defaultValue('/img/default.png')->nullable();
+            $table->string('photo')->defaultValue('/img/default.png');
             $table->date('birthdate');
             $table->string('country');
             $table->text('address')->nullable();

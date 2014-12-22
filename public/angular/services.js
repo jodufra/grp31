@@ -1,13 +1,8 @@
 'use strict';
 
 /* Services */
-var appServices = angular.module('appServices', [/*'btford.socket-io'*/]);
+var appServices = angular.module('appServices', []);
 
-// appServices.factory('socket', function (socketFactory) {
-// 	return socketFactory({
-// 		ioSocket: io.connect('https://grp31.dad:3000')
-// 	});
-// });
 
 appServices.factory('CurrentUser', function ($http){
 	var self = {};
@@ -17,14 +12,12 @@ appServices.factory('CurrentUser', function ($http){
 	self.img_src;
 
 	var user = {};
-	$http.get( '/player/currentuser' ).
-	success(function(data, status, headers, config) {
+	$http.get( '/player/currentuser' ).success(function(data, status, headers, config) {
 		self.player_id = data.player_id;
 		self.user_id = parseInt(data.user_id);
 		self.username = data.username;
 		self.img_src = data.img_src;
-	}).
-	error(function(data, status, headers, config) {
+	}).error(function(data, status, headers, config) {
 		alert("Server did not respond, please try again");
 	});
 	return self;
