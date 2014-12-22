@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 block="
 server {
     listen 80;
@@ -76,7 +75,6 @@ server {
     }
 }
 "
-
 echo "$block" > "/etc/nginx/sites-available/$1"
 ln -fs "/etc/nginx/sites-available/$1" "/etc/nginx/sites-enabled/$1"
 service nginx restart

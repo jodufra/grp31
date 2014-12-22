@@ -67,10 +67,12 @@ appControllers.controller('ChatController', function($scope) {
 	});
 
 	socket.on('chat:user:left', function (data) {
-		addMessage({
-			user: 'ChatRoom',
-			message: 'User ' + data.user + ' has left.'
-		});
+		if(data.channel == $scope.channel){
+			addMessage({
+				user: 'ChatRoom',
+				message: 'User ' + data.user + ' has left.'
+			});
+		}
 		$scope.$apply();
 	});
 	

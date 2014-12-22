@@ -45,16 +45,14 @@ module.exports = function(io, socket) {
 			}
 			chatBuffer[channel] = newBuffer;
 		}
-
-		socket.broadcast.emit('chat:message:send', msg);
+		io.emit('chat:message:send', msg);
 	});
-
 	socket.on('disconnect', function() {
-		if(!(typeof users[socket.id] === 'undefined')){
+		if(typeof users[socket.id] !== 'undefined'){
 			var user = users[socket.id].user;
 			var channel = users[socket.id].channel;
 
-			socket.broadcast.emit('chat:user:left', user, channel);
+			socket.broadcast.emit('chat:user:left', {user:user, channel:channel});
 
 			delete users[socket.id];
 		}
