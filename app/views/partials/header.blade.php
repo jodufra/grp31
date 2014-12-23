@@ -10,7 +10,9 @@
         </button>
         @if(!isset($has_sidebar))
         <a class="navbar-brand" href="/">
-            <span class=""><img alt="Yahtzee" src="{{asset('favicon.ico')}}"/>&nbsp;Yahtzee</span>
+            <span>
+                <img alt="" class="portrait portrait-xs" src="/favicon.ico"/>&nbsp;Yahtzee
+            </span>
         </a>
         @endif
     </div>

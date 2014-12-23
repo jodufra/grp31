@@ -1,5 +1,5 @@
 <div id="chat-wrapper" ng-controller="ChatController">
-	<div id="chat" class="pull-left pull-bottom" ng-repeat="chat in getChats()" >
+	<div id="chat" ng-repeat="chat in getChats()" >
 		<div ng-if="chat.minimized" class="weight" style="height:332px;width: 100%;"></div>
 		<div class="head clearfix">
 			<div class="title pull-left">

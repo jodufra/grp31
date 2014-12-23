@@ -4,22 +4,10 @@ html,body{
 body{
     background-color: #f8f8f8;
 }
-.navbar{
-    z-index: 1;
-    border-bottom: 1px solid gray;
-    background-image: url('../img/classy_fabric.png') !important;
-    padding: 0 20px;
-}
-.wrapper{
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 100%;
-}
 
 #sidebar{
     z-index: 2;
-    position: relative;
+    position: absolute;
     width: 250px;
     height: 100%;
     background-image: url('../img/classy_fabric.png') !important;
@@ -48,27 +36,28 @@ body{
 }
 #sidebar .list-group-item.active{
     box-shadow: inset 0  8px 8px -8px black, inset 0  12px 12px -12px #DD4814,inset 0  6px 6px -6px white,
-                inset 0 -8px 8px -8px black, inset 0 -12px 12px -12px #DD4814,inset 0 -6px 6px -6px white;
+    inset 0 -8px 8px -8px black, inset 0 -12px 12px -12px #DD4814,inset 0 -6px 6px -6px white;
 }
 #sidebar .list-group-item.active .list-group-item-heading{
     color: #DD4814;
 }
 #sidebar .list-group-item:hover{
     box-shadow: inset 0  8px 8px -8px black, inset 0  12px 12px -12px #DD4814,inset 0  6px 6px -6px white,
-                inset 0 -8px 8px -8px black, inset 0 -12px 12px -12px #DD4814,inset 0 -6px 6px -6px white;
+    inset 0 -8px 8px -8px black, inset 0 -12px 12px -12px #DD4814,inset 0 -6px 6px -6px white;
 }
 #sidebar .list-group-item:first-child:hover{
     box-shadow: inset 0 -8px 8px -8px black, inset 0 -12px 12px -12px #DD4814,inset 0 -6px 6px -6px white;
 }
 
 #content{
-    position: absolute;
     width: 100%;
     min-height: 100%;
-    top: 0;
-    padding-top: 55px;
     padding-left: 250px;
-
+}
+.navbar{
+    background-image: url('../img/classy_fabric.png') !important;
+    padding: 0 20px;
+    margin-bottom: 15px !important;
 }
 form.form-horizontal .form-group label.required:after{
     content: '*';
@@ -130,27 +119,20 @@ input::-webkit-inner-spin-button {
 
 
 /************ CHAT  ************/
-/* Green Chat
-    strong: #43AC6A;
-    normal: #D9EDF7
-    rgba(67,172,106,0.9);
-*/
-/* Blue Chat
-    strong: #007196
-    normal: #D9EDF7;
-    rgba(0,113,150,1);
-*/
+
 #chat-wrapper{
     position: fixed;
-    z-index: 1;
     bottom: 0;
     right: 0;
+    max-height: 400px;
+    min-width: 100%;
 }
 #chat{
     position:relative;
     color: #eee;
     margin-right: 5px;
-    bottom: 0;
+    max-width: 300px;
+    float:right;
 }
 #chat .head{
     position:relative;

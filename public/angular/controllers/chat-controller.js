@@ -16,10 +16,6 @@ appControllers.controller('ChatController', function($scope, currentUser, Privat
 	});
 
 	function initPublicChat(){
-		$scope.privateChats['Private Chat 1'] = PrivateChat('Private Chat 1');
-		$scope.privateChats['Private Chat 2'] = PrivateChat('Private Chat 2');
-		$scope.privateChats['Private Chat 3'] = PrivateChat('Private Chat 3');
-		$scope.privateChats['Private Chat 4'] = PrivateChat('Private Chat 4');
 		var chatChannel;
 
 		if (typeof game_id !== 'undefined') {
