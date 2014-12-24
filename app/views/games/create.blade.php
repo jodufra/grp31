@@ -1,4 +1,9 @@
-@extends('layouts.scaffold')
+@extends('layouts.scaffold_sidebar')
+
+@section('sidebar')
+<?php $sidebar_game = true ?>
+@include('partials.common_sidebar')
+@endsection
 
 @section('body')
 <div ng-controller="GameCreateController">

@@ -8,14 +8,20 @@
 </head>
 <body>
     @include('partials.header')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 sidebar">
-                @yield('sidebar')
-            </div>
-            <div class="col-md-9 content">
-                @include('partials.session_messages')
-                @yield('body')
+    <div class="wrapper">
+        <div id="sidebar" class=" pull-left">
+            @yield('sidebar')
+        </div>
+        <div id="content" class='pull-left'>
+            <div style="width:100%;">
+                <div class="container ">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            @include('partials.session_messages')
+                            @yield('body')
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

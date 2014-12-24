@@ -1,116 +1,120 @@
-appControllers.controller('ChatController', function($scope, currentUser) {
-	var global_channel = "global";
-	$scope.canJoin = false;
-	$scope.hasJoined = false;
+appControllers.controller('ChatController', function($scope, currentUser, PrivateChat, PublicChat, ChatUser) {
+	const DEFAULT_CHAT_CHANNEL = "global";
+	const DEFAULT_IMG_SRC = '/img/default.png';
+	const SELF_CHAT_USER = ChatUser('Yahtzee Chat', '/img/yahtzee-nt.png');
 
-	$scope.name = '';
-	$scope.channel;
-
-	$scope.messages=[];
-	$scope.unreadedMessages = 0;
+	$scope.publicChat = PublicChat(null);
+	$scope.privateChats = [];
+	$scope.user = ChatUser('',DEFAULT_IMG_SRC);
 
 	currentUser.success(function(data){
-		$scope.name = data.name;
-		$scope.canJoin = true;
-	}).error(function(data){
-		$scope.name = '';
-		$scope.canJoin = true;
+		$scope.user.name = data.name;
+		$scope.user.img_src = data.img_src;
+		initPublicChat();
+	}).error(function(){
+		initPublicChat();
 	});
 
+	function initPublicChat(){
+		var channel = '';
 
-	$scope.setChatState = function(state){
-		$scope.chatState = state;
-		if(state){
-			$('#chat').removeClass('minimized');
-			if($scope.canJoin && typeof $scope.channel !== 'undefined'){
-				$('#chat .setuser').addClass('hidden');
-			}
-			$scope.unreadedMessages = 0;
+		if (typeof game_id !== 'undefined') {
+			channel = "Game "+game_id;
 		}else{
-			$('#chat').addClass('minimized');
-			if(!$scope.canJoin || typeof $scope.channel === 'undefined'){
-				$('#chat .setuser').removeClass('hidden');
-			}
+			channel = DEFAULT_CHAT_CHANNEL;
 		}
-		return state;
+
+		socket.emit('chat:init:public', {
+			user: $scope.user,
+			channel: $scope.channel,
+		});
 	}
 
-	$scope.chatState = $scope.setChatState(true);
-
-
-
-	$scope.joinChat = function(){
-		if($scope.canJoin){
-			if (typeof game_id !== 'undefined') {
-				$scope.channel = "Game "+game_id;
-			}else{
-				$scope.channel = global_channel;
+	$scope.initPrivateChat = function(addressee){
+		if($scope.user.name.str.search('/guest/i') != -1){
+			if(!$scope.privateChats[addressee]){
+				$scope.privateChats[addressee] = PrivateChat(addressee);
+				$scope.privateChats[addressee].init = true;
+			} else if($scope.privateChats[addressee].minimized){
+				$scope.privateChats[addressee].minimized = false;
 			}
-			socket.emit('chat:innit', {
-				user: $scope.name,
-				channel: $scope.channel
-			});
+		}else{
+			alert('You must register or login to use the private chatting.')
 		}
 	}
+
+	socket.on('chat:init:public', function (data) {
+		$scope.user.name = data.user.name;
+		$scope.publicChat.channel = data.channel;
+		$scope.publicChat.init = true;
+		addMessage($scope.publicChat, {user:SELF_CHAT_USER, message:'You joined the chat!'});
+	});
+
+	socket.on('chat:message:buffer', function (data) {
+		if(!data.privateChat){
+			if(data.channel == $scope.publicChat.channel){
+				data.messages.forEach(function(message){
+					addMessage($scope.publicChat, message);
+				});
+			} 
+		}else{
+			if(data.addressee == $scope.user.name){
+				var sender_name = data.user.name;
+				if($scope.privateChats[sender_name]){
+					data.messages.forEach(function(message){
+						addMessage($scope.privateChats[sender_name], message);
+					});
+				}
+			}
+		}
+	});
+
+	socket.on('chat:message:receive', function (data) {
+		var message = {data.user, data.message};
+
+		if(!data.privateChat){
+			if(data.channel == $scope.publicChat.channel){
+				addMessage($scope.publicChat, message);
+			} 
+		}else{
+			if(data.addressee == $scope.user.name){
+				var sender_name = data.user.name;
+				if(!$scope.privateChats[sender_name]){
+					$scope.privateChats[sender_name] = PrivateChat(sender_name);
+				}
+
+				addMessage($scope.privateChats[sender_name], message);
+			}
+		}
+	});
 
 	socket.on('reconnect', function () {
-		if($scope.canJoin && typeof $scope.channel !== 'undefined'){
-			addMessage({user:'Yahtzee Chat',message:'You were reconnected!'});
-			$scope.joinChat();
+		if($scope.publicChat.init){
+			addMessage($scope.publicChat, {user:SELF_CHAT_USER, message:'You were reconnected!'});
 		}
 	});
 
-	socket.on('chat:innit', function (data) {
-		$scope.name = data.user;
-		$scope.channel = data.channel;
-		$('#chat .setuser').addClass('hidden');
-		addMessage({user:'Yahtzee Chat',message:'You joined the chat!'});
-	});
-
-	socket.on('chat:message:buffer', function (messages) {
-		messages.forEach(function(msg){
-			addMessage(msg);
-		});
-	});
-
-	socket.on('chat:message:send', function (message) {
-		if(message.channel == $scope.channel){
-			addMessage(message);
-		} 		
-	});
-
-	socket.on('chat:user:join', function (data) {
-		if(data.channel == $scope.channel){
-			addMessage({
-				user: 'Yahtzee Chat',
-				message: 'User ' + data.user + ' has joined.'
-			});
+	socket.on('disconnect', function () {
+		if($scope.publicChat.init){
+			addMessage($scope.publicChat, {user:SELF_CHAT_USER,message, message:'You were disconnected!'});
 		}
 	});
 
-	socket.on('chat:user:left', function (data) {
-		if(data.channel == $scope.channel){
-			addMessage({
-				user: 'Yahtzee Chat',
-				message: 'User ' + data.user + ' has left.'
-			});
+	$scope.sendMessage = function (chat) {
+		var message = {
+			user: $scope.user,
+			privateChat: chat.privateChat,
+			channel: chat.channel,
+			addressee: chat.addressee,
+			message: chat.message,
 		}
-	});
-	
-	socket.on('disconnect', function (data) {
-		if($scope.canJoin && typeof $scope.channel !== 'undefined'){
-			addMessage({user:'Yahtzee Chat',message:'You were disconnected!'});
-		}
-	});
 
-	$scope.sendMessage = function () {
-		socket.emit('chat:message:send', {
-			user: $scope.name,
-			channel: $scope.channel,
-			message: $scope.message
-		});
-		$scope.message = '';
+		socket.emit('chat:message:send', message);
+
+		chat.message = '';
 	};
+
+
 
 	$scope.stringToColour = function(str) {
 		var colour;
@@ -125,18 +129,18 @@ appControllers.controller('ChatController', function($scope, currentUser) {
 		return colour;
 	}
 
-	function addMessage(message){
-		if($scope.messages.length > 0 && message.user == $scope.messages[$scope.messages.length -1].user){
-			$scope.messages[$scope.messages.length -1].message += "\n"+ message.message;
+	function addMessage(chat, data){
+		if(chat.messages.length > 0 && data.user.name == chat.messages[chat.messages.length -1].user.name){
+			chat.messages[chat.messages.length -1].message += "\n"+ data.message;
 		}else{
-			$scope.messages.push(message);
+			chat.messages.push(data);
 		}
-
-		if($scope.chatState){
-			$scope.unreadedMessages = 0;
+		if(chat.minimized){
+			chat.unreadedMessages++;
 		}else{
-			$scope.unreadedMessages++;
+			chat.unreadedMessages = 0;
 		}
 		$scope.$apply();
 	}
+
 });
