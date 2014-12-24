@@ -1,23 +1,23 @@
 appServices.factory('PublicChat', function(){
 	var self = function(channel){
-		return new chat(false, channel, null, false, false);
+		return new chat(false, channel, null, false, false, false);
 	}
 	return self;
 });
 
 appServices.factory('PrivateChat', function(){
 	var self = function(addressee){
-		return new chat(true, null, addressee, true, false);
+		return new chat(true, null, addressee, true, true, false);
 	}
 	return self;
 });
-function chat(privateChat, channel, addressee, closable, minimized) {
+function chat(privateChat, channel, addressee, init, closable, minimized) {
 	this.privateChat = privateChat;
 	this.channel = channel;
 	this.addressee = addressee;
 	this.message = '';
 	this.messages = [];
-	this.init = false;
+	this.init = init;
 	this.closable= closable;
 	this.minimized = minimized;
 	this.unreadedMessages = 0;

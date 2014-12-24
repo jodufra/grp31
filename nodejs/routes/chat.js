@@ -23,7 +23,7 @@ Message Layout:
 
 function setUserName(name){
 	var newName;
-	if(!data.user || data.user == ''){
+	if(!name || name == ''){
 		guestCount++;
 		newName = 'Guest'+guestCount;
 	}else{
@@ -58,7 +58,7 @@ module.exports = function(io, socket) {
 		data.user = setUserName(data.user);
 
 		if(publicChatBuffer[data.channel]){
-			socket.emit('chat:message:buffer', publicChatBuffer[data.channel]);
+			socket.emit('chat:message:buffer', {channel:data.channel, messages:publicChatBuffer[data.channel]});
 		}
 
 		socket.emit('chat:init:public', {user: data.user, channel: data.channel});

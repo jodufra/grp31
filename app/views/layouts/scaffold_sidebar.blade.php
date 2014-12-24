@@ -7,6 +7,7 @@
     <title>Yahtzee</title>
 </head>
 <body>
+    <?php $has_sidebar = true;?>
     @include('partials.header')
     <div class="wrapper">
         <div id="sidebar" class=" pull-left">

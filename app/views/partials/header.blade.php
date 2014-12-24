@@ -2,20 +2,24 @@
 <!-- <h1 class=""><img alt="Yahtzee" width="150px" alt="Yahtzee" src="{{asset('img/yahtzee.png')}}"/></h1>-->
 <nav class="navbar navbar-static-top" role="navigation">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapseable-navbar-header">
+        <button type="button" class="navbar-toggle collapsed" style="color:white;" data-toggle="collapse" data-target="#collapseable-navbar-header">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
+        @if(!isset($has_sidebar))
         <a class="navbar-brand" href="/">
             <span class=""><img alt="Yahtzee" src="{{asset('favicon.ico')}}"/>&nbsp;Yahtzee</span>
         </a>
+        @endif
     </div>
     <div class="collapse navbar-collapse" id="collapseable-navbar-header">
+        @if(!isset($has_sidebar))
         <ul class="nav navbar-nav">
             <li><a href="#" data-target="#rules-modal" data-toggle="modal">Rules</a></li>
         </ul>
+        @endif
         <ul class="nav navbar-nav navbar-right">
             @if (Auth::check())
             <?php $person = Auth::user()->person()->first();?>

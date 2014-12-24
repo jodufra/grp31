@@ -19,6 +19,7 @@ appConstants.constant('CSRF_TOKEN', '{{csrf_token()}}' );
 {{ HTML::script('angular/controllers/game/play-controller.js'); }}
 
 <!-- Angular Services-->
+{{ HTML::script('angular/services/chat-services.js'); }}
 {{ HTML::script('angular/services/game-services.js'); }}
 {{ HTML::script('angular/services/player-services.js'); }}
 

@@ -145,24 +145,24 @@ input::-webkit-inner-spin-button {
     z-index: 1;
     bottom: 0;
     right: 0;
-    padding-right: 20px;
 }
 #chat{
     position:relative;
-    color: #D9EDF7;
-    width: 300px;
+    color: #eee;
+    margin-right: 5px;
+    bottom: 0;
 }
 #chat .head{
     position:relative;
-    background-color: #007196;
+    background-image: url('../img/classy_fabric.png') !important;
     font-size: 14px !important;
     width: 100%;
     line-height: 1.2;
-    padding:4px 2px;
-    border: 1px solid #2E4588;
-    border-bottom: none;
+    padding:4px 4px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+    border: 1px solid gray;
+    border-bottom-width: 0px;
 }
 #chat .head .close{
     font-size: 14px !important;
@@ -170,54 +170,70 @@ input::-webkit-inner-spin-button {
 #chat .head .title .name{
     color: white;
 }
-#chat .head .badge{
-    display: none;
+#chat .head .chat-controller{
+    margin-left: 4px;
+    height: 100%;
+    cursor: pointer;
+}
+#chat .head .chat-controller:hover{
+    color: white;
 }
 #chat .body{
     position:relative;
-    background-color: #007196;
+    background-image: url('../img/classy_fabric.png') !important;
     color: black;
-    padding: 0;
-    border: 1px solid gray;
+    width: 300px;
 }
-#chat .body .messageslist{
+#chat .body .loading{
+    background-image: url('../img/classy_fabric.png') !important;
+    color: white;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+    padding: 30px;
+}
+#chat .body .message-list{
     position: relative;
     background-color: #eee;
     color: black;
     height: 300px;
     overflow-y: auto; 
     word-break: break-all;
+    padding: 0 4px;
+    border: 1px solid gray;
+    border-bottom-width: 0px;
 }
-#chat .body .messageslist .message{
+#chat .body .message-list .message{
     width: 100%;
     padding-bottom: 2px;
 }
-#chat .body .messageslist .message:last-child{
+#chat .body .message-list .message:last-child{
     padding-bottom: 0px;
 }
-#chat .body .messageslist .message .author{
+#chat .body .message-list .message .author{
     text-align: left !important;
     font-size: 16px;
     padding: 4px;
 }
-#chat .body .messageslist .message .image{
+#chat .body .message-list .message .image{
     float: left;
-    width: 15%;
+    width: 17.5%;
 }
-#chat .body .messageslist .message .image img{
+#chat .body .message-list .message .image img{
     width: 100%;
     height: 100%;
 }
-#chat .body .messageslist .message .text {
+#chat .body .message-list .message .text {
     position: relative;
     float: right;
     width: 80%;
     text-align: left;
     font-size: 13px;
     color: black;
-    margin-right: 4px;
 }
-#chat .body .messageslist .message .text:before {
+#chat .body .message-list .message .text:before {
     content: '';
     position: absolute;
     top: 7px;
@@ -233,62 +249,22 @@ input::-webkit-inner-spin-button {
     border-bottom-width: 7px;
     border-right-width: 7px;
 }
-#chat .body .messageslist .message .text pre{
+#chat .body .message-list .message .text pre{
     border: 1px solid transparent;
     border-color: inherit;
 }
-#chat .body .messageslist .message .text pre,
-#chat .body .messageslist .message .text code{
+#chat .body .message-list .message .text pre,
+#chat .body .message-list .message .text code{
     width: 100%;
     overflow-x: visible; 
     overflow-y: visible; 
     word-break: break-all;
     background-color: white;
 }
-#chat .body .messageslist .message .text code{
+#chat .body .message-list .message .text code{
     padding: 5px;
 }
-
-
-#chat .body .messagetyper input{
+#chat .body .message-typer input{
     height:30px;
     width: 100%;
-}
-
-#chat .body .setuser{
-    background-color: #007196;
-    color: white;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top:0;
-    left:0;
-    padding: 30px;
-}
-
-#chat .smallcounter .glyphicon{
-    color: #D9EDF7;
-}
-
-#chat .smallcounter .badge{
-    color: black;
-}
-
-#chat.minimized{
-    width: auto;
-    height: auto;
-}
-
-#chat.minimized > div{
-    display: none;
-}
-
-#chat.minimized .head{
-    display: inline-block;
-}
-#chat.minimized .head .badge{
-    display: inline;
-}
-#chat.minimized .head .glyphicon-comment{
-    display: none;
 }
