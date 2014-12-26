@@ -1,10 +1,10 @@
 var app = require('express')();
 var fs = require('fs');
 var options = {
-	//	key: fs.readFileSync('/home/vagrant/grp31/site/app/keys/server.key'),
-	//	cert: fs.readFileSync('/home/vagrant/grp31/site/app/keys/server.crt')
-	key: fs.readFileSync('/var/www/html/laravel/app/keys/server.key'),
-	cert: fs.readFileSync('/var/www/html/laravel/app/keys/server.crt')
+	key: fs.readFileSync('/home/vagrant/grp31/site/app/keys/server.key'),
+	cert: fs.readFileSync('/home/vagrant/grp31/site/app/keys/server.crt')
+	//	key: fs.readFileSync('/var/www/html/laravel/app/keys/server.key'),
+	//	cert: fs.readFileSync('/var/www/html/laravel/app/keys/server.crt')
 };
 var https = require('https').Server(options, app);
 
