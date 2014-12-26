@@ -1,33 +1,25 @@
 app.factory('Dices', function ($q, $http)
 {
     var self = {
-
+        getReroll : function(dicesCount){
+            return $http.post( '/game/getReroll', dicesCount );
+        },
+        getDices : function(){
+            return $http.get( '/game/getDices' );
+        },
     };
-
-
-    self.getReroll = function(dices)
-    {
-        var d = $q.defer();
-        $http.post( '/game/getReroll', dices ).
-            success(function (data)
-            {
-                d.resolve(data);
-            }
-        );
-        return d.promise;
-    };
-
-    self.getDices = function()
-    {
-        var d = $q.defer();
-        $http.get( '/game/getDices' ).
-            success(function (data)
-            {
-                d.resolve(data);
-            }
-        );
-        return d.promise;
-    };
-
     return self;
 });
+
+app.factory('Dice', function ()
+{
+    return function(val, saved){
+        return new dice(val, saved);
+    };
+});
+
+function dice(val, saved){
+    this.val = val;
+    this.saved = saved;
+    return this;
+}

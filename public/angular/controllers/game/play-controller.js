@@ -1,10 +1,24 @@
-appControllers.controller('GamePlayController', function($scope){
+appControllers.controller('GamePlayController', function($scope, currentUser, gamePlayPlayer, Dices, Dice){
 	$scope.players=[];
 	$scope.dices = [];
 
-	//Current Score Small Table
+	currentUser.success(function(data){
+		var player = gamePlayPlayer(data.id, data.user_id, data.name, data.img_src, 0);
+		$scope.players.push(player);
+		initializeGame();
+	})
+
+	function initializeGame(){
+		$scope.currentScorePlayerNum = 0;
+		$scope.currentScorePlayer = $scope.players[0];
+		$scope.currentPlayerNum = 0;
+		$scope.currentPlayer = $scope.players[0];
+	}
+
+	//Current Score Table
 	$scope.currentScorePlayerNum = 0;
-	$scope.currentScorePlayer = $scope.players[$scope.currentScorePlayerNum];
+	$scope.currentScorePlayer = [];
+
 	$scope.previousCurrentScore = function(){
 		$scope.currentScorePlayerNum--;
 		if($scope.currentScorePlayerNum < 0){
@@ -25,7 +39,7 @@ appControllers.controller('GamePlayController', function($scope){
 
 	//Current Player Scores
 	$scope.currentPlayerNum = 0;
-	$scope.currentPlayer = $scope.players[$scope.currentPlayerNum];
+	$scope.currentPlayer = [];
 
 	$scope.roll = function() {
 		if ($scope.currentPlayer.rollsAvailable > 0){
@@ -53,11 +67,12 @@ appControllers.controller('GamePlayController', function($scope){
 		fixPortraits();
 		return inactivePlayers;
 	};
+	
 	function getNewDices(){
 		$scope.dices = [];
 		var max = 5 - $scope.dices.length;
 		for (var i = 0; i < max; i++) {
-			$scope.dices.push({val:(Math.ceil(Math.random()*6)),saved:false});
+			$scope.dices.push(Dice(Math.ceil(Math.random()*6), false));
 		}
 		$scope.currentPlayer.rollsAvailable--;
 

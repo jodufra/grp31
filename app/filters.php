@@ -13,7 +13,7 @@
 
 App::before(function($request)
 {
-   if(!Request::secure()) return Redirect::secure(Request::path(),'307');
+   //if(!Request::secure()) return Redirect::secure(Request::path(),'307');
 
 });
 
