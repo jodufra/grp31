@@ -1,7 +1,71 @@
+html,body{
+    height: 100%;
+}
 body{
     background-color: #f8f8f8;
 }
-.content .row-item{
+
+#sidebar{
+    z-index: 2;
+    position: absolute;
+    width: 250px;
+    height: 100%;
+    background-image: url('../img/classy_fabric.png') !important;
+    padding-top: 0;
+}
+#sidebar .list-group{
+    padding: 0 0px;
+}
+#sidebar .list-group-item,
+#sidebar .list-group-item *{
+    color:white;
+    background: none;
+    border: none;
+}
+#sidebar .list-group-item{
+    padding: 10px 20px;
+    border-radius: 0px;
+    margin-bottom: 0px;
+    border-top: 1px solid #DD4814;
+}
+#sidebar .list-group-item:first-child{
+    border-top:none;
+}
+#sidebar .list-group-item:last-child{
+    border-bottom: 1px solid #DD4814;
+}
+#sidebar .list-group-item.active{
+    box-shadow: inset 0  8px 8px -8px black, inset 0  12px 12px -12px #DD4814,inset 0  6px 6px -6px white,
+    inset 0 -8px 8px -8px black, inset 0 -12px 12px -12px #DD4814,inset 0 -6px 6px -6px white;
+}
+#sidebar .list-group-item.active .list-group-item-heading{
+    color: #DD4814;
+}
+#sidebar .list-group-item:hover{
+    box-shadow: inset 0  8px 8px -8px black, inset 0  12px 12px -12px #DD4814,inset 0  6px 6px -6px white,
+    inset 0 -8px 8px -8px black, inset 0 -12px 12px -12px #DD4814,inset 0 -6px 6px -6px white;
+}
+#sidebar .list-group-item:first-child:hover{
+    box-shadow: inset 0 -8px 8px -8px black, inset 0 -12px 12px -12px #DD4814,inset 0 -6px 6px -6px white;
+}
+
+#content{
+    width: 100%;
+    min-height: 100%;
+    padding-left: 250px;
+}
+.navbar{
+    background-image: url('../img/classy_fabric.png') !important;
+    padding: 0 20px;
+    margin-bottom: 15px !important;
+}
+form.form-horizontal .form-group label.required:after{
+    content: '*';
+    color: red;
+}
+
+
+#content .row-item{
     background-color: white;
     border: 1px solid #DDD;
     padding: 10px;
@@ -33,55 +97,54 @@ input::-webkit-inner-spin-button {
 
 /************ PORTRAITS  ************/
 .portrait.portrait-xs{
-    background-size: 30px 30px;
-    width:30px;
-    height:30px;
+    width:20px;
+    height:20px;
 }
 .portrait.portrait-s{
-    background-size: 50px 50px;
     width:50px;
     height:50px;
 }
 .portrait, .portrait.portrait-m{
-    background-size: 75px 75px;
     width:75px;
     height:75px;
 }
 .portrait.portrait-l{
-    background-size: 100px 100px;
     width:100px;
     height:100px;
 }
 .portrait.portrait-xl{
-    background-size: 150px 150px;
     width:150px;
     height:150px;
 }
 
 
 /************ CHAT  ************/
-/* Green Chat
-    strong: #43AC6A;
-    normal: #D9EDF7
-    rgba(67,172,106,0.9);
-*/
-/* Blue Chat
-    strong: #007196
-    normal: #D9EDF7;
-    rgba(0,113,150,1);
-*/
+
+#chat-wrapper{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    max-height: 400px;
+    min-width: 100%;
+}
 #chat{
     position:relative;
-    color: #D9EDF7;
-    border-radius: 2px;
+    color: #eee;
+    margin-right: 5px;
+    max-width: 300px;
+    float:right;
 }
 #chat .head{
     position:relative;
-    background-color: #007196;
+    background-image: url('../img/classy_fabric.png') !important;
     font-size: 14px !important;
     width: 100%;
     line-height: 1.2;
-    padding:0 2px;
+    padding:4px 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border: 1px solid gray;
+    border-bottom-width: 0px;
 }
 #chat .head .close{
     font-size: 14px !important;
@@ -89,52 +152,23 @@ input::-webkit-inner-spin-button {
 #chat .head .title .name{
     color: white;
 }
+#chat .head .chat-controller{
+    margin-left: 4px;
+    height: 100%;
+    cursor: pointer;
+}
+#chat .head .chat-controller:hover{
+    color: white;
+}
 #chat .body{
     position:relative;
-    background-color: #007196;
+    background-image: url('../img/classy_fabric.png') !important;
     color: black;
-    padding: 5px;
+    width: 300px;
 }
-#chat .body .messageslist{
-    background-color: white;
-    border-radius: 4px;
-    color: black;
-    height: 300px;
-    overflow-y: auto; 
-    word-break: break-all;
-}
-#chat .body .messageslist .message{
-    background-color: white;
-    padding: 4px 6px;
-    border-bottom: 1px solid #007196;
-}
-#chat .body .messageslist .message:last-child{
-    border-bottom: 0px solid #007196;
-}
-#chat .body .messageslist .message .text,
-#chat .body .messageslist .message pre{
-    text-align: right;
-    font-size: 13px;
-    background:none;
-    color: black;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: auto !important;
-    height: auto !important;
-}
-#chat .body .messageslist .message .author{
-    text-align: left !important;
-    font-size: 16px;
-}
-
-#chat .body .messagetyper input{
-    margin-top: 5px;
-    width: 100%;
-}
-
-#chat .body .setuser{
-    background-color: #007196;
+#chat .body .loading{
+    background-image: url('../img/classy_fabric.png') !important;
+    color: white;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -142,38 +176,77 @@ input::-webkit-inner-spin-button {
     left:0;
     padding: 30px;
 }
-
-#chat .smallcounter{
-    background-color: #007196;
-    display: none;
-    cursor:pointer;
+#chat .body .message-list{
+    position: relative;
+    background-color: #eee;
     color: black;
-    border: 1px solid #D9EDF7;
+    height: 300px;
+    overflow-y: auto; 
+    word-break: break-all;
+    padding: 0 4px;
+    border: 1px solid gray;
+    border-bottom-width: 0px;
+}
+#chat .body .message-list .message{
+    width: 100%;
+    padding-bottom: 2px;
+}
+#chat .body .message-list .message:last-child{
+    padding-bottom: 0px;
+}
+#chat .body .message-list .message .author{
+    text-align: left !important;
+    font-size: 16px;
+    padding: 4px;
+}
+#chat .body .message-list .message .image{
+    float: left;
+    width: 17.5%;
+}
+#chat .body .message-list .message .image img{
+    width: 100%;
+    height: 100%;
+}
+#chat .body .message-list .message .text {
+    position: relative;
+    float: right;
+    width: 80%;
+    text-align: left;
+    font-size: 13px;
+    color: black;
+}
+#chat .body .message-list .message .text:before {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: -9px;
+    width: 0; 
+    height: 0; 
+    border-color: inherit;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-style: solid;
+    border-top-width: 7px;
+    border-bottom-width: 7px;
+    border-right-width: 7px;
+}
+#chat .body .message-list .message .text pre{
+    border: 1px solid transparent;
+    border-color: inherit;
+}
+#chat .body .message-list .message .text pre,
+#chat .body .message-list .message .text code{
+    width: 100%;
+    overflow-x: visible; 
+    overflow-y: visible; 
+    word-break: break-all;
+    background-color: white;
+}
+#chat .body .message-list .message .text code{
     padding: 5px;
 }
-
-#chat .smallcounter .glyphicon{
-    color: #D9EDF7;
-}
-
-#chat .smallcounter .badge{
-    color: black;
-}
-
-#chat.minimized{
-    width: 0;
-    height: 0;
-    padding: 0;
-    border: none;
-}
-
-#chat.minimized > div{
-    display: none;
-}
-
-#chat.minimized .smallcounter{
-    display: inline;
-    position: fixed;
-    bottom: 0;
-    right: 0;
+#chat .body .message-typer input{
+    height:30px;
+    width: 100%;
 }

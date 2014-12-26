@@ -5,7 +5,7 @@
 <script type="text/javascript" src="//code.angularjs.org/1.3.5/angular-route.js"></script>
 <script type="text/javascript" src="//code.angularjs.org/1.3.5/angular-sanitize.js"></script>
 {{ HTML::script('angular/angular_modules/angular-ng-flow/ng-flow-standalone.js'); }}
-{{ HTML::style('css/bootstrap-yeti.min.css'); }}
+{{ HTML::style('css/bootstrap-united.min.css'); }}
 {{ HTML::style('css/bootstrap-datepicker.css'); }}
 {{ HTML::style('css/font-awesome.min.css'); }}
 {{ HTML::style('css/style.css'); }}

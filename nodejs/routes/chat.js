@@ -1,148 +1,74 @@
-/* CHAT MODULE */
-function log(str){
-	console.log("Chat | "+str);
-}
-log("Loading Chat Module");
+const CHAT_BUFFER_SIZE = 10;
 
-//var io = require('../public').io;
-const SOCKETIO_CHAT_EVENT = 'chat:chat';
-const SOCKETIO_START_EVENT = 'chat:start';
-const SOCKETIO_STOP_EVENT = 'chat:stop';
-const CHAT_GLOBAL_CHANNEL = 'global';
-const CHAT_BUFFER_SIZE = 5;
-
-
-var chatBuffer = [];
-
+var publicChatBuffer = [];
 var message = {author:'', msg:'', channel:''};
 var guestCount = 0;
-var users = [];
+
+/* 
+Chat init data layout:
+{
+	user: name,
+	channel: '',
+}
+
+Message Layout:
+{
+	user: {name:'',img_src:''},
+	privateChat: false,
+	channel: '',
+	addressee: '',
+	message: '',
+}
+*/
+
+function setUserName(name){
+	var newName;
+	if(!name || name == ''){
+		guestCount++;
+		newName = 'Guest'+guestCount;
+	}else{
+		newName = name;
+	}
+	return newName;
+}
+
+function updatePublicChatBuffer(msg){
+	var channel = msg.channel;
+
+	if(typeof publicChatBuffer[channel] === 'undefined') {
+		publicChatBuffer[channel] = [];
+	}
+
+	publicChatBuffer[channel].push(msg);
+
+	var length = publicChatBuffer[channel].length 
+
+	if(length >= CHAT_BUFFER_SIZE){
+		newBuffer = [];
+		for(var i = length-CHAT_BUFFER_SIZE; i<CHAT_BUFFER_SIZE; i++){
+			newBuffer.push(publicChatBuffer[channel][i]);
+		}
+		publicChatBuffer[channel] = newBuffer;
+	}
+}
+
 
 module.exports = function(io, socket) {
-	socket.on('chat:innit', function(data){
-		if(!data.user || data.user == ''){
-			guestCount++
-			data.user = 'Guest'+guestCount;
-		}
-		if(chatBuffer[data.channel]){
-			socket.emit('chat:message:buffer', chatBuffer[data.channel]);
-		}
-		socket.emit('chat:innit', {user: data.user, channel: data.channel});
-		socket.broadcast.emit('chat:user:join', {user:data.user, channel:data.channel});
+	socket.on('chat:init:public', function(data){
+		data.user = setUserName(data.user);
 
-		users[socket.id] = {user:data.user,channel:data.channel};
+		if(publicChatBuffer[data.channel]){
+			socket.emit('chat:message:buffer', {channel:data.channel, messages:publicChatBuffer[data.channel]});
+		}
+
+		socket.emit('chat:init:public', {user: data.user, channel: data.channel});
 	});
 
 	socket.on('chat:message:send',function(msg){
-		var channel = msg.channel;
-		if(typeof chatBuffer[channel] === 'undefined') chatBuffer[channel] = [];
-		chatBuffer[channel].push(msg);
-		var length = chatBuffer[channel].length 
-		if(length >= CHAT_BUFFER_SIZE){
-			newBuffer = [];
-			for(var i = length-CHAT_BUFFER_SIZE; i<CHAT_BUFFER_SIZE;i++){
-				newBuffer.push(chatBuffer[channel][i]);
-			}
-			chatBuffer[channel] = newBuffer;
+		if(!msg.privateChat){
+			updatePublicChatBuffer(msg)
 		}
-		io.emit('chat:message:send', msg);
-	});
-	socket.on('disconnect', function() {
-		if(typeof users[socket.id] !== 'undefined'){
-			var user = users[socket.id].user;
-			var channel = users[socket.id].channel;
-
-			socket.broadcast.emit('chat:user:left', {user:user, channel:channel});
-
-			delete users[socket.id];
-		}
+		io.emit('chat:message:receive', msg);
 	});
 
 }
-
-
-
-
-
-// var discardClient = function() {
-// 	log('Client disconnected !');
-// 	nbOpenSockets--;
-
-// 	if (nbOpenSockets <= 0) {
-// 		nbOpenSockets = 0;
-// 		log("No active clients.");
-// 	}
-// };
-
-// var handleClient = function(data, socket) {
-// 	if (data == true) {
-// 		log('Client connected !');
-
-// 		if (nbOpenSockets <= 0) {
-// 			nbOpenSockets = 0;
-// 			log('First active client.');
-// 		}
-
-// 		nbOpenSockets++;
-
-
-// 		if (oldChatBuffer != null && oldChatBuffer.length != 0) {
-// 			socket.emit(SOCKETIO_CHAT_EVENT, oldChatBuffer);
-// 		}
-// 	}
-// };
-
-
-
-
-
-// stream.on('connect', function(request) {
-// 	log('Connected to Twitter API');
-
-// 	if (isFirstConnectionToTwitter) {
-// 		isFirstConnectionToTwitter = false;
-// 		stream.stop();
-// 	}
-// });
-
-// stream.on('disconnect', function(message) {
-// 	log('Disconnected from Twitter API. Message: ' + message);
-// });
-
-// stream.on('reconnect', function (request, response, connectInterval) {
-//   	log('Trying to reconnect to Twitter API in ' + connectInterval + ' ms');
-// });
-
-// stream.on('tweet', function(tweet) {
-// 	if (tweet.place == null) {
-// 		return ;
-// 	}
-
-
-// 	var msg = {};
-// 	msg.text = tweet.text;
-// 	msg.location = tweet.place.full_name;
-// 	msg.user = {
-// 		name: tweet.user.name, 
-// 		image: tweet.user.profile_image_url
-// 	};
-
-
-
-// 	tweetsBuffer.push(msg);
-
-// 	broadcastTweets();
-// });
-
-// var broadcastTweets = function() {
-	
-// 	if (tweetsBuffer.length >= TWEETS_BUFFER_SIZE) {
-
-// 		io.sockets.emit(SOCKETIO_TWEETS_EVENT, tweetsBuffer);
-
-// 		oldChatBuffer = tweetsBuffer;
-// 		tweetsBuffer = [];
-// 	}
-// }
-
-log("Listening for requests");

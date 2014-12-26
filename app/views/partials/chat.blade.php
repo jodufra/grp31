@@ -1,43 +1,53 @@
-<div id="chat" class="col-md-3 col-md-offset-9" ng-controller="ChatController">
-	<div class="head clearfix">
-		<div class="title pull-left">
-			<span class="glyphicon glyphicon-comment" aria-hidden="true"></span><span class="name">&nbsp;Yahtzee Chat</span>
+<div id="chat-wrapper" ng-controller="ChatController">
+	<div id="chat" ng-repeat="chat in getChats()" >
+		<div ng-if="chat.minimized" class="weight" style="height:332px;width: 100%;"></div>
+		<div class="head clearfix">
+			<div class="title pull-left">
+				<span ng-if="chat.minimized" class="badge" ng-bind="chat.unreadedMessages"></span>
+				<span ng-if="!chat.minimized" class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+				<span>&nbsp;</span>
+				<span ng-if="!chat.channel && !chat.addressee" class="name">Yahtzee Chat</span>
+				<span ng-if="chat.channel" class="name" ng-bind="chat.channel"></span>
+				<span ng-if="chat.addressee" class="name" ng-bind="chat.addressee"></span>
+				<span>&nbsp;&nbsp;&nbsp;</span>
+			</div>
+			<div class="chat-window-controller pull-right">
+				<div ng-if="!chat.minimized" class="chat-controller pull-left" ng-click="chat.minimized = true">
+					<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+				</div>
+				<div ng-if="chat.minimized" class="chat-controller pull-left" ng-click="chat.minimized = false">
+					<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+				</div>
+				<div ng-if="chat.closable" class="chat-controller pull-left" ng-click="closeChat(chat)">
+					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+				</div>
+			</div>		
 		</div>
-		<div class="close pull-right" ng-click="setChatState(false)">
-			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-		</div>		
-	</div>
-	<div class="body">
-		<span style="color:white;font-size: 11px;">You are connected on channel: [[channel]]</span>
-		<br>
-		<div class="messageslist">
-			<div>
-				<div ng-repeat="msg in messages" style="box-shadow: inset 0 0 6px 2px [[stringToColour(msg.user)]]" class="message">
-					<span class="author">[[msg.user]]:</span>
-					<pre class="text"><code class="text">[[msg.message]]</code></pre>
+		<div ng-if="!chat.minimized" class="body">
+			<div class="message-list">
+				<div>
+					<div ng-repeat="msg in chat.messages"  class="message clearfix">
+						<span class="author">[[msg.user.name]]</span>
+						<br>
+						<div class="image">
+							<img src="[[msg.user.img_src]]" class="portrait img-rounded" alt="">
+						</div>
+						<div class="text" style="border-color: [[stringToColour(msg.user.name)]] ;">
+							<pre><code>[[msg.message]]</code></pre>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="messagetyper">
-			<form ng-submit="sendMessage()">
-				<input class="form-input" autocomplete="off" placeholder="[[name]]: Type and press Enter" ng-model="message"/>
-			</form>
-		</div>
-		<div class="setuser text-center" >
-			<form ng-submit="joinChat()">
+			<div class="message-typer">
+				<form ng-submit="sendMessage(chat)">
+					<input class="form-input" autocomplete="off" placeholder="[[user.name]]: Type and press Enter" ng-model="chat.message"/>
+				</form>
+			</div>
+			<div class="loading text-center" ng-if="!chat.init" >
 				<h3><strong>Yahtzee Chat</strong></h3>
 				<br>
-				<input class="text-center" autocomplete="off" placeholder="Type your name" ng-model="name"/>
-				<br>
-				<br>
-				<button class="btn btn-default">Join</button>
-			</form>
+				<p><i class="fa fa-2x fa-spinner fa-spin"></i></p>
+			</div>
 		</div>
-	</div>
-	<div class="smallcounter" ng-click="setChatState(true)">
-		<span>
-			<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>&nbsp;
-			<span class="badge">[[unreadedMessages]]</span>
-		</span>
 	</div>
 </div>

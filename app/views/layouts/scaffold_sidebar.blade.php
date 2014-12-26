@@ -7,15 +7,18 @@
     <title>Yahtzee</title>
 </head>
 <body>
-    @include('partials.header')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 sidebar">
-                @yield('sidebar')
-            </div>
-            <div class="col-md-9 content">
-                @include('partials.session_messages')
-                @yield('body')
+    <div id="sidebar">
+        @yield('sidebar')
+    </div>
+    <div id="content">
+        <?php $has_sidebar = true;?>
+        @include('partials.header')
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 ">
+                    @include('partials.session_messages')
+                    @yield('body')
+                </div>
             </div>
         </div>
     </div>
