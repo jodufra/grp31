@@ -34,7 +34,7 @@ class CreateMovesTable extends Migration {
 			$table->tinyInteger('s_chance')->unsigned()->nullable();
 			$table->tinyInteger('s_yahtzee')->unsigned()->nullable();
 			$table->enum('choice', Move::$move_types)->nullable();
-
+            $table->timestamps();
 		});
 	}
 	

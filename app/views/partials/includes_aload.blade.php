@@ -15,6 +15,7 @@ appConstants.constant('CSRF_TOKEN', '{{csrf_token()}}' );
 {{ HTML::script('angular/controllers/home-controller.js'); }}
 {{ HTML::script('angular/controllers/chat-controller.js'); }}
 {{ HTML::script('angular/controllers/game/home-controller.js'); }}
+{{ HTML::script('angular/controllers/game/index-controller.js'); }}
 {{ HTML::script('angular/controllers/game/create-controller.js'); }}
 {{ HTML::script('angular/controllers/game/play-controller.js'); }}
 

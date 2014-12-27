@@ -17,7 +17,7 @@
 			<button ng-if="bots.length != 0" ng-click="removeAllRobots()" type="button" class="btn btn-warning btn-sm pull-left">
 				<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;Remove All Robots
 			</button>
-			{{Form::open(array('action' => 'GamesController@store', 'method' => 'post'))}}
+			{{Form::open(array( 'method' => 'post'))}}
 			<div ng-repeat="player in getPlayers()">
 				<input type="hidden" name="[[$index]]" value="[[player.id]]">
 			</div>

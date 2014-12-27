@@ -33,8 +33,9 @@ Route::group(array('before' => 'auth'), function () {
     // Auth
     Route::get('logout', array('uses' => 'AuthController@getLogout', 'as' => 'logout'));
     // Game
-    Route::resource('game','GamesController');
-	Route::get('game/getDices','GamesController@getDices');
+    Route::resource('game','GameController');
+	Route::get('game/getDices','GameController@getDices');
+    Route::get('getGames','GameController@getGames');
 });
 
 // Not Finished Yet

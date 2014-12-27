@@ -17,6 +17,7 @@ class CreateSpectatorsTable extends Migration {
 			$table->increments('id');
 			$table->integer('game_id')->unsigned();
 			$table->integer('player_id')->unsigned();
+            $table->timestamps();
 		});
 	}
 

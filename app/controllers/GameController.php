@@ -3,7 +3,7 @@
 use ElephantIO\Client,
 ElephantIO\Engine\SocketIO\Version1X;
 
-class GamesController extends \BaseController {
+class GameController extends \BaseController {
 
     /**
      * User Repository
@@ -85,15 +85,22 @@ class GamesController extends \BaseController {
 	 * @return Response
 	 */
 	public function store()
-	{
-		$data = Input::all();
-		$players = [];
-		$player_nums = [];
-		for ($i=0; $i < 10; $i++){
-			$player_nums[$i] = 0;
-		}
+	{   $input=array('name' => Input::get('name'));
+        $validation = Validator::make($input, Game::$rules);
 
-		for ($i=0; $i < 10; $i++) { 
+        if ($validation->passes())
+        {
+            $this->game=$this->game->create($input);
+            $gameHavePlayer= array('game_id'=>$this->game->id,'player_id'=>Input::get('player_id'),'player_num'=>1);
+            GameHavePlayer::create($gameHavePlayer);
+            return Redirect::route('game.create');
+        }
+
+        return Redirect::route('game.index')
+            ->withInput()
+            ->withErrors($validation)
+            ->with('message', 'There were validation errors.');
+		/*for ($i=0; $i < 10; $i++) {
 			if(Input::has(''+$i)){
 				$player_nums[$i]++;
 				if ($player_nums[$i] >= 2)
@@ -108,18 +115,7 @@ class GamesController extends \BaseController {
 					return Redirect::back()->withErrors($validator)->withInput();
 				}
 			}
-		}
-
-
-		$validator = Validator::make($data, Game::$rules);
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
-
-		$this->game = Game::create([]);
-
-		return show($this->game->id);
+		}*/
 	}
 
 	/**
@@ -183,5 +179,8 @@ class GamesController extends \BaseController {
 
 		return Redirect::route('games.index');
 	}
-
+    public function getGames()
+    {
+        return Response::json(Game::all());
+    }
 }

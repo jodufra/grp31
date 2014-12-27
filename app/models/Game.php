@@ -1,12 +1,11 @@
 <?php
 
 class Game extends Eloquent{
+    protected $guarded = array();
 
-	public static $rules = [];
-	
-	protected $fillable = [];
-
-	protected $guarded = ['*'];
+    public static $rules = array(
+        'name' => 'required'
+    );
 
 	public function players()
 	{
