@@ -7,12 +7,77 @@
 @section('body')
 <div class="row">
   <div class="col-md-12">
-    <div class="row-item" ng-controller="TestingNodeController">
+    <div class="row-item">
       Some Content that appears whatever Auth you have, some more content
       <br>
-      <button ng-click="sendRequest()">Random button</button>
-      <span ng-bind="response"></span>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
+    </div>
+    <div class="row-item">
+      Some Content that appears whatever Auth you have, some more content
+      <br>
+      <button>Random button</button>
     </div>
   </div>
 </div>
+@include('partials.chat')
 @endsection

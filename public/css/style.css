@@ -6,12 +6,12 @@ body{
 }
 
 #sidebar{
-    z-index: 2;
     position: absolute;
+    top: 0;
+    z-index: 1;
     width: 250px;
-    height: 100%;
+    min-height: 100%;
     background-image: url('../img/classy_fabric.png') !important;
-    padding-top: 0;
 }
 #sidebar .list-group{
     padding: 0 0px;
@@ -50,36 +50,78 @@ body{
 }
 
 #content{
+    position: absolute;
+    top: 0;
     width: 100%;
-    min-height: 100%;
+    height: 100%;
     padding-left: 250px;
+    overflow-y: auto;
 }
 .navbar{
     background-image: url('../img/classy_fabric.png') !important;
     padding: 0 20px;
     margin-bottom: 15px !important;
 }
-form.form-horizontal .form-group label.required:after{
-    content: '*';
-    color: red;
+.navbar .dropdown-menu{
+    width: auto !important;
 }
-
-
+.navbar .dropdown-menu li{
+    margin: 0 4px;
+}
+.navbar .dropdown-menu li .media{
+    border-bottom: 1px solid #ddd;
+    padding: 4px 0;
+}
+.navbar .dropdown-menu li:last-child .media{
+    border-bottom: none;
+}
+.navbar .dropdown-menu .btn-group{
+    width: 160px;
+    border: 1px solid silver;
+    padding: 4px;
+    border-left: none;
+    border-right: none;
+}
+.navbar .dropdown-menu .btn-group a{
+    float: left;
+    text-align: center;
+    background: none;
+    margin: 0;
+    padding: 0;
+    width: 50%;
+    color: gray;
+    border: none;
+    border-right: 1px solid silver;
+}
+.navbar .dropdown-menu .btn-group a:last-child{
+    border-right: none;
+}
+.navbar .dropdown-menu .btn-group a.success:hover{
+    color: #3C763D;
+}
+.navbar .dropdown-menu .btn-group a.info:hover{
+    color: #31708F;
+}
+#content .container-fluid{
+    max-width: 1170px;
+}
 #content .row-item{
     background-color: white;
     border: 1px solid #DDD;
     padding: 10px;
     margin:0 0 10px;
 }
+form.form-horizontal .form-group label.required:after{
+    content: '*';
+    color: red;
+}
 input[type='number'] {
     -moz-appearance:textfield;
 }
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
-
 .btn-navigation{
     color:#008CBA;
     font-size: 150%;
@@ -120,21 +162,97 @@ input::-webkit-inner-spin-button {
 
 /************ CHAT  ************/
 
-#chat-wrapper{
+#chat-tab{
     position: fixed;
     bottom: 0;
     right: 0;
-    max-height: 400px;
-    min-width: 100%;
+    height: 27px;
+    width: 100%;
+    padding-right: 20px;
+    z-index: 300;
 }
-#chat{
-    position:relative;
+#chat-tab .overflow-chats-wrapper{
+    position: relative;
+    float: right;
+    height: 100%;
+    overflow: visible;
+    width: 200px;
+    margin-right: 5px;
+}
+#chat-tab .overflow-chats-wrapper .dropup{
+    position:absolute;
+    bottom: 0;
     color: #eee;
     margin-right: 5px;
-    max-width: 300px;
-    float:right;
+    width: 200px;
+    height: 100%
 }
-#chat .head{
+#chat-tab .overflow-chats-wrapper .dropup button.dropdown-toggle{
+    background-image: url('../img/classy_fabric.png') !important;
+    font-size: 14px !important;
+    line-height: 1.2;
+    padding:4px 4px;
+    width: 100%; 
+    height: 100%;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border: 1px solid gray;
+}
+#chat-tab .overflow-chats-wrapper .dropup .dropdown-menu,
+#chat-tab .overflow-chats-wrapper .dropup .dropdown-menu li,
+#chat-tab .overflow-chats-wrapper .dropup .dropdown-menu li .btn-group{
+    background:#eee;
+    width: 100%; 
+    color: black;
+    padding: none;
+}
+#chat-tab .overflow-chats-wrapper .dropup .dropdown-menu li{
+    border-bottom: 1px solid gray;
+}
+#chat-tab .overflow-chats-wrapper .dropup .dropdown-menu li:last{
+    border-bottom: 0px solid gray;
+}
+#chat-tab .overflow-chats-wrapper .dropup .dropdown-menu li .btn-group{
+    position: relative;
+    width: 100%;
+    font-size: 14px;
+    overflow: hidden;
+}
+#chat-tab .overflow-chats-wrapper .dropup .dropdown-menu li .btn-group:hover button{
+    background: #DD4814;
+}
+#chat-tab .overflow-chats-wrapper .dropup .dropdown-menu li .btn-group button{
+    height: 100%;
+    border: none;
+    padding: 2px;
+}
+#chat-tab .overflow-chats-wrapper .dropup .dropdown-menu li .btn-group .chat{
+    text-align: left;
+    width: 100%;
+}
+#chat-tab .overflow-chats-wrapper .dropup .dropdown-menu li .btn-group .close{
+    position: absolute;
+    height: auto;
+    top: 0;
+    right: 0;
+    color: black;
+    z-index: 1;
+}
+#chat-tab .chat-wrapper{
+    position: relative;
+    float: right;
+    height: 100%;
+    overflow: visible;
+    width: 300px;
+    margin-right: 5px;
+}
+#chat-tab .chat-wrapper .chat{
+    position:absolute;
+    bottom: 0;
+    color: #eee;
+    width: 300px;
+}
+#chat-tab .chat-wrapper .chat .head{
     position:relative;
     background-image: url('../img/classy_fabric.png') !important;
     font-size: 14px !important;
@@ -146,27 +264,27 @@ input::-webkit-inner-spin-button {
     border: 1px solid gray;
     border-bottom-width: 0px;
 }
-#chat .head .close{
+#chat-tab .chat-wrapper .chat .head .close{
     font-size: 14px !important;
 }
-#chat .head .title .name{
+#chat-tab .chat-wrapper .chat .head .title .name{
     color: white;
 }
-#chat .head .chat-controller{
+#chat-tab .chat-wrapper .chat .head .chat-controller{
     margin-left: 4px;
     height: 100%;
     cursor: pointer;
 }
-#chat .head .chat-controller:hover{
+#chat-tab .chat-wrapper .chat .head .chat-controller:hover{
     color: white;
 }
-#chat .body{
+#chat-tab .chat-wrapper .chat .body{
     position:relative;
     background-image: url('../img/classy_fabric.png') !important;
     color: black;
     width: 300px;
 }
-#chat .body .loading{
+#chat-tab .chat-wrapper .chat .body .loading{
     background-image: url('../img/classy_fabric.png') !important;
     color: white;
     position: absolute;
@@ -176,7 +294,7 @@ input::-webkit-inner-spin-button {
     left:0;
     padding: 30px;
 }
-#chat .body .message-list{
+#chat-tab .chat-wrapper .chat .body .message-list{
     position: relative;
     background-color: #eee;
     color: black;
@@ -187,27 +305,27 @@ input::-webkit-inner-spin-button {
     border: 1px solid gray;
     border-bottom-width: 0px;
 }
-#chat .body .message-list .message{
+#chat-tab .chat-wrapper .chat .body .message-list .message{
     width: 100%;
     padding-bottom: 2px;
 }
-#chat .body .message-list .message:last-child{
+#chat-tab .chat-wrapper .chat .body .message-list .message:last-child{
     padding-bottom: 0px;
 }
-#chat .body .message-list .message .author{
+#chat-tab .chat-wrapper .chat .body .message-list .message .author{
     text-align: left !important;
     font-size: 16px;
     padding: 4px;
 }
-#chat .body .message-list .message .image{
+#chat-tab .chat-wrapper .chat .body .message-list .message .image{
     float: left;
     width: 17.5%;
 }
-#chat .body .message-list .message .image img{
+#chat-tab .chat-wrapper .chat .body .message-list .message .image img{
     width: 100%;
     height: 100%;
 }
-#chat .body .message-list .message .text {
+#chat-tab .chat-wrapper .chat .body .message-list .message .text {
     position: relative;
     float: right;
     width: 80%;
@@ -215,7 +333,7 @@ input::-webkit-inner-spin-button {
     font-size: 13px;
     color: black;
 }
-#chat .body .message-list .message .text:before {
+#chat-tab .chat-wrapper .chat .body .message-list .message .text:before {
     content: '';
     position: absolute;
     top: 7px;
@@ -231,22 +349,33 @@ input::-webkit-inner-spin-button {
     border-bottom-width: 7px;
     border-right-width: 7px;
 }
-#chat .body .message-list .message .text pre{
+#chat-tab .chat-wrapper .chat .body .message-list .message .text pre{
     border: 1px solid transparent;
     border-color: inherit;
 }
-#chat .body .message-list .message .text pre,
-#chat .body .message-list .message .text code{
+#chat-tab .chat-wrapper .chat .body .message-list .message .text pre,
+#chat-tab .chat-wrapper .chat .body .message-list .message .text code{
     width: 100%;
     overflow-x: visible; 
     overflow-y: visible; 
     word-break: break-all;
     background-color: white;
 }
-#chat .body .message-list .message .text code{
+#chat-tab .chat-wrapper .chat .body .message-list .message .text code{
     padding: 5px;
 }
-#chat .body .message-typer input{
+#chat-tab .chat-wrapper .chat .body .message-typer input{
     height:30px;
     width: 100%;
+}
+
+.animated-on-change{
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+.animated-on-change.flash{
+    background-color: #08C;
 }
