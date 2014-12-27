@@ -44,6 +44,10 @@
 						<span ng-if="!player.is_leader && !player.is_user && userIsLeader()" ng-click="removePlayerOrBot([[player.id]])" class="glyphicon glyphicon-remove" aria-hidden="true" style="position: absolute;top:5px;right:5px;cursor:pointer;color:gray;"></span>
 					</div>
 				</div>
+				<div class="list-group-item col-md-6 clearfix empty searching" ng-repeat="n in [] | range: (10 - getPlayers().length)">
+					<div class="content">
+					</div>
+				</div>
 			</div>
 		</div>					
 	</div>

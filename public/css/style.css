@@ -102,6 +102,20 @@ body{
 .navbar .dropdown-menu .btn-group a.info:hover{
     color: #31708F;
 }
+.list-group .list-group-item.col-md-6{
+    height: 72px;
+}
+.list-group .list-group-item.col-md-6.empty,
+.list-group .list-group-item.col-md-6.empty.searching{
+    background: #eee;
+    text-align: center;
+    cursor: pointer;
+    line-height: 50px;
+    font-size: 18px;
+}
+.list-group .list-group-item.col-md-6.empty:hover .content{
+    color:#3A87AD;
+}
 #content .container-fluid{
     max-width: 1170px;
 }

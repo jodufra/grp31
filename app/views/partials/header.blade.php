@@ -26,12 +26,15 @@
             <!-- Friend List -->
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-user"></span>&nbsp;<span class="badge">0</span>
+                    <span class="glyphicon glyphicon-user"></span>&nbsp;<span class="badge" ng-bind="onlineFriends.length"></span>
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-autoclose-prevented" role="menu">
-                    <li ng-if="!haveOnlineFriends()"></li>
-                    <li ng-repeat="friend in onlineFriends">
+                    <li ng-if="!haveOnlineFriends()">No Online Friends</li>
+                    <li>
+                        <input type="text" placeholder="Search" ng-model="searchText">  
+                    </li>
+                    <li ng-repeat="friend in onlineFriends | filter:searchText">
                         <div class="media">
                             <div class="media-left media-middle">
                                 <img src="[[friend.img_src]]" alt="" class="portrait portrait-s" style="height:100%">

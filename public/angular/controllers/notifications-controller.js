@@ -12,10 +12,10 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 		{user_id:10, name:"Wanabe Friend 4"},
 	];
 	$scope.onlineFriends = [
-		{name:"Guest 1", img_src:"/img/default"},
-		{name:"Friend2", img_src:"/img/default"},
-		{name:"Friend3", img_src:"/img/default"},
-		{name:"Friend4", img_src:"/img/default"},
+		{name:"Guest 1", img_src:"/img/default.png"},
+		{name:"Friend2", img_src:"/img/default.png"},
+		{name:"Friend3", img_src:"/img/default.png"},
+		{name:"Friend4", img_src:"/img/default.png"},
 	];
 
 	$scope.haveNotifications = function(){

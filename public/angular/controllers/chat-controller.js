@@ -91,7 +91,7 @@ appControllers.controller('ChatController', function($scope, currentUser, Privat
 				addMessage(publicChat, message);
 			} 
 		}else{
-			var sender_name = data.user.name;
+			var sender_name;
 			if(data.addressee == $scope.user.name){
 				sender_name = data.user.name;
 				if(!privateChats[sender_name]){
