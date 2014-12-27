@@ -1,18 +1,32 @@
 appControllers.controller('ChatController', function($scope, currentUser, PrivateChat, PublicChat, ChatUser) {
-	const DEFAULT_CHAT_CHANNEL = "global";
-	const DEFAULT_IMG_SRC = '/img/default.png';
+	const DEFAULT_CHAT_CHANNEL = "Yahtzee";
 	const SELF_CHAT_USER = ChatUser('Yahtzee Chat', '/img/yahtzee-nt.png');
 
-	$scope.publicChat = PublicChat(null);
-	$scope.privateChats = [];
-	$scope.user = ChatUser('',DEFAULT_IMG_SRC);
+	const maxVisibleChats = 3;
+	var chatsCount = 1;
+	var oldChatsCount = 0;
+	var visibleChats = [];
+	var hiddenChats = [];
+
+	var publicChat = PublicChat(null);
+	var privateChats = [];
+
+	var userIsGuest = true;
+	$scope.user = {name:'', img_src:'/img/default.png'};
 
 	currentUser.success(function(data){
-		$scope.user.name = data.name;
-		$scope.user.img_src = data.img_src;
+		if(data.name){
+			$scope.user.name = data.name;
+			$scope.user.img_src = data.img_src;
+			userIsGuest = false;
+		}
 		initPublicChat();
 	}).error(function(){
 		initPublicChat();
+	});
+
+	$scope.$on('chat:init:private', function(event, data) {
+		initPrivateChat(data.addressee);
 	});
 
 	function initPublicChat(){
@@ -23,46 +37,46 @@ appControllers.controller('ChatController', function($scope, currentUser, Privat
 		}else{
 			chatChannel = DEFAULT_CHAT_CHANNEL;
 		}
-
 		socket.emit('chat:init:public', {
 			user: $scope.user,
 			channel: chatChannel,
 		});
 	}
 
-	$scope.initPrivateChat = function(addressee){
-		if($scope.user.name.str.search('/guest/i') != -1){
-			if(!$scope.privateChats[addressee]){
-				$scope.privateChats[addressee] = PrivateChat(addressee);
-				$scope.privateChats[addressee].init = true;
-			} else if($scope.privateChats[addressee].minimized){
-				$scope.privateChats[addressee].minimized = false;
+	function initPrivateChat(addressee){
+		if(!userIsGuest){
+			if(!privateChats[addressee]){
+				privateChats[addressee] = PrivateChat(addressee);
+				privateChats[addressee].init = true;
+				chatsCount++;
+			} else if(privateChats[addressee].minimized){
+				$scope.maximize(privateChats[addressee]);
 			}
 		}else{
-			alert('You must register or login to use the private chatting.')
+			alert('You must register or login to use the private chat.');
 		}
 	}
 
 	socket.on('chat:init:public', function (data) {
 		$scope.user.name = data.user.name;
-		$scope.publicChat.channel = data.channel;
-		$scope.publicChat.init = true;
-		addMessage($scope.publicChat, {user:SELF_CHAT_USER, message:'You joined the chat!'});
+		publicChat.channel = data.channel;
+		publicChat.init = true;
+		addMessage(publicChat, {user:SELF_CHAT_USER, message:'You joined the chat!'});
 	});
 
 	socket.on('chat:message:buffer', function (data) {
 		if(!data.privateChat){
-			if(data.channel == $scope.publicChat.channel){
+			if(data.channel == publicChat.channel){
 				data.messages.forEach(function(message){
-					addMessage($scope.publicChat, message);
+					addMessage(publicChat, message);
 				});
 			} 
 		}else{
 			if(data.addressee == $scope.user.name){
 				var sender_name = data.user.name;
-				if($scope.privateChats[sender_name]){
+				if(privateChats[sender_name]){
 					data.messages.forEach(function(message){
-						addMessage($scope.privateChats[sender_name], message);
+						addMessage(privateChats[sender_name], message);
 					});
 				}
 			}
@@ -73,61 +87,51 @@ appControllers.controller('ChatController', function($scope, currentUser, Privat
 		var message = {user:data.user, message:data.message};
 
 		if(!data.privateChat){
-			if(data.channel == $scope.publicChat.channel){
-				addMessage($scope.publicChat, message);
+			if(data.channel == publicChat.channel){
+				addMessage(publicChat, message);
 			} 
 		}else{
+			var sender_name = data.user.name;
 			if(data.addressee == $scope.user.name){
-				var sender_name = data.user.name;
-				if(!$scope.privateChats[sender_name]){
-					$scope.privateChats[sender_name] = PrivateChat(sender_name);
+				sender_name = data.user.name;
+				if(!privateChats[sender_name]){
+					privateChats[sender_name] = PrivateChat(sender_name);
 				}
-
-				addMessage($scope.privateChats[sender_name], message);
 			}
+			if(data.user.name == $scope.user.name){
+				var sender_name = data.addressee;
+			}
+			addMessage(privateChats[sender_name], message);
 		}
 	});
 
 	socket.on('reconnect', function () {
-		if($scope.publicChat.init){
-			addMessage($scope.publicChat, {user:SELF_CHAT_USER, message:'You were reconnected!'});
+		if(publicChat.init){
+			addMessage(publicChat, {user:SELF_CHAT_USER, message:'You were reconnected!'});
 		}
 	});
 
 	socket.on('disconnect', function () {
-		if($scope.publicChat.init){
-			addMessage($scope.publicChat, {user:SELF_CHAT_USER, message:'You were disconnected!'});
+		if(publicChat.init){
+			addMessage(publicChat, {user:SELF_CHAT_USER, message:'You were disconnected!'});
 		}
 	});
 
 	$scope.sendMessage = function (chat) {
-		var message = {
-			user: $scope.user,
-			privateChat: chat.privateChat,
-			channel: chat.channel,
-			addressee: chat.addressee,
-			message: chat.message,
+		if(chat.message && chat.message != ''){
+			var message = {
+				user: $scope.user,
+				privateChat: chat.privateChat,
+				channel: chat.channel,
+				addressee: chat.addressee,
+				message: chat.message,
+			}
+
+			socket.emit('chat:message:send', message);
+
 		}
-
-		socket.emit('chat:message:send', message);
-
-		chat.message = '';
+		chat.message = '';	
 	};
-
-
-
-	$scope.stringToColour = function(str) {
-		var colour;
-		for (var i = 0, hash = 0; i < str.length; ){
-			hash = str.charCodeAt(i++) + ((hash << 5) - hash);
-		}
-
-		for (var i = 0, colour = "#"; i < 3; ){
-			colour += ("00" + ((hash >> i++ * 8) & 0xFF).toString(16)).slice(-2);
-		}
-
-		return colour;
-	}
 
 	function addMessage(chat, data){
 		if(chat.messages.length > 0 && data.user.name == chat.messages[chat.messages.length -1].user.name){
@@ -144,18 +148,73 @@ appControllers.controller('ChatController', function($scope, currentUser, Privat
 	}
 
 	$scope.getChats = function(){
-		var chats = [];
-		for(addressee in $scope.privateChats){
-			chats.push($scope.privateChats[addressee]);
+
+		if(chatsCount != (hiddenChats.length + visibleChats.length)){
+			visibleChats=[]
+			hiddenChats=[]
+			visibleChats.push(publicChat);
+
+			for(addressee in privateChats){
+				var chat = privateChats[addressee];
+
+				if(chatsCount >= maxVisibleChats){
+					if(visibleChats.length < maxVisibleChats){
+						visibleChats.push(chat);
+					}else{
+						privateChats[addressee].minimized = true;
+						hiddenChats.push(chat);
+					}
+				}else{
+					visibleChats.push(privateChats[addressee]);
+				}
+			}
+
+			oldChatsCount = chatsCount + 0;
+
 		}
-		chats.push($scope.publicChat);
-		return chats;
+
+
+		return {chats:visibleChats, hiddenChats:hiddenChats};
+	}
+
+	$scope.minimizeChat = function(chat){
+		chat.minimized = true;
+	}
+
+	$scope.maximizeChat = function(chat){
+		chat.minimized = false;
+		chat.unreadedMessages = 0;
+		var indexChat = hiddenChats.indexOf(chat);
+		if(indexChat>=0){
+			if(visibleChats.length == maxVisibleChats){
+				hiddenChats[indexChat] = visibleChats[2];
+				visibleChats[2] = visibleChats[1];
+				visibleChats[1] = chat;
+			}else{
+				visibleChats.push(chat);
+				hiddenChats.splice(indexChat, 1);
+			}
+		}
 	}
 
 	$scope.closeChat = function(chat){
 		var addressee = chat.addressee;
 		if(chat.closable && addressee){
-			delete $scope.privateChats[addressee];
+			delete privateChats[addressee];
+			chatsCount--;
 		}
+	}
+
+	$scope.stringToColour = function(str) {
+		var colour;
+		for (var i = 0, hash = 0; i < str.length; ){
+			hash = str.charCodeAt(i++) + ((hash << 5) - hash);
+		}
+
+		for (var i = 0, colour = "#"; i < 3; ){
+			colour += ("00" + ((hash >> i++ * 8) & 0xFF).toString(16)).slice(-2);
+		}
+
+		return colour;
 	}
 });

@@ -1,5 +1,3 @@
-
-<!-- <h1 class=""><img alt="Yahtzee" width="150px" alt="Yahtzee" src="{{asset('img/yahtzee.png')}}"/></h1>-->
 <nav class="navbar navbar-static-top" role="navigation">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" style="color:white;" data-toggle="collapse" data-target="#collapseable-navbar-header">
@@ -22,27 +20,53 @@
             <li><a href="#" data-target="#rules-modal" data-toggle="modal">Rules</a></li>
         </ul>
         @endif
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right" ng-controller="NotificationsController">
             @if (Auth::check())
             <?php $person = Auth::user()->person()->first();?>
+            <!-- Friend List -->
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" style="height: 100%;" data-toggle="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-user"></span>&nbsp;<span class="badge">0</span>
                     <span class="caret"></span>
                 </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="/user/{{Auth::user()->username}}">My profile</a></li>
+                <ul class="dropdown-menu dropdown-autoclose-prevented" role="menu">
+                    <li ng-if="!haveOnlineFriends()"></li>
+                    <li ng-repeat="friend in onlineFriends">
+                        <div class="media">
+                            <div class="media-left media-middle">
+                                <img src="[[friend.img_src]]" alt="" class="portrait portrait-s" style="height:100%">
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading" ng-bind="friend.name"></h4>
+                                <div class="btn-group clearfix">
+                                    <a href="/user/[[friend.name]]" class="success" data-toggle="tooltip" data-placement="top" title="View Profile">
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                    </a>
+                                    <a href="#" ng-click="sendMessageToFriend([[friend.name]])" class="info" data-toggle="tooltip" data-placement="top" title="Send Message">
+                                        <span class="glyphicon glyphicon-envelope"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                     <li class="divider"></li>
-                    <li><a href="/logout">Logout</a></li>
+                    <li>
+                        <span>Invite Friend</span>
+                        <div>
+                            <input style="width: 70%" class="pull-left" type="text" placeholder="Friend Name" ng-bind="newFriendName" ng-click="inviteNewFriend()">
+                            <button style="width: 30%" class="pull-left" >Invite</button>
+                        </div>
+                    </li>
                 </ul>
             </li>
+            <!-- Notifications List -->
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" style="height: 100%;" data-toggle="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-bell"></span>&nbsp;<span class="badge">0</span>
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="/user/{{Auth::user()->username}}">My profile</a></li>
+                    <li ng-if="!haveNotifications()"></li>
                     <li class="divider"></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
@@ -68,9 +92,9 @@
             </li>
             @endif
         </ul>
-    </div><!-- /.navbar-collapse -->
+    </div>
 </nav>
-<!-- Modal -->
+<!-- Rules -->
 <div class="modal fade" id="rules-modal" tabindex="-1" role="dialog" aria-labelledby="rules-modal-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

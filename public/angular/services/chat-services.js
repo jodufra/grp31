@@ -25,11 +25,11 @@ function chat(privateChat, channel, addressee, init, closable, minimized) {
 
 appServices.factory('ChatUser', function(){
 	var self = function(name, img_src){
-		return new chatUser(name,img_src);
+		return new chatUser(name, img_src);
 	}
 	return self;
 });
-function chatUser(name,img_src) {
+function chatUser(name, img_src) {
 	this.name = name;
 	this.img_src = img_src;
 }

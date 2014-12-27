@@ -1,8 +1,5 @@
 const CHAT_BUFFER_SIZE = 10;
-
 var publicChatBuffer = [];
-var message = {author:'', msg:'', channel:''};
-var guestCount = 0;
 
 /* 
 Chat init data layout:
@@ -20,17 +17,61 @@ Message Layout:
 	message: '',
 }
 */
+var usersManager = (function () {
+	var users = {};
+	var names = {};
 
-function setUserName(name){
-	var newName;
-	if(!name || name == ''){
-		guestCount++;
-		newName = 'Guest'+guestCount;
-	}else{
-		newName = name;
+	var set = function(socketID, name){
+		users[socketID] = setName(name);
+		return users[socketID];
 	}
-	return newName;
-}
+	var free = function(socketID){
+		freeName(users[socketID]);
+		delete users[socketID];
+	}
+
+	function setName(oldName){
+		var name = oldName;
+		if(!oldName || oldName === ''){
+			name = getGuestName();
+		}else{
+			claimName(name);
+		}
+		return name;
+	}
+
+	function claimName (name) {
+		if (!name || names[name]) {
+			return false;
+		} else {
+			names[name] = true;
+			return true;
+		}
+	}
+
+	function getGuestName() {
+		var name,
+		nextUserId = 1;
+
+		do {
+			name = 'Guest ' + nextUserId;
+			nextUserId += 1;
+		} while (!claimName(name));
+
+		return name;
+	}
+
+	function freeName(name) {
+		if (names[name]) {
+			delete names[name];
+		}
+	}
+
+	return {
+		set: set,
+		free: free,
+	};
+}());
 
 function updatePublicChatBuffer(msg){
 	var channel = msg.channel;
@@ -55,7 +96,7 @@ function updatePublicChatBuffer(msg){
 
 module.exports = function(io, socket) {
 	socket.on('chat:init:public', function(data){
-		data.user = setUserName(data.user);
+		data.user.name = usersManager.set(socket.id, data.user.name);
 
 		if(publicChatBuffer[data.channel]){
 			socket.emit('chat:message:buffer', {channel:data.channel, messages:publicChatBuffer[data.channel]});
@@ -71,4 +112,7 @@ module.exports = function(io, socket) {
 		io.emit('chat:message:receive', msg);
 	});
 
+	socket.on('disconnect', function(){
+		usersManager.free(socket.id);
+	});
 }

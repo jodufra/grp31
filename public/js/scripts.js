@@ -2,12 +2,16 @@ $(function(){
 	timeoutAlerts();
 	fixPortraits();
 	$('.datepicker').datepicker({});
+	$('.dropdown-autoclose-prevented *').click(function(e) {
+        e.stopPropagation();
+    });
+  	$('[data-toggle="tooltip"]').tooltip()
 });
 function fixPortraits(){
 	$( ".portrait" ).error(function() {
 		 $(this).attr( "src", "../img/default.png" );
 	});
-	setTimeout(function(){ fixPortraits() }, 2500);
+	setTimeout(function(){ fixPortraits() }, 5000);
 }
 function timeoutAlerts(){
 	setTimeout(function(){ $('.alert-success').slideUp("slow")}, 5000);
