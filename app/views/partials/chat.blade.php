@@ -63,7 +63,7 @@
 					<span class="caret"></span>
 				</span>
 			</button>
-			<ul class="dropdown-menu">
+			<ul class="dropdown-menu dropdown-autoclose-prevented">
 				<li ng-repeat="chat in getChats().hiddenChats">
 					<div class="btn-group">
 						<button class="chat" ng-click="maximizeChat(chat)">

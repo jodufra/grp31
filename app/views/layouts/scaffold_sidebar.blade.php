@@ -7,6 +7,7 @@
     <title>Yahtzee</title>
 </head>
 <body>
+    <div class="hidden" ng-controller="UserController"></div>
     <div id="sidebar">
         @yield('sidebar')
     </div>

@@ -1,4 +1,4 @@
-appControllers.controller('ChatController', function($scope, currentUser, PrivateChat, PublicChat, ChatUser) {
+appControllers.controller('ChatController', function($scope, PrivateChat, PublicChat, ChatUser) {
 	const DEFAULT_CHAT_CHANNEL = "Yahtzee";
 	const SELF_CHAT_USER = ChatUser('Yahtzee Chat', '/img/yahtzee-nt.png');
 
@@ -14,15 +14,16 @@ appControllers.controller('ChatController', function($scope, currentUser, Privat
 	var userIsGuest = true;
 	$scope.user = {name:'', img_src:'/img/default.png'};
 
-	currentUser.success(function(data){
-		if(data.name){
-			$scope.user.name = data.name;
-			$scope.user.img_src = data.img_src;
+	$scope.$on('user:init', function(event, data) {
+		if(data.isUser){
+			var user = data.user;
+			$scope.user.name = user.name;
+			$scope.user.img_src = user.img_src;
 			userIsGuest = false;
+			initPublicChat();
+		}else{
+			initPublicChat();
 		}
-		initPublicChat();
-	}).error(function(){
-		initPublicChat();
 	});
 
 	$scope.$on('chat:init:private', function(event, data) {
@@ -41,20 +42,6 @@ appControllers.controller('ChatController', function($scope, currentUser, Privat
 			user: $scope.user,
 			channel: chatChannel,
 		});
-	}
-
-	function initPrivateChat(addressee){
-		if(!userIsGuest){
-			if(!privateChats[addressee]){
-				privateChats[addressee] = PrivateChat(addressee);
-				privateChats[addressee].init = true;
-				chatsCount++;
-			} else if(privateChats[addressee].minimized){
-				$scope.maximize(privateChats[addressee]);
-			}
-		}else{
-			alert('You must register or login to use the private chat.');
-		}
 	}
 
 	socket.on('chat:init:public', function (data) {
@@ -94,9 +81,7 @@ appControllers.controller('ChatController', function($scope, currentUser, Privat
 			var sender_name;
 			if(data.addressee == $scope.user.name){
 				sender_name = data.user.name;
-				if(!privateChats[sender_name]){
-					privateChats[sender_name] = PrivateChat(sender_name);
-				}
+				initPrivateChat(sender_name);
 			}
 			if(data.user.name == $scope.user.name){
 				var sender_name = data.addressee;
@@ -105,6 +90,21 @@ appControllers.controller('ChatController', function($scope, currentUser, Privat
 		}
 	});
 
+
+	function initPrivateChat(addressee){
+		if(!userIsGuest){
+			if(privateChats[addressee] === undefined){
+				privateChats[addressee] = PrivateChat(addressee);
+				privateChats[addressee].init = true;
+				chatsCount++;
+			} else if(privateChats[addressee].minimized){
+				$scope.maximizeChat(privateChats[addressee]);
+			}
+		}else{
+			alert('You must login to use the private chat.');
+		}
+	}
+	
 	socket.on('reconnect', function () {
 		if(publicChat.init){
 			addMessage(publicChat, {user:SELF_CHAT_USER, message:'You were reconnected!'});

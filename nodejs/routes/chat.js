@@ -17,7 +17,7 @@ Message Layout:
 	message: '',
 }
 */
-var usersManager = (function () {
+var chatUsersManager = (function () {
 	var users = {};
 	var names = {};
 
@@ -96,7 +96,7 @@ function updatePublicChatBuffer(msg){
 
 module.exports = function(io, socket) {
 	socket.on('chat:init:public', function(data){
-		data.user.name = usersManager.set(socket.id, data.user.name);
+		data.user.name = chatUsersManager.set(socket.id, data.user.name);
 
 		if(publicChatBuffer[data.channel]){
 			socket.emit('chat:message:buffer', {channel:data.channel, messages:publicChatBuffer[data.channel]});
@@ -113,6 +113,6 @@ module.exports = function(io, socket) {
 	});
 
 	socket.on('disconnect', function(){
-		usersManager.free(socket.id);
+		chatUsersManager.free(socket.id);
 	});
 }

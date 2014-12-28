@@ -18,19 +18,13 @@ exports.io = io;
 
 var firstClient = true;
 io.on('connection', function(socket) {
-	if (firstClient) {
-		console.log('First Client Connected! - '+ socket.id);
-		console.log('Loading Modules');
-		firstClient = false;
-	}else{
-		console.log('Client Connected! - '+ socket.id);
-	}
+	console.log('Connected - '+ socket.id);
 
-	require('./routes/test')(io, socket);
+	require('./routes/user')(io, socket);
 	require('./routes/chat')(io, socket);
 
 	socket.on('disconnect', function() {
-		console.log('Client Disconnected! - '+ socket.id);
+		console.log('Disconnected - '+ socket.id);
 	});
 });
 
