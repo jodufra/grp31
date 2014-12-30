@@ -44,3 +44,7 @@ function notification(id, type, message_type, message_text, game_owner, game_inv
 		break;
 	}
 }
+
+appServices.service('FriendList', function(){
+	return {onlineFriends:[]};
+})

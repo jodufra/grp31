@@ -25,16 +25,16 @@
             <?php $person = Auth::user()->person()->first();?>
 
             <!-- Friend List -->
-            <li class="dropdown">
+            <li class="dropdown" data-toggle="tooltip" data-placement="left" title="Online Friend List">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span data-toggle="tooltip" data-placement="bottom" title="Online Friend List">
-                        <span class="glyphicon glyphicon-user"></span>&nbsp;
-                        <span class="badge" ng-bind="onlineFriends().length"></span>
+                    <span >
+                        <span><i class="fa fa-users"></i></span>&nbsp;
+                        <span class="badge" animate-on-change="onlineFriends().length" ng-bind="onlineFriends().length"></span>
                         <span class="caret"></span>
                     </span>
                 </a>
                 <ul ng-if="started" class="dropdown-menu dropdown-autoclose-prevented" role="menu">
-                    <li class="text-center" ng-if="!haveOnlineFriends()">No Friends Online!</li>
+                    <li class="text-center text-muted" ng-if="!haveOnlineFriends()">No Friends Online!</li>
                     <li ng-if="onlineFriends().length > 4">
                         <input type="text" placeholder="Search" ng-model="searchText">  
                     </li>
@@ -49,65 +49,63 @@
                                     <a href="/user/[[friend.name]]" class="success" data-toggle="tooltip" data-placement="top" title="View Profile">
                                         <span class="glyphicon glyphicon-eye-open"></span>
                                     </a>
-                                    <a href="#" ng-click="sendMessageToFriend([[friend.name]])" class="info" data-toggle="tooltip" data-placement="top" title="Send Message">
+                                    <p ng-click="sendMessageToFriend([[friend.name]])" class="info" data-toggle="tooltip" data-placement="top" title="Send Message">
                                         <span class="glyphicon glyphicon-envelope"></span>
-                                    </a>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li>
-                        <div class="clearfix">
-                            <input style="width: 100%" type="text" placeholder="Friend Name" ng-model="friendRequestName">
-                        </div>
-                        <div class="btn-group btn-group-single">
-                            <a href="#" ng-click="sendFriendRequest()" class="warning">
-                                <span class="glyphicon glyphicon-plus"></span><span>&nbsp;Add Friend</span>
-                            </a>
-                        </div>
+                        <form ng-submit="sendFriendRequest(friendRequestName)">
+                            <input style="width: 100%" class="form-input" autocomplete="off" placeholder="Friend Name" ng-model="friendRequestName.name">
+                            <div class="btn-group btn-group-single">
+                                <button type="submit" class="info"><span class="glyphicon glyphicon-plus"></span><span>&nbsp;Add Friend</span></button>
+                            </div>
+                        </form>
                     </li>
                 </ul>
             </li>
 
             <!-- Notifications List -->
-            <li class="dropdown">
+            <li class="dropdown" data-toggle="tooltip" data-placement="left" title="Notifications">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                    <span data-toggle="tooltip" data-placement="bottom" title="Notifications">
+                    <span>
                         <span class="glyphicon glyphicon-inbox"></span>&nbsp;
-                        <span class="badge" ng-bind="notificationsCount()"></span>
+                        <span class="badge"  animate-on-change="notificationsCount()" ng-bind="notificationsCount()"></span>
                         <span class="caret"></span>
                     </span>
                 </a>
                 <ul ng-if="started" class="dropdown-menu dropdown-autoclose-prevented" role="menu">
-                    <li class="text-center" ng-if="!haveNotifications()">Your Inbox is Empty!</li>
+                    <li class="text-center text-muted" ng-if="!haveNotifications()">Your Inbox is Empty!</li>
                     <li ng-repeat="notification in getNormalNotifications()">
-                        <p ng-bind="notification.text"></p>
+                        <pre><code class="text-center text-[[notification.message.type]]" ng-bind="notification.message.text"></code></pre>
                         <div class="btn-group btn-group-single clearfix">
-                            <a href="#" ng-click="dismiss([[notification]])" class="danger">
+                            <p ng-click="dismissNotification([[notification.id]])" class="danger">
                                 <span class="glyphicon glyphicon-remove"></span><span>&nbsp;Dismiss</span>
-                            </a>
+                            </p>
                         </div>
                     </li>
                     <li ng-repeat="request in getGameNotifications()">
                         <p>User <a href="/user/[[request.user.name]]">[[request.user.name]]</a> has invited you to join his game</p>
                         <div class="btn-group btn-group clearfix">
-                            <a href="#" ng-click="acceptGameInvite([[request]])" class="success">
+                            <p ng-click="acceptGameInvite([[request]])" class="success">
                                 <span class="glyphicon glyphicon-check"></span><span>&nbsp;Accept</span>
-                            </a>
-                            <a href="#" ng-click="dismissGameInvite([[request]])" class="danger">
+                            </p>
+                            <p ng-click="dismissGameInvite([[request]])" class="danger">
                                 <span class="glyphicon glyphicon-remove"></span><span>&nbsp;Ignore</span>
-                            </a>
+                            </p>
                         </div>
                     </li>
                     <li ng-repeat="request in getFriendNotifications()">
                         <p>User <a href="/user/[[request.user.name]]">[[request.user.name]]</a> wants to add you to his friends list</p>
                         <div class="btn-group btn-group clearfix">
-                            <a href="#" ng-click="acceptFriendRequest([[request]])" class="success">
+                            <p ng-click="acceptFriendRequest([[request]])" class="success">
                                 <span class="glyphicon glyphicon-check"></span><span>&nbsp;Accept</span>
-                            </a>
-                            <a href="#" ng-click="dismiss([[request]])" class="danger">
+                            </p>
+                            <p ng-click="dismissNotification([[request.id]])" class="danger">
                                 <span class="glyphicon glyphicon-remove"></span><span>&nbsp;Ignore</span>
-                            </a>
+                            </p>
                         </div>
                     </li>
                 </ul>

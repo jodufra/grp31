@@ -86,6 +86,7 @@ input::-webkit-inner-spin-button {
     background-color: white;
     margin-bottom: 4px;
     padding: 2px;
+    max-width: 400px;
 }
 .navbar .dropdown-menu li:first-child{
     margin-top: 4px;
@@ -101,12 +102,24 @@ input::-webkit-inner-spin-button {
 .navbar .dropdown-menu .media-body{
     width: 160px;
 }
+.navbar .dropdown-menu li code{
+    min-width: 250px;
+    overflow-x: visible; 
+    overflow-y: visible; 
+    word-break: break-all;
+    background-color: inherit;
+
+}
 .navbar .dropdown-menu .btn-group,
 .navbar .dropdown-menu .btn-group.btn-group-single{
     width: 100%;
     border: none;
 }
+.navbar .dropdown-menu .btn-group p,
 .navbar .dropdown-menu .btn-group a,
+.navbar .dropdown-menu .btn-group button,
+.navbar .dropdown-menu .btn-group.btn-group-single button,
+.navbar .dropdown-menu .btn-group.btn-group-single p,
 .navbar .dropdown-menu .btn-group.btn-group-single a{
     float: left;
     text-align: center;
@@ -116,30 +129,45 @@ input::-webkit-inner-spin-button {
     width: 50%;
     color: gray;
     border: none;
-    opacity: 0.6;
+    opacity: 0.75;
     border: 1px solid #eee;
+    cursor: pointer;
 }
-.navbar .dropdown-menu .btn-group.btn-group-single a{
+.navbar .dropdown-menu .btn-group.btn-group-single p,
+.navbar .dropdown-menu .btn-group.btn-group-single a,
+.navbar .dropdown-menu .btn-group.btn-group-single button{
     width: 100% !important;
 }
-.navbar .dropdown-menu .btn-group a.info{
+.navbar .dropdown-menu .btn-group a.info,
+.navbar .dropdown-menu .btn-group p.info,
+.navbar .dropdown-menu .btn-group button.info{
     color: #31708F;
     border-color: #31708F;
 }
-.navbar .dropdown-menu .btn-group a.success{
+.navbar .dropdown-menu .btn-group a.success,
+.navbar .dropdown-menu .btn-group p.success,
+.navbar .dropdown-menu .btn-group button.success{
     color: #3C763D;
     border-color: #3C763D;
 }
-.navbar .dropdown-menu .btn-group a.warning{
+.navbar .dropdown-menu .btn-group a.warning,
+.navbar .dropdown-menu .btn-group p.warning,
+.navbar .dropdown-menu .btn-group button.warning{
     color: #8A6D3B;
     border-color: #8A6D3B;
 }
-.navbar .dropdown-menu .btn-group a.danger{
+.navbar .dropdown-menu .btn-group a.danger,
+.navbar .dropdown-menu .btn-group p.danger,
+.navbar .dropdown-menu .btn-group button.danger{
     color: #A94442;
     border-color: #A94442;
 }
+.navbar .dropdown-menu .btn-group p:hover,
+.navbar .dropdown-menu .btn-group.btn-group-single p:hover,
 .navbar .dropdown-menu .btn-group a:hover,
-.navbar .dropdown-menu .btn-group.btn-group-single a:hover{
+.navbar .dropdown-menu .btn-group.btn-group-single a:hover,
+.navbar .dropdown-menu .btn-group button:hover,
+.navbar .dropdown-menu .btn-group.btn-group-single button:hover{
     opacity: 1;
     text-decoration:none;
 }
@@ -180,6 +208,9 @@ input::-webkit-inner-spin-button {
 .jumbotron.button:hover *{
     opacity: 1;
 }
+a.button:hover {
+    text-decoration: none !important;
+}
 .btn-navigation{
     color:#008CBA;
     font-size: 150%;
@@ -194,41 +225,55 @@ input::-webkit-inner-spin-button {
 .btn-navigation:hover{
     color:#008CCB;
 }
-.games .game-wrapper{
+.games .games-wrapper{
     width: 100%;
 }
-.games .game-wrapper .game{
+.games .games-wrapper .game{
     position: relative;
-    background: white url("../img/wood_wall.png") no-repeat 0 -100px;
     float: left;
     width: 50%;
-    border: 4px solid white;
-    border-bottom: none;
-    height: 204px;
     margin-bottom: 20px;
+    border: 4px solid white;
 }
-.games .game-wrapper .game .wrapper{
+.games .games-wrapper .game .wrapper{
     position: relative;
+    height: 200px;
+    width: 100%;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    box-shadow: 0 0 3px black;
+}
+.games .games-wrapper .game .wrapper:hover{
+    box-shadow: 0 0 0px black;
+}
+.games .games-wrapper .game .wrapper:before{
+    content: "";
+    position: absolute;
+    top: 0px;
     width: 100%;
     height: 100%;
+    background: white url("../img/wood_wall.png") no-repeat 0 -100px;
 }
-.games .game-wrapper .game .logo{
+.games .games-wrapper .game .logo{
     position: absolute; 
     width: 100%;
     height: 200px;
     white-space: nowrap;
     text-align: center;
 }
-.games .game-wrapper .game .logo .helper{
+.games .games-wrapper .game .logo .helper{
     display: inline-block;
     height: 100%;
     vertical-align: middle;
 }
-.games .game-wrapper .game .logo img{
+.games .games-wrapper .game .logo img{
     height: 100px;
     vertical-align: middle;
 }
-.games .game-wrapper .game .spectate{
+.games .games-wrapper .game .spectate{
     position: absolute;
     bottom: 0;
     right: 0;
@@ -248,13 +293,13 @@ input::-webkit-inner-spin-button {
     -o-transition: all 0.5s;
     transition: all 0.5s;
 }
-.games .game-wrapper .game .spectate span{
+.games .games-wrapper .game .spectate span{
     padding: 2px;
 }
-.games .game-wrapper .game .wrapper:hover .spectate{
+.games .games-wrapper .game .wrapper:hover .spectate{
     height: 30px;
 }
-.games .game-wrapper .game .names{
+.games .games-wrapper .game .names{
     position: absolute;
     width: 100%;
     font-size: 18px;
@@ -262,61 +307,85 @@ input::-webkit-inner-spin-button {
     text-align: center;
     line-height: 54px;
 }
-.games .game-wrapper .game .names span{
+.games .games-wrapper .game .names span{
     cursor: pointer;
 }
-.games .game-wrapper .game .names span:hover{
+.games .games-wrapper .game .names span:hover{
     color: white;
 }
-.games .game-wrapper .game .names.impar{
+.games .games-wrapper .game .names.impar{
     top:0;
 }
-.games .game-wrapper .game .names.par{
+.games .games-wrapper .game .names.par{
     bottom:0;
 }
-.games .game-wrapper .game .names span:after{
+.games .games-wrapper .game .names span:after{
     content: " | ";
     font-size: 10px;
     color: transparent;
 }
-.games .game-wrapper .game .names span:first-child:after,
-.games .game-wrapper .game .names span:last-child:after{
+.games .games-wrapper .game .names span:first-child:after,
+.games .games-wrapper .game .names span:last-child:after{
     content: "";
 }
-.games .game-wrapper .game .names span:first-child {
+.games .games-wrapper .game .names span:first-child {
     position: absolute;
     line-height: 18px;
 }
-.games .game-wrapper .game .names.impar span:first-child {
+.games .games-wrapper .game .names.impar span:first-child {
     left:18px;
     top: 86.5px
 }
-.games .game-wrapper .game .names.par span:first-child {
+.games .games-wrapper .game .names.par span:first-child {
     direction: rtl;
     text-align: right;
     bottom: 86.5px;
     right:18px;
 }
 /************ PORTRAITS  ************/
+.portrait{
+    width: auto;
+    height: auto;
+}
 .portrait.portrait-xs{
     width:20px;
     height:20px;
+    min-width:20px;
+    min-height:20px;
+    max-width:20px;
+    max-height:20px;
 }
 .portrait.portrait-s{
     width:50px;
     height:50px;
+    min-width:50px;
+    min-height:50px;
+    max-width:50px;
+    max-height:50px;
 }
-.portrait, .portrait.portrait-m{
+.portrait.portrait-m{
     width:75px;
     height:75px;
+    min-width:75px;
+    min-height:75px;
+    max-width:75px;
+    max-height:75px;
 }
 .portrait.portrait-l{
     width:100px;
     height:100px;
+    min-width:100px;
+    min-height:100px;
+    max-width:100px;
+    max-height:100px;
 }
 .portrait.portrait-xl{
     width:150px;
     height:150px;
+    min-width:150px;
+    min-height:150px;
+    max-width:150px;
+    max-height:150px;
 }
 
 
@@ -496,8 +565,8 @@ input::-webkit-inner-spin-button {
 #chat-tab .chat-wrapper .chat .body .message-list .message .text:before {
     content: '';
     position: absolute;
-    top: 7px;
-    left: -9px;
+    top: 6px;
+    left: -12px;
     width: 0; 
     height: 0; 
     border-color: inherit;
@@ -505,9 +574,7 @@ input::-webkit-inner-spin-button {
     border-bottom-color: transparent;
     border-left-color: transparent;
     border-style: solid;
-    border-top-width: 7px;
-    border-bottom-width: 7px;
-    border-right-width: 7px;
+    border-width: 6px;
 }
 #chat-tab .chat-wrapper .chat .body .message-list .message .text pre{
     border: 1px solid transparent;

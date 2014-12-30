@@ -30,7 +30,7 @@
 							<span class="author">[[msg.user.name]]</span>
 							<br>
 							<div class="image">
-								<img src="[[msg.user.img_src]]" class="portrait img-rounded" alt="">
+								<img src="[[msg.user.img_src]]" class="portrait" alt="">
 							</div>
 							<div class="text" style="border-color: [[stringToColour(msg.user.name)]] ;">
 								<pre><code>[[msg.message]]</code></pre>

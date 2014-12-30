@@ -23,6 +23,7 @@
             </div>
         </div>
     </div>
+    @include('partials.chat')
     @include('partials.includes_aload')
 </body>
 </html>

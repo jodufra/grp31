@@ -4,43 +4,27 @@ appServices.service('currentUser', function($http){
 });
 
 // Player
-appServices.factory('player', function(){
+appServices.factory('Player', function(){
 	var self = function(id, user_id, name, img_src){
-		return new Player(id, user_id, name, img_src);
+		return new player(id, user_id, name, img_src);
 	}
 	return self;
 });
-function Player(id, user_id, name, img_src) {
+function player(id, user_id, name, img_src) {
 	this.id = id;
 	this.user_id = user_id;
 	this.name = name;
 	this.img_src = img_src;
-}
-
-// Game Create Player
-appServices.factory('gameCreatePlayer', function() {
-	var self = function(id, user_id, name, img_src, is_user, is_leader){
-		return new GameCreatePlayer(id, user_id, name, img_src, is_user, is_leader);
-	}
-	return self;
-});
-function GameCreatePlayer(id, user_id, name, img_src, is_user, is_leader) {
-	this.id = id;
-	this.user_id = user_id;
-	this.name = name;
-	this.img_src = img_src;
-	this.is_user = is_user;
-	this.is_leader = is_leader;
 }
 
 // Game Playing Player
-appServices.factory('gamePlayPlayer', function() {
+appServices.factory('GamePlayPlayer', function() {
 	var self = function(id, user_id, name, img_src, player_num){
-		return new GamePlayPlayer(id, user_id, name, img_src, player_num);
+		return new gamePlayPlayer(id, user_id, name, img_src, player_num);
 	}
 	return self;
 });
-function GamePlayPlayer(id, user_id, name, img_src, player_num) {
+function gamePlayPlayer(id, user_id, name, img_src, player_num) {
 	this.id = id;
 	this.user_id = user_id;
 	this.name = name;

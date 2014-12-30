@@ -5,22 +5,21 @@
 @include('partials.common_sidebar')
 @endsection
 @section('body')
-@include('partials.createGame')
 <div class="row">
   <div class="col-md-12">
     @include('partials.session_messages')
   </div>
-
+  @if(Auth::check())
   <div class="clearfix" ng-init="isPlaying = false">
     <div ng-if="isPlaying" class="col-md-12">
-      <a href="/game/[[game_id]]">
+      <a class="button" href="/game/[[game_id]]">
         <div class="jumbotron button">
           <h2 class=""><span class="glyphicon glyphicon-share-alt"></span>&nbsp;&nbsp;&nbsp;Reenter Game</h2>
         </div>
       </a>
     </div>
     <div ng-if="!isPlaying" class="col-md-6">
-      <a href="/game/create">
+      <a class="button" href="/game/create">
         <div class="jumbotron button">
           <h2 class="text-info"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;Create Game</h2>
         </div>
@@ -32,120 +31,207 @@
       </div>
     </div>
   </div>
-
-  <div class="col-md-12 games"> 
-    <div class="row-item">
+  @endif
+  <div class="col-md-12"> 
+    
+    <div class="row-item games">
       <h3>Ongoing Games</h3>
       <hr>
-      <div class="game-wrapper clearfix">
-        <div class="game">
-          <div class="wrapper clearfix"> 
-            <div class="logo">
-              <span class="helper"></span>
-              <img src="/img/yahtzee_logo.png" alt="">
-            </div>
-            <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
-              <span class="glyphicon glyphicon-search"></span>
-            </div>
-            <div class="names impar">
-              <span>nasdame 1</span>
-              <span>name 1</span>
-              <span>namasdasasde 1</span>
-              <span>nasme 1</span>
-              <span>nadasdme 1</span>
-            </div>
-            <div class="names par">
-              <span>naasdaasdsme 1</span>
-              <span>nawqeme 1</span>
-              <span>namwwqee 1</span>
-              <span>namdsade 1</span>
-              <span>naaame 1</span>
+      <div class="games-wrapper clearfix">
+        <div class="game-wrapper" ng-repeat="">
+          <div class="game">
+            <div class="wrapper clearfix"> 
+              <div class="logo">
+                <span class="helper"></span>
+                <img src="/img/yahtzee_logo.png" alt="">
+              </div>
+              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
+                <span class="glyphicon glyphicon-search"></span>
+              </div>
+              <div class="names impar">
+                <span>nasdame 1</span>
+                <span>name 1</span>
+                <span>namasdasasde 1</span>
+                <span>nasme 1</span>
+                <span>nadasdme 1</span>
+              </div>
+              <div class="names par">
+                <span>naasdaasdsme 1</span>
+                <span>nawqeme 1</span>
+                <span>namwwqee 1</span>
+                <span>namdsade 1</span>
+                <span>naaame 1</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="game">
-          <div class="wrapper clearfix"> 
-            <div class="logo">
-              <span class="helper"></span>
-              <img src="/img/yahtzee_logo.png" alt="">
+        <div class="game-wrapper">
+          <div class="game">
+            <div class="wrapper clearfix"> 
+              <div class="logo">
+                <span class="helper"></span>
+                <img src="/img/yahtzee_logo.png" alt="">
+              </div>
+              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
+                <span class="glyphicon glyphicon-search"></span>
+              </div>
+              <div class="names impar">
+                <span>nasdame 1</span>
+                <span>name 1</span>
+                <span>namasdasasde 1</span>
+                <span>nasme 1</span>
+                <span>nadasdme 1</span>
+              </div>
+              <div class="names par">
+                <span>naasdaasdsme 1</span>
+                <span>nawqeme 1</span>
+                <span>namwwqee 1</span>
+                <span>namdsade 1</span>
+                <span>naaame 1</span>
+              </div>
             </div>
-            <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
-              <span class="glyphicon glyphicon-search"></span>
+          </div>
+        </div>
+        <div class="game-wrapper">
+          <div class="game">
+            <div class="wrapper clearfix"> 
+              <div class="logo">
+                <span class="helper"></span>
+                <img src="/img/yahtzee_logo.png" alt="">
+              </div>
+              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
+                <span class="glyphicon glyphicon-search"></span>
+              </div>
+              <div class="names impar">
+                <span>nasdame 1</span>
+                <span>name 1</span>
+                <span>namasdasasde 1</span>
+                <span>nasme 1</span>
+                <span>nadasdme 1</span>
+              </div>
+              <div class="names par">
+                <span>naasdaasdsme 1</span>
+                <span>nawqeme 1</span>
+                <span>namwwqee 1</span>
+                <span>namdsade 1</span>
+                <span>naaame 1</span>
+              </div>
             </div>
-            <div class="names impar">
-              <span>nasdame 1</span>
-              <span>name 1</span>
-              <span>namasdasasde 1</span>
+          </div>
+        </div>
+        <div class="game-wrapper">
+          <div class="game">
+            <div class="wrapper clearfix"> 
+              <div class="logo">
+                <span class="helper"></span>
+                <img src="/img/yahtzee_logo.png" alt="">
+              </div>
+              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
+                <span class="glyphicon glyphicon-search"></span>
+              </div>
+              <div class="names impar">
+                <span>nasdame 1</span>
+                <span>name 1</span>
+                <span>namasdasasde 1</span>
+                <span>nasme 1</span>
+                <span>nadasdme 1</span>
+              </div>
+              <div class="names par">
+                <span>naasdaasdsme 1</span>
+                <span>nawqeme 1</span>
+                <span>namwwqee 1</span>
+                <span>namdsade 1</span>
+                <span>naaame 1</span>
+              </div>
             </div>
-            <div class="names par">
-              <span>naasdaasdsme 1</span>
-              <span>nawqeme 1</span>
+          </div>
+        </div>
+        <div class="game-wrapper">
+          <div class="game">
+            <div class="wrapper clearfix"> 
+              <div class="logo">
+                <span class="helper"></span>
+                <img src="/img/yahtzee_logo.png" alt="">
+              </div>
+              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
+                <span class="glyphicon glyphicon-search"></span>
+              </div>
+              <div class="names impar">
+                <span>nasdame 1</span>
+                <span>name 1</span>
+                <span>namasdasasde 1</span>
+                <span>nasme 1</span>
+                <span>nadasdme 1</span>
+              </div>
+              <div class="names par">
+                <span>naasdaasdsme 1</span>
+                <span>nawqeme 1</span>
+                <span>namwwqee 1</span>
+                <span>namdsade 1</span>
+                <span>naaame 1</span>
+              </div>
             </div>
           </div>
-        </div><div class="game">
-        <div class="wrapper clearfix"> 
-          <div class="logo">
-            <span class="helper"></span>
-            <img src="/img/yahtzee_logo.png" alt="">
+        </div>
+        <div class="game-wrapper">
+          <div class="game">
+            <div class="wrapper clearfix"> 
+              <div class="logo">
+                <span class="helper"></span>
+                <img src="/img/yahtzee_logo.png" alt="">
+              </div>
+              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
+                <span class="glyphicon glyphicon-search"></span>
+              </div>
+              <div class="names impar">
+                <span>nasdame 1</span>
+                <span>name 1</span>
+                <span>namasdasasde 1</span>
+                <span>nasme 1</span>
+                <span>nadasdme 1</span>
+              </div>
+              <div class="names par">
+                <span>naasdaasdsme 1</span>
+                <span>nawqeme 1</span>
+                <span>namwwqee 1</span>
+                <span>namdsade 1</span>
+                <span>naaame 1</span>
+              </div>
+            </div>
           </div>
-          <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
-            <span class="glyphicon glyphicon-search"></span>
+        </div>
+        <div class="game-wrapper">
+          <div class="game">
+            <div class="wrapper clearfix"> 
+              <div class="logo">
+                <span class="helper"></span>
+                <img src="/img/yahtzee_logo.png" alt="">
+              </div>
+              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
+                <span class="glyphicon glyphicon-search"></span>
+              </div>
+              <div class="names impar">
+                <span>nasdame 1</span>
+                <span>name 1</span>
+                <span>namasdasasde 1</span>
+                <span>nasme 1</span>
+                <span>nadasdme 1</span>
+              </div>
+              <div class="names par">
+                <span>naasdaasdsme 1</span>
+                <span>nawqeme 1</span>
+                <span>namwwqee 1</span>
+                <span>namdsade 1</span>
+                <span>naaame 1</span>
+              </div>
+            </div>
           </div>
-          <div class="names impar">
-            <span>nasdame 1</span>
-          </div>
-          <div class="names par">
-            <span>naasdaasdsme 1</span>
-          </div>
         </div>
-      </div><div class="game">
-      <div class="wrapper clearfix"> 
-        <div class="logo">
-          <span class="helper"></span>
-          <img src="/img/yahtzee_logo.png" alt="">
-        </div>
-        <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
-          <span class="glyphicon glyphicon-search"></span>
-        </div>
-        <div class="names impar">
-          <span>nasdame 1</span>
-          <span>name 1</span>
-        </div>
-        <div class="names par">
-          <span>naasdaasdsme 1</span>
-          <span>nawqeme 1</span>
-        </div>
-      </div>
-    </div><div class="game">
-    <div class="wrapper clearfix"> 
-      <div class="logo">
-        <span class="helper"></span>
-        <img src="/img/yahtzee_logo.png" alt="">
-      </div>
-      <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
-        <span class="glyphicon glyphicon-search"></span>
-      </div>
-      <div class="names impar">
-        <span>nasdame 1</span>
-        <span>name 1</span>
-        <span>namasdasasde 1</span>
-        <span>nasme 1</span>
-      </div>
-      <div class="names par">
-        <span>naasdaasdsme 1</span>
-        <span>nawqeme 1</span>
-        <span>namwwqee 1</span>
-        <span>namdsade 1</span>
-        <span>naaame 1</span>
+
       </div>
     </div>
   </div>
-
-</div>
-</div>
-</div>
-
 </div>
 
 @endsection

@@ -1,119 +1,146 @@
-appControllers.controller('GameCreateController', function($scope, currentUser, player, gameCreatePlayer){
-	$scope.roomID;
-	$scope.players=[];
-	$scope.bots=[];
-	$scope.currentUser;
+appControllers.controller('GameCreateController', function($scope, Player, FriendList){
+	$scope.started = false;
+	$scope.roomLeader = '';
+	$scope.players = [];
+	$scope.invited = [];
 
-	currentUser.success(function(data){
-		$scope.currentUser = player(data.id, data.user_id, data.name, data.img_src);
-		// emit socket innit
-		initializeRoom(1, [], []);
-	}).error(function(data){
-		console.log(data);
-		alert('Internal Server Error. Please, try reloading.');
+	$scope.user;
+	$scope.$on('user:init', function(event, data) {
+		if(data.isUser){
+			$scope.user = data.user;
+			$scope.started = true;
+			requestRoom();
+		}else{
+			alert('Server Error. Please, try reloading.');
+		}
 	});
 
+	function requestRoom(){
+		var players = [];
+		players.push($scope.user);
 
+		initializeRoom($scope.user.name, players);
+	}
 	// on socket innit initializeRoom()
 
 
-	function initializeRoom(roomID, players, bots){
-		$scope.roomID = 1;
+	function initializeRoom(roomLeader, players){
+		$scope.roomLeader = roomLeader;
 		$scope.players = players;
-		$scope.bots = bots;
-
-		if(!playersContainCurrentUser()){
-			addPlayer($scope.currentUser.id, $scope.currentUser.user_id, $scope.currentUser.name, $scope.currentUser.img_src);
-		}
-
 	}
 
-	$scope.userIsLeader = function(){
-		var leader = false;
-		if($scope.players.length != 0){
-			$scope.players.forEach(function(player){
-				if(player.user_id == $scope.currentUser.user_id && player.is_leader){
-					leader = true;
-					return;
-				}
-			});
-		}
-		return leader;
+	$scope.isLeader = function(name){
+		return $scope.roomLeader == name;
+	}
+	
+	$scope.isUser = function(name){
+		return name == $scope.user.name;
 	}
 
 	$scope.havePlayers = function(){
 		return $scope.players.length > 0;
 	}
 
+	$scope.botsCount = function(){
+		var count = 0;
+		for (var i = 0; i < $scope.players.length; i++) {
+			if($scope.players[i].id < 10){
+				count++;
+			}
+			
+		};
+		return count;
+	}
+
 	$scope.getPlayers = function(){
 		var players = [];
+		var bots = [];
 		$scope.players.forEach(function(player){
-			players.push(player);
+			if(player.id < 10){
+				bots.push(player);
+			}else{
+				players.push(player);
+			}
 		});
-		$scope.bots.forEach(function(bot){
+		bots.forEach(function(bot){
 			players.push(bot);
 		});
+
 		return players;
 	}
+
 	$scope.addRobot = function(){
-		if($scope.userIsLeader() && $scope.players.length != 0 && ($scope.players.length + $scope.bots.length) < 10){
-			var bot_id = $scope.bots.length + 1;
-			var bot = gameCreatePlayer(bot_id, null, "Robot "+bot_id, "../img/bot.png", false, false);
-			$scope.bots.push(bot);
+		if($scope.started && $scope.isLeader($scope.user.name) && $scope.players.length < 10){
+			var bot_id = $scope.botsCount() + 1;
+			var bot = Player(bot_id, null, "Robot "+bot_id, "../img/bot.png");
+			$scope.players.push(bot);
 		}
 	}
-	$scope.removeAllRobots = function(){
-		while($scope.bots.length != 0){
-			removeRobot();
-		}
-	}
-	$scope.removePlayerOrBot = function(id){
-		if (id<10) {
-			var num_bots = $scope.bots.length-1;
-			$scope.removeAllRobots();
-			for(;num_bots>0;num_bots--){
-				$scope.addRobot();
+
+	function removeLastRobot(){
+		if($scope.started && $scope.isLeader($scope.user.name)){
+			var lastIndex = -1;
+			var lastID = -1;
+			for (var i = 0; i < $scope.players.length; i++) {
+				var id = $scope.players[i].id;
+				if(id < 10 && id > lastID){
+					lastID = id;
+					lastIndex = i;
+				}
+			};
+			if(lastIndex !== -1){
+				$scope.players.splice(lastIndex,1);
 			}
-		}else{
-			if(confirm("Are you sure you want to remove this Player?")){
-				for(var i = 0;i<$scope.players.length;i++){
-					if($scope.players[i].id == id){
-						$scope.players.splice(i, 1);
-						return;
-					}
+		}
+	}
+
+	function addPlayer(id, user_id, name, img_src){
+		if($scope.started && $scope.isLeader($scope.user.name)){
+			if($scope.players.length === 10){
+				if($scope.botsCount() > 0){
+					removeLastRobot();
+				}else{
+					alert('This room is full!');
+				}
+			}
+			$scope.players.push(Player(id, user_id, name, img_src));
+		}
+	}
+
+	$scope.removeAllRobots = function(){
+		if($scope.started && $scope.isLeader($scope.user.name)){
+			var players = [];
+			$scope.players.forEach(function(player){
+				if(player.user_id){
+					players.push(player);
+				}
+			});
+			$scope.players = players;
+		}
+	}
+
+	$scope.removePlayerOrBot = function(id){
+		if($scope.started && $scope.isLeader($scope.user.name)){
+			if(id < 10){
+				removeLastRobot();
+			}else{
+				if(confirm("Are you sure you want to remove this player?")){
+					var players = [];
+					$scope.players.forEach(function(player){
+						if(player.id !== id){
+							players.push(player);
+						}
+					});
+					$scope.players = players;
 				}
 			}
 		}
 	}
-	function removeRobot(){
-		if($scope.userIsLeader() && $scope.bots.length != 0){
-			$scope.bots.splice($scope.bots.length - 1, 1);
-		}
+
+	$scope.invitedPlayers = [];
+
+	$scope.onlineFriends = function(){
+		return FriendList.onlineFriends;
 	}
-
-	function playersContainCurrentUser(){
-		if($scope.players.length == 0) return false;
-		$scope.players.forEach(function(player){
-			if(player.user_id == $scope.currentUser.user_id) return true;
-		});
-		return false;
-	}
-
-	function addPlayer(id, user_id, name, img_src){
-		if(($scope.players.length + $scope.bots.length) == 10){
-			if($scope.bots.length>0){
-				removeRobot();
-			}else{
-				alert('This room is full!');
-			}
-		}
-
-		var isUser = user_id != null && user_id == $scope.currentUser.user_id;
-		var isLeader = $scope.players.length == 0 || $scope.players[0].id == id;
-
-		var player = gameCreatePlayer(id, user_id, name, img_src, isUser, isLeader);
-		$scope.players.push(player);
-	}
-
 	$scope.inviteFriend = function(){};
 });

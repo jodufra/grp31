@@ -76,7 +76,7 @@ var chatUsersManager = (function () {
 function updatePublicChatBuffer(msg){
 	var channel = msg.channel;
 
-	if(typeof publicChatBuffer[channel] === 'undefined') {
+	if(publicChatBuffer[channel] == undefined) {
 		publicChatBuffer[channel] = [];
 	}
 
@@ -85,8 +85,8 @@ function updatePublicChatBuffer(msg){
 	var length = publicChatBuffer[channel].length 
 
 	if(length >= CHAT_BUFFER_SIZE){
-		newBuffer = [];
-		for(var i = length-CHAT_BUFFER_SIZE; i<CHAT_BUFFER_SIZE; i++){
+		var newBuffer = [];
+		for(var i = length-CHAT_BUFFER_SIZE; i<length; i++){
 			newBuffer.push(publicChatBuffer[channel][i]);
 		}
 		publicChatBuffer[channel] = newBuffer;
@@ -98,7 +98,7 @@ module.exports = function(io, socket) {
 	socket.on('chat:init:public', function(data){
 		data.user.name = chatUsersManager.set(socket.id, data.user.name);
 
-		if(publicChatBuffer[data.channel]){
+		if(publicChatBuffer[data.channel] != undefined){
 			socket.emit('chat:message:buffer', {channel:data.channel, messages:publicChatBuffer[data.channel]});
 		}
 

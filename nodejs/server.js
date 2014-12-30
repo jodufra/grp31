@@ -18,13 +18,14 @@ exports.io = io;
 
 var firstClient = true;
 io.on('connection', function(socket) {
-	console.log('Connected - '+ socket.id);
+	//	console.log('Connected - '+ socket.id);
 
 	require('./routes/user')(io, socket);
 	require('./routes/chat')(io, socket);
+	require('./routes/notification_handler')(io, socket);
 
 	socket.on('disconnect', function() {
-		console.log('Disconnected - '+ socket.id);
+		//	console.log('Disconnected - '+ socket.id);
 	});
 });
 
