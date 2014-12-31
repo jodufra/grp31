@@ -9,7 +9,7 @@
 <div ng-controller="GameCreateController">
 	<div class="page-header"><h1>Create Game</h1></div>
 	@include('partials.session_messages')
-	<div ng-if="isLeader(user.name)">
+	<div ng-if="started && isLeader(user.name)">
 		<div class="clearfix" >
 			<div class="pull-left clearfix">
 				<button ng-if="players.length < 10" ng-click="addRobot()" type="button" class="btn btn-success btn-sm pull-left">
@@ -22,8 +22,8 @@
 			</div>
 
 			<div class="pull-right clearfix">
-				<button class="btn btn-danger btn-sm pull-left">
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Quit
+				<button class="btn btn-danger btn-sm pull-left" ng-click="terminateRoom()">
+					<span class="glyphicon glyphicon-remove"aria-hidden="true"></span>&nbsp;Quit
 				</button>
 				<span class="pull-left">&nbsp;</span>
 				<div class="pull-left">
@@ -38,7 +38,7 @@
 		</div>
 		<hr>
 	</div>
-	<div ng-if="!isLeader(user.name)">
+	<div ng-if="started && !isLeader(user.name)">
 		<div class="clearfix" >
 			<div class="pull-left clearfix">
 				<span class="pull-left">&nbsp;</span>
@@ -54,7 +54,7 @@
 			<div ng-if="havePlayers()" class="list-group">
 				<div class="list-group-item col-md-6 clearfix" ng-repeat="player in getPlayers()">
 					<div class="pull-left text-left">
-						<img class="portrait portrait-s" alt="" src="[[player.img_src]]">
+						<img class="portrait portrait-s" alt="" ng-src="[[player.img_src]]">
 						<span>[[player.name]]</span>
 						<span ng-if="isUser(player.name)" class="glyphicon glyphicon-user text-info" aria-hidden="true" data-toggle="tooltip" title="Yep!! Thats you!"></span>
 						<span ng-if="isLeader(player.name)" class="glyphicon glyphicon-flag text-success" aria-hidden="true" data-toggle="tooltip" title="The Room Leader"></span>

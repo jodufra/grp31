@@ -52,17 +52,17 @@ var RoomManager = (function(){
 		usersInRoom[player.name] = rooms[leader];
 	};
 
-	self.removeBot = function(leader, player){
+	self.removeBot = function(leader){
 		var id = -1;
-		for(name in rooms[leader].players){
-			var p_id = rooms[leader].players.id;
+		var name = '';
+		for(p_name in rooms[leader].players){
+			var p_id = rooms[leader].players[p_name].id;
 			if(p_id < 10 && id < p_id){
 				id = p_id;
+				name = p_name;
 			}
 		}
-		if(id != -1){
-			removeBot(leader, id);
-		}
+		delete rooms[leader].players[name];
 	};
 
 	self.removeAllBots = function(leader, player){
@@ -109,38 +109,44 @@ var RoomManager = (function(){
 	};
 
 	self.acceptInvite = function(leader, user){
-
-		var name = user.name;
 		if(usersInRoom[user.name]){
-			rooms[leader].invited[name].state = 'declined';
+			rooms[leader].invited[user.name].state = 'declined';
 			return 'busy';
+		}
+		if(rooms[leader] == null){
+			return 'unavailable';
+		}
+		var isNotInvited = true;
+		for(name in rooms[leader].invited){
+			if(name == user.name){
+				isNotInvited = false;
+				break;
+			}
+		}
+		if(isNotInvited){
+			return 'unavailable';
 		}
 		var players_count = 0;
 		var max_bot_id = -1;
 		for(name in rooms[leader].players){
-			players_count++;
-			var id = rooms[leader].players[name].id;
-			if(id < 10){
-				if(max_bot_id < id){
-					max_bot_id = id;
-				}
+			if(rooms[leader].players[name].id < 10 && max_bot_id < rooms[leader].players[name].id){
+				max_bot_id = rooms[leader].players[name].id;
 			}
+			players_count++;
 		}
 		if(players_count == 10){
 			if(max_bot_id != -1){
-				removeRobot(leader, max_bot_id);
+				RoomManager.removeRobot(leader);
 				players_count--;
 			}
 		}
-		name = user.name;
 		if(players_count < 10){
-
-			rooms[leader].invited[name].state = 'accepted';
-			rooms[leader].players[name] = user;
-			usersInRoom[name] = rooms[leader];
+			rooms[leader].invited[user.name].state = 'accepted';
+			rooms[leader].players[user.name] = user;
+			usersInRoom[user.name] = rooms[leader];
 			return 'ok';
 		}else{
-			rooms[leader].invited[name].state = 'full';
+			rooms[leader].invited[user.name].state = 'full';
 			return 'full';
 		}
 	};
@@ -152,11 +158,13 @@ var RoomManager = (function(){
 	self.terminate = function(leader){
 		for(name in rooms[leader].players){
 			delete usersInRoom[name];
+			delete onlineUsers[name];
 		}
 		delete rooms[leader];
 	};
 
 	function removePlayer(leader, player){
+		delete onlineUsers[player.name]
 		delete rooms[leader].players[player.name];
 		usersInRoom[player.name] = null;
 	} 
@@ -169,7 +177,6 @@ var RoomManager = (function(){
 				break;
 			}
 		}
-		
 	} 
 
 	function connectUser(user, socketID){
@@ -219,6 +226,13 @@ module.exports.sio = function(io, socket) {
 
 	socket.on('game:create:removeplayer', function(data){
 		RoomManager.removePlayer(data.leader, data.player);
+		var note = {type:'danger', text:'You were kicked out of the game room.'};
+		var notification = {id:0, type:1, message:note};
+		var new_notification = {name:data.player.name, notification:notification};
+		new_notification = NotificationsHandler.newNotification(new_notification);
+
+		socket.emit('game:create:removeplayer', {name:data.player.name});
+		socket.emit('notification_handler:newNotification', new_notification);
 		io.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
 	});
 
@@ -254,20 +268,20 @@ module.exports.sio = function(io, socket) {
 
 	socket.on('game:create:acceptinvite', function(data){
 		var result = RoomManager.acceptInvite(data.leader, data.player);
-		if(result == 'busy' || result == 'full'){
+		if(result  != 'ok'){
 			if (result == 'busy') {
 				var note = {type:'warning', text:'Can\'t join a room while in another.'};
-			}else{
+			}if(result == 'full'){
 				var note = {type:'warning', text:'Unfortunately that room is already full.'};
+			}if(result == 'unavailable'){
+				var note = {type:'warning', text:'That room is already closed.'};
 			}
-			var notification = {id:0, type:1, message:note};
-			var new_notification = {name:data.player.name, notification:notification};
-
-			new_notification = NotificationsHandler.newNotification(new_notification);
+			var new_notification = NotificationsHandler.newNotification({name:data.player.name, notification:{id:0, type:1, message:note}});
 			socket.emit('notification_handler:newNotification', new_notification);
-			socket.broadcast.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
-		}
-		else{
+			if(result != 'unavailable'){
+				socket.broadcast.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
+			}
+		} else{
 			socket.emit('game:create:acceptinvite', {name:data.player.name});
 			socket.broadcast.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
 		}

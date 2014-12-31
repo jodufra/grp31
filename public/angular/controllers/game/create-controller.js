@@ -82,6 +82,13 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 		return players;
 	};
 
+	socket.on('game:create:removeplayer', function(data){
+		if(data.name==$scope.user.name){
+			$window.location.href = '/game/';
+		}
+		$scope.$apply();
+	});
+
 	$scope.addRobot = function(){
 		if($scope.started && $scope.isLeader($scope.user.name) && $scope.players.length < 10){
 			var bot_id = $scope.botsCount() + 1;
@@ -155,4 +162,22 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 			socket.emit('game:create:addinvited', {leader:$scope.leader, name:name});
 		}
 	};
+
+	$scope.terminateRoom = function(name){
+		if($scope.started && $scope.isLeader($scope.user.name)){
+			socket.emit('game:create:terminate', {leader:$scope.user.name});
+		}
+	};
+
+	socket.on('game:create:terminate', function(data){
+		if(data.leader==$scope.leader){
+			$scope.started = false;
+			$scope.$apply();
+			if(data.leader!=$scope.user.name){
+				alert('This room was closed by '+data.leader+'.');
+			}
+			$window.location.href = '/game/';
+		}
+		$scope.$apply();
+	});
 });

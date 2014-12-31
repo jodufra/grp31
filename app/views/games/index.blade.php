@@ -5,30 +5,36 @@
 @include('partials.common_sidebar')
 @endsection
 @section('body')
-<div class="row">
+<div class="row" ng-controller="GameIndexController">
   <div class="col-md-12">
     @include('partials.session_messages')
   </div>
   @if(Auth::check())
-  <div class="clearfix" ng-init="isPlaying = false">
-    <div ng-if="isPlaying" class="col-md-12">
-      <a class="button" href="/game/[[game_id]]">
-        <div class="jumbotron button">
-          <h2 class=""><span class="glyphicon glyphicon-share-alt"></span>&nbsp;&nbsp;&nbsp;Reenter Game</h2>
-        </div>
-      </a>
-    </div>
-    <div ng-if="!isPlaying" class="col-md-6">
+  <div class="clearfix" ng-if="isUser">
+    <div ng-if="!isPlaying && !isSearching" class="col-md-6">
       <a class="button" href="/game/create">
         <div class="jumbotron button">
           <h2 class="text-info"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;Create Game</h2>
         </div>
       </a>
     </div>
-    <div ng-if="!isPlaying" class="col-md-6">
-      <div class="jumbotron button">
+    <div ng-if="!isPlaying && !isSearching" class="col-md-6">
+      <div class="jumbotron button" ng-click="searchGame()">
         <h2 class="text-success"><span class="glyphicon glyphicon-play"></span>&nbsp;&nbsp;&nbsp;Join Game</h2>
       </div>
+    </div>
+    <div ng-if="isPlaying" class="col-md-12">
+      <a class="button" href="/game/1">
+        <div class="jumbotron button">
+          <h2 class=""><span class="glyphicon glyphicon-share-alt"></span>&nbsp;&nbsp;&nbsp;Reenter Game</h2>
+        </div>
+      </a>
+    </div>
+    <div ng-if="isSearching" class="col-md-12">
+        <div class="jumbotron button searching" ng-click="stopSearching()">
+          <h2 class="text-info"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;&nbsp;Searching for a Game</h2>
+          <h2 class="text-warning searching"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;&nbsp;Stop Searching</h2>
+        </div>
     </div>
   </div>
   @endif
@@ -38,7 +44,7 @@
       <h3>Ongoing Games</h3>
       <hr>
       <div class="games-wrapper clearfix">
-        <div class="game-wrapper" ng-repeat="">
+        <div class="game-wrapper">
           <div class="game">
             <div class="wrapper clearfix"> 
               <div class="logo">

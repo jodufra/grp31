@@ -208,6 +208,15 @@ input::-webkit-inner-spin-button {
 .jumbotron.button:hover *{
     opacity: 1;
 }
+.jumbotron.button.searching h2.searching{
+    display: none;
+}
+.jumbotron.button.searching:hover h2{
+    display: none;
+}
+.jumbotron.button.searching:hover h2.searching{
+    display: block;
+}
 a.button:hover {
     text-decoration: none !important;
 }
