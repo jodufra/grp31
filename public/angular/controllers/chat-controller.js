@@ -3,12 +3,13 @@ appControllers.controller('ChatController', function($scope, PrivateChat, Public
 	const SELF_CHAT_USER = ChatUser('Yahtzee Chat', '/img/yahtzee-nt.png');
 
 	const maxVisibleChats = 3;
+
 	var chatsCount = 1;
 	var oldChatsCount = 0;
 	var visibleChats = [];
 	var hiddenChats = [];
 
-	var publicChat = PublicChat(null);
+	var publicChat = PublicChat(DEFAULT_CHAT_CHANNEL);
 	var privateChats = [];
 
 	var userIsGuest = true;
@@ -26,21 +27,19 @@ appControllers.controller('ChatController', function($scope, PrivateChat, Public
 		}
 	});
 
+	$scope.$on('chat:init:public', function(event, data) {
+		publicChat.channel = data.channel;
+		addMessage(publicChat, {user:SELF_CHAT_USER, message:'Changed channel: '+ data.channel});
+	});
+
 	$scope.$on('chat:init:private', function(event, data) {
 		initPrivateChat(data.addressee);
 	});
 
 	function initPublicChat(){
-		var chatChannel;
-
-		if (typeof game_id !== 'undefined') {
-			chatChannel = "Game "+game_id;
-		}else{
-			chatChannel = DEFAULT_CHAT_CHANNEL;
-		}
 		socket.emit('chat:init:public', {
 			user: $scope.user,
-			channel: chatChannel,
+			channel: publicChat.channel,
 		});
 	}
 

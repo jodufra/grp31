@@ -20,9 +20,10 @@ var firstClient = true;
 io.on('connection', function(socket) {
 	//	console.log('Connected - '+ socket.id);
 
-	require('./routes/user')(io, socket);
-	require('./routes/chat')(io, socket);
-	require('./routes/notification_handler')(io, socket);
+	require('./routes/user').sio(io, socket);
+	require('./routes/chat').sio(io, socket);
+	require('./routes/notification_handler').sio(io, socket);
+	require('./routes/game/create').sio(io, socket);
 
 	socket.on('disconnect', function() {
 		//	console.log('Disconnected - '+ socket.id);

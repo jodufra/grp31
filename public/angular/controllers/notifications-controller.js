@@ -1,4 +1,4 @@
-appControllers.controller('NotificationsController', function($scope, $rootScope, FriendList, NotificationNormal, NotificationGame, NotificationFriend) {
+appControllers.controller('NotificationsController', function($scope, $rootScope, $window, FriendList, NotificationNormal, NotificationGame, NotificationFriend) {
 	$scope.started = false;
 
 	$scope.user = {};
@@ -167,6 +167,24 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 		notifications = notes;
 		$scope.$apply();
 	});
+
+	$scope.acceptGameInvite = function(notification){
+		var leader = notification.game.owner;
+		socket.emit('game:create:acceptinvite', {leader:leader, player:$scope.user});
+		socket.emit('notification_handler:dismissNotification',{name:$scope.user.name, id:notification.id});
+	}
+
+	socket.on('game:create:acceptinvite', function(data){
+		if(data.name==$scope.user.name){
+			$window.location.href = '/game/create';
+		}
+	});
+
+	$scope.dismissGameInvite = function(notification){
+		var leader = notification.game.owner;
+		socket.emit('game:create:declineinvite', {leader:leader, name:$scope.user.name});
+		socket.emit('notification_handler:dismissNotification',{name:$scope.user.name, id:notification.id});
+	}
 
 	function addNotification(id, type, note){
 		var notification = {};

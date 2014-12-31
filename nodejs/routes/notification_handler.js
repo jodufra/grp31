@@ -38,7 +38,7 @@ var NotificationsHandler = (function(){
 				var invite_suppliant = msg.notification.user.name;
 
 				var note = {type:'danger', text:'User \''+invite_target+'\' doesn\'t exist or he hasn\'t login since last downtime.'};
-				var notification = addNotification(msg.notification.user.name, NOTIFICATION_NORMAL, note);
+				var notification = addNotification(msg.invite_suppliant, NOTIFICATION_NORMAL, note);
 				new_notification = {name:invite_suppliant, notification:notification};
 			};
 		}
@@ -92,8 +92,8 @@ var NotificationsHandler = (function(){
 }());
 
 
-
-module.exports = function(io, socket) {
+module.exports.notifications = NotificationsHandler;
+module.exports.sio = function(io, socket) {
 	socket.on('user:init', function(data){
 		NotificationsHandler.checkUser(data.name);
 	});

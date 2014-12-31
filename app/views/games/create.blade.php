@@ -9,7 +9,7 @@
 <div ng-controller="GameCreateController">
 	<div class="page-header"><h1>Create Game</h1></div>
 	@include('partials.session_messages')
-	<div ng-show="isLeader(user.name)">
+	<div ng-if="isLeader(user.name)">
 		<div class="clearfix" >
 			<div class="pull-left clearfix">
 				<button ng-if="players.length < 10" ng-click="addRobot()" type="button" class="btn btn-success btn-sm pull-left">
@@ -38,6 +38,17 @@
 		</div>
 		<hr>
 	</div>
+	<div ng-if="!isLeader(user.name)">
+		<div class="clearfix" >
+			<div class="pull-left clearfix">
+				<span class="pull-left">&nbsp;</span>
+				<button ng-click="leaveRoom()" type="button" class="btn btn-warning btn-sm pull-left">
+					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;Leave
+				</button>
+			</div>
+		</div>
+		<hr>
+	</div>
 	<div class="col-md-9">
 		<div class="row">
 			<div ng-if="havePlayers()" class="list-group">
@@ -61,15 +72,16 @@
 	<div class="col-md-3" style="padding-right: 0">
 		<div class="row row-item">
 			<table class="table">
-				<thead><th>Invited</th></thead>
+				<thead><th>Invited Players</th></thead>
 				<tbody>
 					<td>
-						<div class="text-muted" ng-if="!invitedPlayers.length">No Invited Players</div>
-						<div class="media" ng-repeat="player in invitedPlayers">
+						<div class="text-muted" ng-if="!getInvitedPlayers().length">No Invited Players</div>
+						<div class="media" ng-repeat="player in getInvitedPlayers()">
 							<div class="media-left media-middle">
-								<i ng-if="player.state == 'waiting'" class="fa fa-spinner text-info fa-spin"></i>
-								<i ng-if="player.state == 'canceled'" class="fa fa-remove text-danger"></i>
-								<i ng-if="player.state == 'success'" class="fa fa-check text-success"></i>
+								<i ng-if="player.state == 'waiting'" class="fa fa-spinner text-info fa-spin" data-toggle="tooltip" data-placement="top" title="Waiting for Player"></i>
+								<i ng-if="player.state == 'declined'" class="fa fa-remove text-danger" data-toggle="tooltip" data-placement="top" title="Player is Busy"></i>
+								<i ng-if="player.state == 'accepted'" class="fa fa-check text-success" data-toggle="tooltip" data-placement="top" title="Player has Accept"></i>
+								<i ng-if="player.state == 'full'" class="fa fa-exclamation-circle text-warning" data-toggle="tooltip" data-placement="top" title="Room is Full"></i>
 							</div>
 							<div class="media-body">
 								<span class="media-heading" ng-bind="player.name"></span>
@@ -81,12 +93,12 @@
 		</div>
 		<div class="row row-item">
 			<table class="table">
-				<thead><th>Friends List</th></thead>
+				<thead><th>Invite your Friends</th></thead>
 				<tbody>
 					<td>
 						<div class="text-muted" ng-if="!onlineFriends().length">No Online Friends</div>
 						<div class="media" ng-repeat="friend in onlineFriends()">
-							<a ng-click="inviteFriend(friend)" class="media-left media-middle" href="">
+							<a ng-click="inviteFriend(friend.name)" class="media-left media-middle" href="">
 								<i class="fa fa-plus"></i>
 							</a>
 							<div class="media-body">

@@ -589,6 +589,9 @@ a.button:hover {
     background-color: white;
 }
 #chat-tab .chat-wrapper .chat .body .message-list .message .text code{
+    background-color: transparent;
+}
+#chat-tab .chat-wrapper .chat .body .message-list .message .text code{
     padding: 5px;
 }
 #chat-tab .chat-wrapper .chat .body .message-typer input{

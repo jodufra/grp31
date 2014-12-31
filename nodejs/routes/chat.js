@@ -94,7 +94,7 @@ function updatePublicChatBuffer(msg){
 }
 
 
-module.exports = function(io, socket) {
+module.exports.sio = function(io, socket) {
 	socket.on('chat:init:public', function(data){
 		data.user.name = chatUsersManager.set(socket.id, data.user.name);
 

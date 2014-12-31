@@ -87,12 +87,16 @@
                         </div>
                     </li>
                     <li ng-repeat="request in getGameNotifications()">
-                        <p>User <a href="/user/[[request.user.name]]">[[request.user.name]]</a> has invited you to join his game</p>
+                        <p ng-if="request.game.inviter === request.game.owner"><a href="/user/show/[[request.game.owner]]">[[request.game.owner]]</a> has invited you to join his game</p>
+                        <p ng-if="request.game.inviter !== request.game.owner">
+                            <a href="/user/show/[[request.game.inviter]]">[[request.game.inviter]]</a> has invited you to join <a href="/user/show/[[request.game.owner]]">[[request.game.owner]]</a>'s game
+                        </p>
+
                         <div class="btn-group btn-group clearfix">
-                            <p ng-click="acceptGameInvite([[request]])" class="success">
+                            <p ng-click="acceptGameInvite(request)" class="success">
                                 <span class="glyphicon glyphicon-check"></span><span>&nbsp;Accept</span>
                             </p>
-                            <p ng-click="dismissGameInvite([[request]])" class="danger">
+                            <p ng-click="dismissGameInvite(request)" class="danger">
                                 <span class="glyphicon glyphicon-remove"></span><span>&nbsp;Ignore</span>
                             </p>
                         </div>

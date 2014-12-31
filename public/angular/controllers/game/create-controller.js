@@ -1,146 +1,158 @@
-appControllers.controller('GameCreateController', function($scope, Player, FriendList){
+appControllers.controller('GameCreateController', function($scope, $rootScope, $window, Player, FriendList, NotificationGame){
 	$scope.started = false;
-	$scope.roomLeader = '';
+	$scope.leader = '';
 	$scope.players = [];
 	$scope.invited = [];
+	$scope.timeouts = [];
 
 	$scope.user;
 	$scope.$on('user:init', function(event, data) {
 		if(data.isUser){
 			$scope.user = data.user;
-			$scope.started = true;
-			requestRoom();
+			socket.emit('game:create:init', {user:$scope.user});
 		}else{
 			alert('Server Error. Please, try reloading.');
 		}
 	});
 
-	function requestRoom(){
-		var players = [];
-		players.push($scope.user);
+	socket.on('game:create:init', function(data){
+		$scope.leader = data.room.leader;
+		$scope.players = data.room.players;
+		$scope.invited = data.room.invited;
+		$scope.timeouts = data.room.timeouts;
+		$scope.started = true;
+		changeChatChannel();
+		$scope.$apply();
+	});
 
-		initializeRoom($scope.user.name, players);
-	}
-	// on socket innit initializeRoom()
+	socket.on('game:create:update', function(data){
+		if($scope.leader == data.room.leader){
+			$scope.players = data.room.players;
+			$scope.invited = data.room.invited;
+			$scope.timeouts = data.room.timeouts;
+		}
+		$scope.$apply();
+	});
 
-
-	function initializeRoom(roomLeader, players){
-		$scope.roomLeader = roomLeader;
-		$scope.players = players;
+	function changeChatChannel(){
+		var channel = 'Creating '+$scope.leader+'\'s game';
+		$rootScope.$broadcast('chat:init:public',{channel:channel});
 	}
 
 	$scope.isLeader = function(name){
-		return $scope.roomLeader == name;
-	}
+		return $scope.started && $scope.leader == name;
+	};
 	
 	$scope.isUser = function(name){
-		return name == $scope.user.name;
-	}
+		return $scope.started && name == $scope.user.name;
+	};
 
 	$scope.havePlayers = function(){
-		return $scope.players.length > 0;
-	}
+		return $scope.started && $scope.players.length > 0;
+	};
 
 	$scope.botsCount = function(){
 		var count = 0;
-		for (var i = 0; i < $scope.players.length; i++) {
-			if($scope.players[i].id < 10){
-				count++;
+		if($scope.started){
+			for (var i = 0; i < $scope.players.length; i++) {
+				if($scope.players[i].id < 10){
+					count++;
+				}
 			}
-			
-		};
+		}
 		return count;
-	}
+	};
 
 	$scope.getPlayers = function(){
 		var players = [];
-		var bots = [];
-		$scope.players.forEach(function(player){
-			if(player.id < 10){
-				bots.push(player);
-			}else{
-				players.push(player);
+		if($scope.started){
+			var bots = [];
+			for(name in $scope.players){
+				var player = $scope.players[name];
+				if(player.id < 10){
+					bots.push(player);
+				}else{
+					players.push(player);
+				}
 			}
-		});
-		bots.forEach(function(bot){
-			players.push(bot);
-		});
-
+			bots.forEach(function(bot){
+				players.push(bot);
+			});
+		}
 		return players;
-	}
+	};
 
 	$scope.addRobot = function(){
 		if($scope.started && $scope.isLeader($scope.user.name) && $scope.players.length < 10){
 			var bot_id = $scope.botsCount() + 1;
 			var bot = Player(bot_id, null, "Robot "+bot_id, "../img/bot.png");
-			$scope.players.push(bot);
+			socket.emit('game:create:addbot',{leader:$scope.user.name, player:bot});
 		}
-	}
-
-	function removeLastRobot(){
-		if($scope.started && $scope.isLeader($scope.user.name)){
-			var lastIndex = -1;
-			var lastID = -1;
-			for (var i = 0; i < $scope.players.length; i++) {
-				var id = $scope.players[i].id;
-				if(id < 10 && id > lastID){
-					lastID = id;
-					lastIndex = i;
-				}
-			};
-			if(lastIndex !== -1){
-				$scope.players.splice(lastIndex,1);
-			}
-		}
-	}
-
-	function addPlayer(id, user_id, name, img_src){
-		if($scope.started && $scope.isLeader($scope.user.name)){
-			if($scope.players.length === 10){
-				if($scope.botsCount() > 0){
-					removeLastRobot();
-				}else{
-					alert('This room is full!');
-				}
-			}
-			$scope.players.push(Player(id, user_id, name, img_src));
-		}
-	}
+	};
 
 	$scope.removeAllRobots = function(){
 		if($scope.started && $scope.isLeader($scope.user.name)){
-			var players = [];
-			$scope.players.forEach(function(player){
-				if(player.user_id){
-					players.push(player);
-				}
-			});
-			$scope.players = players;
+			socket.emit('game:create:removeallbots',{leader:$scope.user.name});
 		}
-	}
+	};
 
 	$scope.removePlayerOrBot = function(id){
 		if($scope.started && $scope.isLeader($scope.user.name)){
 			if(id < 10){
-				removeLastRobot();
+				socket.emit('game:create:removebot',{leader:$scope.user.name});
 			}else{
 				if(confirm("Are you sure you want to remove this player?")){
-					var players = [];
-					$scope.players.forEach(function(player){
-						if(player.id !== id){
-							players.push(player);
+					for (var i = 0; i < $scope.players.length; i++) {
+						if($scope.players[i].id === id){
+							player = $scope.players[i];
+							break;
 						}
-					});
-					$scope.players = players;
+					};
+					socket.emit('game:create:removeplayer',{leader:$scope.user.name, player:player});
 				}
 			}
 		}
+	};
+
+	$scope.leaveRoom = function(){
+		socket.emit('game:create:leave',{leader:$scope.leader, player:$scope.user});
+		$window.location.href = '/game';
 	}
 
-	$scope.invitedPlayers = [];
+	$scope.getInvitedPlayers = function(){
+		return $scope.invited;
+	};
 
 	$scope.onlineFriends = function(){
-		return FriendList.onlineFriends;
-	}
-	$scope.inviteFriend = function(){};
+		var onlineFriends = [];
+		if($scope.started){
+			for(key in FriendList.onlineFriends){
+				var onlineFriend = FriendList.onlineFriends[key];
+				var notInvited = true;
+				for (var i = 0; i < $scope.invited.length; i++) {
+					if($scope.invited[i].name == onlineFriend.name){
+						if($scope.invited[i].state != 'full'){
+							notInvited = false;
+						}
+						break;
+					}
+				}
+				if(notInvited){
+					onlineFriends.push(onlineFriend);
+				}
+
+			}
+		}
+
+		return onlineFriends;
+	};
+
+	$scope.inviteFriend = function(name){
+		if($scope.started && ($scope.players.length < 10 || $scope.botsCount() > 0)){
+			var notification = NotificationGame(-1, $scope.leader, $scope.user.name);
+
+			socket.emit('notification_handler:newNotification', {name:name, notification:notification});
+			socket.emit('game:create:addinvited', {leader:$scope.leader, name:name});
+		}
+	};
 });

@@ -70,7 +70,7 @@ var usersManager = (function(){
 
 
 
-module.exports = function(io, socket) {
+module.exports.sio = function(io, socket) {
 	socket.on('user:init', function(data){
 		var name = data.name;
 		if(onlineUsers[name] && onlineUsers[name].online){
