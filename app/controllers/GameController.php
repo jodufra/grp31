@@ -84,38 +84,47 @@ class GameController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{   $input=array('name' => Input::get('name'));
-        $validation = Validator::make($input, Game::$rules);
-
-        if ($validation->passes())
-        {
-            $this->game=$this->game->create($input);
-            $gameHavePlayer= array('game_id'=>$this->game->id,'player_id'=>Input::get('player_id'),'player_num'=>1);
-            GameHavePlayer::create($gameHavePlayer);
-            return Redirect::route('game.create');
-        }
-
-        return Redirect::route('game.index')
-            ->withInput()
-            ->withErrors($validation)
-            ->with('message', 'There were validation errors.');
-		/*for ($i=0; $i < 10; $i++) {
-			if(Input::has(''+$i)){
-				$player_nums[$i]++;
-				if ($player_nums[$i] >= 2)
-				{
-					return Redirect::back()->with('danger', 'There are repeated players in this room.');
-				}
-
-				$players[$i] = ['player_id' => Input::get(''+$i), 'player_num' => $i];
-				$validator = Validator::make($players[$i], GameHavePlayer::$rules);
-				if ($validator->fails())
-				{
-					return Redirect::back()->withErrors($validator)->withInput();
-				}
+	public function store(){   
+		$data = [];
+		$data['players_count'] = 0;
+		$data['one_player_is_user'] = false;
+		$myID = Auth::user()->id;
+		$players = Input::get('players');
+		$count = 0;
+		foreach($players as $player){
+			if($myID == $player['user_id']){
+				$data['player_is_user'] = true;
 			}
-		}*/
+			$count++;
+		}
+		unset($player); 
+		$data['players_count'] = $count;
+		$validator = Validator::make($data, Game::$rules);
+
+		if ($validator->fails()){
+			$message = '';
+			if ($validator->messages()->has('players_count')){
+				$message = $validator->messages()->first('players_count');
+			}else{
+				$message = $validator->messages()->first('one_player_is_user');
+			}
+			return Response::json(['message'=>$message], 400);
+		}
+
+		try{
+			$this->game=$this->game->create([]);
+			$count = 0;
+			foreach($players as $player){
+				$count++;
+				GameHavePlayer::create(['game_id'=>$this->game->id,'player_id'=>$player['id'],'player_num'=>$count]);
+			}
+			unset($player);
+		}catch(Exception $e){
+			var_dump($e);
+			return Response::json(['message'=>$e], 400);
+		}
+
+		return Response::json(['game_id'=>$this->game->id]);
 	}
 
 	/**
@@ -179,8 +188,8 @@ class GameController extends \BaseController {
 
 		return Redirect::route('games.index');
 	}
-    public function getGames()
-    {
-        return Response::json(Game::all());
-    }
+	public function getGames()
+	{
+		return Response::json(Game::all());
+	}
 }

@@ -12,11 +12,11 @@
 	<div ng-if="started && isLeader(user.name)">
 		<div class="clearfix" >
 			<div class="pull-left clearfix">
-				<button ng-if="players.length < 10" ng-click="addRobot()" type="button" class="btn btn-success btn-sm pull-left">
+				<button ng-disabled="players.length == 10" ng-click="addRobot()" type="button" class="btn btn-success btn-sm pull-left">
 					<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Robot
 				</button>
 				<span class="pull-left">&nbsp;</span>
-				<button ng-if="botsCount() > 0" ng-click="removeAllRobots()" type="button" class="btn btn-warning btn-sm pull-left">
+				<button ng-disabled="botsCount() == 0" ng-click="removeAllRobots()" type="button" class="btn btn-warning btn-sm pull-left">
 					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;Remove All Robots
 				</button>
 			</div>
@@ -27,12 +27,9 @@
 				</button>
 				<span class="pull-left">&nbsp;</span>
 				<div class="pull-left">
-				{{Form::open(array( 'method' => 'post'))}}
-				<input ng-repeat="player in getPlayers()" type="hidden" name="[[$index]]" value="[[player.id]]">
-				<button ng-if="players.length >= 2" type="submit" class="btn btn-primary btn-sm">
+				<button ng-click="startGame()" type="submit" class="btn btn-primary btn-sm">
 					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>&nbsp;Start Game
 				</button>
-				{{Form::close()}}
 				</div>
 			</div>
 		</div>

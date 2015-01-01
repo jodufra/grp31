@@ -1,9 +1,10 @@
-appControllers.controller('GameCreateController', function($scope, $rootScope, $window, Player, FriendList, NotificationGame){
+appControllers.controller('GameCreateController', function($scope, $rootScope, $window, Player, FriendList, NotificationGame, GameStore, CSRF_TOKEN){
 	$scope.started = false;
 	$scope.leader = '';
 	$scope.players = [];
 	$scope.invited = [];
 	$scope.timeouts = [];
+	$scope.canStart = true;
 
 	$scope.user;
 	$scope.$on('user:init', function(event, data) {
@@ -49,6 +50,10 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 
 	$scope.havePlayers = function(){
 		return $scope.started && $scope.players.length > 0;
+	};
+
+	$scope.canStartGame = function(){
+		return $scope.started && $scope.players.length > 1 && $scope.canStart;
 	};
 
 	$scope.botsCount = function(){
@@ -163,7 +168,7 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 		}
 	};
 
-	$scope.terminateRoom = function(name){
+	$scope.terminateRoom = function(){
 		if($scope.started && $scope.isLeader($scope.user.name)){
 			socket.emit('game:create:terminate', {leader:$scope.user.name});
 		}
@@ -180,4 +185,60 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 		}
 		$scope.$apply();
 	});
+
+	$scope.startGame = function(){
+		if($scope.started && $scope.isLeader($scope.user.name) && $scope.players.length > 1){
+			$scope.canStart = false;
+			if($scope.timeouts.length){
+				var names = '';
+				var first = true;
+				var many = false;
+				for(name in $scope.timeouts){
+					if(first){
+						names = names+name;
+						first = false;
+					}else{
+						names = names+', '+name;
+						many = true;
+					}
+				}
+				if(many){
+					alert('Users '+names+' are currently disconnected, please wait 5 seconds and try again.');
+				}else{
+					alert('User '+names+' is currently disconnected, please wait 5 seconds and try again.');
+				}
+				$scope.canStart = true;
+			}else{
+				var store = {
+					_token:CSRF_TOKEN,
+					players:$scope.players
+				}
+				GameStore(store).success(function(data){
+					emitStart(data.game_id);
+				}).error(function(data){
+					if(data.message){
+						alert(data.message);
+					}else{
+						alert('Server Error. Please try again.');
+					}
+					$scope.canStart = true;
+				});
+			}
+		}
+	};
+
+	function emitStart(game_id){
+		socket.emit('game:create:start', {leader:$scope.user.name, game_id:game_id});
+	}
+
+	socket.on('game:create:start', function(data){
+		if(data.leader==$scope.leader){
+			$scope.started = false;
+			$scope.$apply();
+			alert('Game is starting. Press OK to continue.');
+			$window.location.href = '/game/'+data.game_id;
+		}
+		$scope.$apply();
+	});
+
 });

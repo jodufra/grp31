@@ -302,6 +302,11 @@ module.exports.sio = function(io, socket) {
 		io.emit('game:create:terminate', {leader:data.leader});
 	});
 
+	socket.on('game:create:start', function(data){
+		RoomManager.terminate(data.leader);
+		io.emit('game:create:start', {leader:data.leader, game_id:data.game_id});
+	});
+
 	socket.on('disconnect', function(){
 		RoomManager.onPlayerDisconnected(io, socket.id);
 	});

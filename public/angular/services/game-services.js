@@ -1,3 +1,9 @@
+appServices.service('GameStore', function($http){
+    var self = function(data){
+        return $http.post( '/game', data );
+    }
+    return self;
+});
 app.factory('Dices', function ($q, $http)
 {
     var self = {
