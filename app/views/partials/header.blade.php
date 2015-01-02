@@ -122,7 +122,7 @@
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="/user/{{Auth::user()->username}}"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;My profile</a></li>
+                    <li><a href="/user/show/{{Auth::user()->username}}"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;My profile</a></li>
                     <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;&nbsp;Logout</a></li>
                 </ul>
             </li>

@@ -27,7 +27,7 @@ Route::group(array('before' => 'guest'), function () {
 // Only Users
 Route::group(array('before' => 'auth'), function () {
     // User
-    Route::get('user/show', array('uses' => 'UsersController@show', 'as' => 'user.show'));
+    Route::get('user/show/{username}', array('uses' => 'UsersController@show', 'as' => 'user.show'));
     // Player
     Route::controller('player', 'PlayersController');
     // Auth

@@ -98,9 +98,14 @@ class UsersController extends BaseController
 	 *
 	 * @return Response
 	 */
-    public function show()
+    public function show($username)
     {
-        return View::make('users.show');
+        $result = DB::table('users')->where('username', $username)->first();
+        if(!$result){
+            App::abort(404);
+        }
+        else{return View::make('users.show');}
+
     }
 
     /**
