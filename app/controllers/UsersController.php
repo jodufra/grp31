@@ -63,6 +63,21 @@ class UsersController extends BaseController
         }
 
         try{
+            if(Input::hasFile('photo_file')) {
+
+                $extension = Input::file('photo_file')->getClientOriginalExtension();
+                $filename = $this->user->username;
+                $filename = str_replace(' ', '_', $filename);
+                $filename = preg_replace('/[^A-Za-z0-9\-]/', '', $filename);
+                if ($filename == ''){
+                    $filename = 'user'.$this->user->id;
+                }
+                Input::file('photo_file')->move(public_path().'/img/uploads/',$filename.'.'.$extension);
+                $data['photo'] = ('/img/uploads'.$filename.'.'.$extension);
+            }else{
+                $data['photo'] = ('/img/default.png');
+                }
+
             $data['name'] = $data['first_name'] . " " . $data['last_name'];
             $data['credit_card_valid'] = $data['credit_card_valid_month'] . "/" . $data['credit_card_valid_year'];
             $data['birthdate'] = strtotime($data['birth_date']);
@@ -75,6 +90,8 @@ class UsersController extends BaseController
             $this->user->delete();
             return Redirect::route('user.create')->withErrors("Error Processing Request. Please try again.")->withInput();
         }
+
+
 
         try {
             $this->user->player()->create($data);

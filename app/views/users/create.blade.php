@@ -5,7 +5,7 @@
   <div class="page-header"><h1>Register</h1></div>
   @include('partials.session_messages')
 
-  {{ Form::open(array('route' => array('user.store'), 'method' => 'post', 'class' => 'form-horizontal')) }}
+  {{ Form::open(array('route' => array('user.store'), 'method' => 'post', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) }}
 
   <div class="row-item">
     <fieldset>
@@ -46,6 +46,12 @@
   <div class="row-item">
     <fieldset>
       <legend><small>User Information</small></legend>
+      <div class="form-group">
+        {{Form::label('photo_file','Profile Photo', array('class'=>'col-md-3 control-label text-right'))}}
+        <div class="col-md-6">
+          {{ Form::file('photo_file', null,array('class' => 'form-control'))}}
+        </div>
+      </div>
       <div class="form-group">
         {{Form::label('first_name','First Name', array('class'=>'col-md-3 control-label text-right required'))}}
         <div class="col-md-6">
