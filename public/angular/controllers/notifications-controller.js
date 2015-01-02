@@ -5,9 +5,7 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 	$scope.$on('user:init', function(event, data) {
 		if(data.isUser){
 			$scope.started = true;
-			var user = data.user;
-			$scope.user.name = user.name;
-			$scope.user.img_src = user.img_src;
+			$scope.user = data.user;
 			getFriendsList();
 			getNotifications();
 		}

@@ -14,6 +14,9 @@ appControllers.controller('GameIndexController', function($scope, $http){
 		init();
 	});
 
+	function init(){
+		
+	}
 
 	$scope.searchGame = function(){
 		$scope.isSearching = true;

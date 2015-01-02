@@ -92,8 +92,10 @@ class GameController extends \BaseController {
 		$players = Input::get('players');
 		$count = 0;
 		foreach($players as $player){
-			if($myID == $player['user_id']){
-				$data['player_is_user'] = true;
+			if($player['user_id']){
+				if($myID == $player['user_id']){
+					$data['player_is_user'] = true;
+				}
 			}
 			$count++;
 		}
