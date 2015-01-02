@@ -73,7 +73,7 @@ class UsersController extends BaseController
                     $filename = 'user'.$this->user->id;
                 }
                 Input::file('photo_file')->move(public_path().'/img/uploads/',$filename.'.'.$extension);
-                $data['photo'] = ('/img/uploads'.$filename.'.'.$extension);
+                $data['photo'] = ('/img/uploads/'.$filename.'.'.$extension);
             }else{
                 $data['photo'] = ('/img/default.png');
                 }
