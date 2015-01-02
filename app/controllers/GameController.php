@@ -187,8 +187,26 @@ class GameController extends \BaseController {
 
 		return Redirect::route('games.index');
 	}
+
 	public function getGames()
 	{
-		return Response::json(Game::all());
+		$games = [];
+		$q_games = Game::take(10)->skip(10)->get();
+		$g_count = 0;
+		foreach ($q_games as $this->game) {
+			$games[$g_count] = [];
+			$games[$g_count]->id = $this->game->id;
+			$q_players = DB::table('games_have_players')->where('game_id', $games[$g_count]->id);
+
+			$p_count = 0;
+			foreach ($q_players as $player) {
+				$player[$p_count] = [];
+				$player[$p_count]->name = $player->user()->first()->username;
+				$p_count++;
+			}
+			$g_count++;
+		}
+
+		return Response::json();
 	}
 }
