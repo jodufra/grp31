@@ -16,8 +16,6 @@ var NotificationsHandler = (function(){
 
 	self.newNotification = function(msg){
 		var new_notification;
-		console.log(msg);
-		console.log(users['jodufra']);
 		if(users[msg.name] && users[msg.name].notifications){
 			var note;
 			switch(msg.notification.type){

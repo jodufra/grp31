@@ -46,7 +46,7 @@
                             <div class="media-body">
                                 <h4 class="media-heading" ng-bind="friend.name"></h4>
                                 <div class="btn-group clearfix">
-                                    <a href="/user/[[friend.name]]" class="success" data-toggle="tooltip" data-placement="top" title="View Profile">
+                                    <a href="/user/show/[[friend.name]]" class="success" data-toggle="tooltip" data-placement="top" title="View Profile">
                                         <span class="glyphicon glyphicon-eye-open"></span>
                                     </a>
                                     <p ng-click="sendMessageToFriend([[friend.name]])" class="info" data-toggle="tooltip" data-placement="top" title="Send Message">
@@ -102,7 +102,7 @@
                         </div>
                     </li>
                     <li ng-repeat="request in getFriendNotifications()">
-                        <p>User <a href="/user/[[request.user.name]]">[[request.user.name]]</a> wants to add you to his friends list</p>
+                        <p>User <a href="/user/show/[[request.user.name]]">[[request.user.name]]</a> wants to add you to his friends list</p>
                         <div class="btn-group btn-group clearfix">
                             <p ng-click="acceptFriendRequest([[request]])" class="success">
                                 <span class="glyphicon glyphicon-check"></span><span>&nbsp;Accept</span>
