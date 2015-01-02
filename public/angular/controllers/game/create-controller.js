@@ -198,12 +198,12 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 				var names = '';
 				var first = true;
 				var many = false;
-				for(name in $scope.timeouts){
+				for(key in $scope.timeouts){
 					if(first){
-						names = names+name;
+						names = names+$scope.timeouts[key];
 						first = false;
 					}else{
-						names = names+', '+name;
+						names = names+', '+$scope.timeouts[key];
 						many = true;
 					}
 				}

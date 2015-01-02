@@ -37,9 +37,7 @@
             <span>&nbsp;&nbsp;&nbsp;</span>
             <span>Searching for a Game</span>
             <span>&nbsp;&nbsp;&nbsp;</span>
-            <small>Time In Queue: 
-              <timer interval="1000">[[minutes]] minute[[minutesS]],&nbsp; [[seconds]] second[[secondsS]]</timer>
-          </small>
+            <small>Time In Queue: <timer interval="1000">[[minutes]] minute[[minutesS]],&nbsp; [[seconds]] second[[secondsS]]</timer></small>
           </h2>
           <h2 class="text-warning searching"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;&nbsp;Stop Searching</h2>
           

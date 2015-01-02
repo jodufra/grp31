@@ -23,21 +23,26 @@ var RoomManager = (function(){
 	self.getRoom = function (name) {
 		var room = {};
 
+		console.log('get room');
 		room.leader = usersInRoom[name].leader;
 		room.players=[];
 		room.invited=[];
 		room.timeouts=[];
-
+		console.log('players');
 		for(key in usersInRoom[name].players){
 			room.players.push(usersInRoom[name].players[key]);
 		}
+		console.log('invited');
 		for(key in usersInRoom[name].invited){
 			room.invited.push(usersInRoom[name].invited[key]);
-		}
+		}		
+		console.log('timeouts');
+		console.log(usersInRoom[name].timeouts);
 		for(key in usersInRoom[name].timeouts){
-			room.timeouts.push(usersInRoom[name].timeouts[key]);
+			console.log('timeout');
+			room.timeouts.push(usersInRoom[name].timeouts[key].name);
 		}
-
+		console.log('getRoom end');
 		return room;
 	};
 
@@ -83,17 +88,20 @@ var RoomManager = (function(){
 	};
 
 	self.onPlayerDisconnected = function(io, socketID){
-		var user = null;
+		var username = '';
 		for(name in onlineUsers){
 			if(onlineUsers[name].socketID == socketID){
-				user = onlineUsers[name];
+				username = name;
 				break;
 			}
 		}
-		if(user != null){
-			usersInRoom[user.name].players[user.name].online = false;
-			usersInRoom[user.name].timeouts[user.name] = setTimeout(function(){ RoomManager.disconnectPlayer(io, user.name)}, TIMEOUT_FOR_DISCONNECT);
-			return usersInRoom[user.name].leader;
+		if(username != ''){
+			usersInRoom[username].players[username].online = false;
+			usersInRoom[username].timeouts[username] = {};
+			usersInRoom[username].timeouts[username].name = username;
+			usersInRoom[username].timeouts[username].timeout = setTimeout(function(){ RoomManager.disconnectPlayer(io, username)}, TIMEOUT_FOR_DISCONNECT);
+			console.log('onPlayerDisconnected');
+			return usersInRoom[username].leader;
 		}
 	};
 
@@ -103,12 +111,13 @@ var RoomManager = (function(){
 				RoomManager.terminate(name);
 				io.emit('user:disconnect',{name:name});
 			}else{
+				var leader = usersInRoom[name].leader;
 				usersInRoom[name].invited[name] = "waiting";
 				delete usersInRoom[name].players[name];
-				delete usersInRoom[name];
 				delete onlineUsers[name];
+				delete usersInRoom[name];
+				io.emit('game:create:update', {room:RoomManager.getRoom(leader)});
 			}
-			return usersInRoom[name].leader;
 		}
 		return null;
 	};
