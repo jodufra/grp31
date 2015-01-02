@@ -23,26 +23,19 @@ var RoomManager = (function(){
 	self.getRoom = function (name) {
 		var room = {};
 
-		console.log('get room');
 		room.leader = usersInRoom[name].leader;
 		room.players=[];
 		room.invited=[];
 		room.timeouts=[];
-		console.log('players');
 		for(key in usersInRoom[name].players){
 			room.players.push(usersInRoom[name].players[key]);
 		}
-		console.log('invited');
 		for(key in usersInRoom[name].invited){
 			room.invited.push(usersInRoom[name].invited[key]);
 		}		
-		console.log('timeouts');
-		console.log(usersInRoom[name].timeouts);
 		for(key in usersInRoom[name].timeouts){
-			console.log('timeout');
 			room.timeouts.push(usersInRoom[name].timeouts[key].name);
 		}
-		console.log('getRoom end');
 		return room;
 	};
 
@@ -100,7 +93,6 @@ var RoomManager = (function(){
 			usersInRoom[username].timeouts[username] = {};
 			usersInRoom[username].timeouts[username].name = username;
 			usersInRoom[username].timeouts[username].timeout = setTimeout(function(){ RoomManager.disconnectPlayer(io, username)}, TIMEOUT_FOR_DISCONNECT);
-			console.log('onPlayerDisconnected');
 			return usersInRoom[username].leader;
 		}
 	};
