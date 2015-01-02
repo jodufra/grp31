@@ -1,5 +1,6 @@
-appControllers.controller('UserController', function($scope, $rootScope, currentUser) {	
+appControllers.controller('UserController', function($scope, $rootScope, $window, currentUser) {	
 	$scope.user = {};
+	$scope.isUser = false;
 	currentUser.success(function(data){
 		if(data.name){
 			$scope.user.id = data.id;
@@ -25,7 +26,12 @@ appControllers.controller('UserController', function($scope, $rootScope, current
 	});
 
 	function broadcastUser(isUser){
+		$scope.isUser = isUser;
 		$rootScope.$broadcast('user:init',{isUser:isUser, user:$scope.user});
 	}
+	
+	socket.on('reconnect', function () {
+		setTimeout(function(){$window.location.reload()}, 1000);
+	});
 
 });

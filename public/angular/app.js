@@ -1,6 +1,6 @@
 /* App Module */
 
-var app = angular.module('app', ['ngAnimate', 'appControllers', 'appServices']);
+var app = angular.module('app', ['ngAnimate', 'timer', 'appControllers', 'appServices']);
 app.config(function($interpolateProvider) {
 	$interpolateProvider.startSymbol('[[');
 	$interpolateProvider.endSymbol(']]');

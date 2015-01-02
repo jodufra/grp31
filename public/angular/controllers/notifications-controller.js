@@ -1,6 +1,5 @@
 appControllers.controller('NotificationsController', function($scope, $rootScope, $window, FriendList, NotificationNormal, NotificationGame, NotificationFriend) {
 	$scope.started = false;
-
 	$scope.user = {};
 
 	$scope.$on('user:init', function(event, data) {
@@ -12,6 +11,10 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 			getFriendsList();
 			getNotifications();
 		}
+	});
+
+	socket.on('disconnect', function () {
+		$scope.started = false;
 	});
 
 	// Friends List
@@ -31,6 +34,15 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 		socket.emit('user:states', {users:users});
 	}
 
+	socket.on('user:init', function(data){
+		if(data.name != $scope.user.name){
+			if (friends[data.name] != null) {
+				friends[data.name].online = true;
+			};
+		}
+		$scope.$apply();
+	});
+
 	socket.on('user:states', function(data){
 		for (var i = 0; i < data.users.length; i++) {
 			var user = data.users[i];
@@ -40,17 +52,8 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 		$scope.$apply();
 	});
 
-	socket.on('user:init', function(data){
-		if($scope.started && data.name != $scope.user.name){
-			if (friends[data.name] != null) {
-				friends[data.name].online = true;
-			};
-		}
-		$scope.$apply();
-	});
-
 	socket.on('user:disconnect', function(data){
-		if($scope.started && data.name != $scope.user.name){
+		if(data.name != $scope.user.name){
 			if (friends[data.name] != null) {
 				friends[data.name].online = false;
 			};
@@ -78,9 +81,11 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 	}
 
 	$scope.sendFriendRequest = function(data){
-		var notification = NotificationFriend(-1, $scope.user.id, $scope.user.name);
-		socket.emit('notification_handler:newNotification', {name:data.name, notification:notification});
-		data.name = '';
+		if($scope.started){
+			var notification = NotificationFriend(-1, $scope.user.id, $scope.user.name);
+			socket.emit('notification_handler:newNotification', {name:data.name, notification:notification});
+			data.name = '';
+		}
 	}
 
 	// Notifications 
@@ -153,7 +158,9 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 	}
 
 	$scope.dismissNotification = function(notificationID){
-		socket.emit('notification_handler:dismissNotification',{name:$scope.user.name, id:notificationID});
+		if($scope.started){
+			socket.emit('notification_handler:dismissNotification',{name:$scope.user.name, id:notificationID});
+		}
 	}
 
 	socket.on('notification_handler:dismissNotification', function(data){
@@ -169,9 +176,11 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 	});
 
 	$scope.acceptGameInvite = function(notification){
-		var leader = notification.game.owner;
-		socket.emit('game:create:acceptinvite', {leader:leader, player:$scope.user});
-		socket.emit('notification_handler:dismissNotification',{name:$scope.user.name, id:notification.id});
+		if($scope.started){
+			var leader = notification.game.owner;
+			socket.emit('game:create:acceptinvite', {leader:leader, player:$scope.user});
+			socket.emit('notification_handler:dismissNotification',{name:$scope.user.name, id:notification.id});
+		}
 	}
 
 	socket.on('game:create:acceptinvite', function(data){
@@ -181,9 +190,11 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 	});
 
 	$scope.dismissGameInvite = function(notification){
-		var leader = notification.game.owner;
-		socket.emit('game:create:declineinvite', {leader:leader, name:$scope.user.name});
-		socket.emit('notification_handler:dismissNotification',{name:$scope.user.name, id:notification.id});
+		if($scope.started){
+			var leader = notification.game.owner;
+			socket.emit('game:create:declineinvite', {leader:leader, name:$scope.user.name});
+			socket.emit('notification_handler:dismissNotification',{name:$scope.user.name, id:notification.id});
+		}
 	}
 
 	function addNotification(id, type, note){

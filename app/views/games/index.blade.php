@@ -32,8 +32,20 @@
     </div>
     <div ng-if="isSearching" class="col-md-12">
         <div class="jumbotron button searching" ng-click="stopSearching()">
-          <h2 class="text-info"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;&nbsp;Searching for a Game</h2>
+          <h2 class="text-info">
+            <i class="fa fa-spinner fa-spin"></i>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+            <span>Searching for a Game</span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+            <small>Time In Queue: 
+              <timer interval="1000">
+              <span>[[minutes]] minute[[minutesS]],&nbsp;</span>
+              <span>[[seconds]] second[[secondsS]]</span>
+            </timer>
+          </small>
+          </h2>
           <h2 class="text-warning searching"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;&nbsp;Stop Searching</h2>
+          
         </div>
     </div>
   </div>

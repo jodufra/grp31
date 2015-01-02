@@ -27,7 +27,7 @@
 				</button>
 				<span class="pull-left">&nbsp;</span>
 				<div class="pull-left">
-				<button ng-click="startGame()" type="submit" class="btn btn-primary btn-sm">
+				<button ng-disabled="canStartGame() == false"ng-click="startGame()" type="submit" class="btn btn-primary btn-sm">
 					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>&nbsp;Start Game
 				</button>
 				</div>

@@ -14,7 +14,7 @@ appControllers.controller('ChatController', function($scope, PrivateChat, Public
 
 	var userIsGuest = true;
 	$scope.user = {name:'', img_src:'/img/default.png'};
-
+	$scope.started = false;
 	$scope.$on('user:init', function(event, data) {
 		if(data.isUser){
 			var user = data.user;
@@ -30,6 +30,7 @@ appControllers.controller('ChatController', function($scope, PrivateChat, Public
 	$scope.$on('chat:init:public', function(event, data) {
 		publicChat.channel = data.channel;
 		addMessage(publicChat, {user:SELF_CHAT_USER, message:'Changed channel: '+ data.channel});
+		initPublicChat();
 	});
 
 	$scope.$on('chat:init:private', function(event, data) {
@@ -44,6 +45,7 @@ appControllers.controller('ChatController', function($scope, PrivateChat, Public
 	}
 
 	socket.on('chat:init:public', function (data) {
+		$scope.started = true;
 		$scope.user.name = data.user.name;
 		publicChat.channel = data.channel;
 		publicChat.init = true;
@@ -116,22 +118,25 @@ appControllers.controller('ChatController', function($scope, PrivateChat, Public
 		if(publicChat.init){
 			addMessage(publicChat, {user:SELF_CHAT_USER, message:'You were disconnected!'});
 		}
+		$scope.started = false;
 	});
 
 	$scope.sendMessage = function (chat) {
-		if(chat.message && chat.message != ''){
-			var message = {
-				user: $scope.user,
-				privateChat: chat.privateChat,
-				channel: chat.channel,
-				addressee: chat.addressee,
-				message: chat.message,
+		if($scope.started){
+			if(chat.message && chat.message != ''){
+				var message = {
+					user: $scope.user,
+					privateChat: chat.privateChat,
+					channel: chat.channel,
+					addressee: chat.addressee,
+					message: chat.message,
+				}
+
+				socket.emit('chat:message:send', message);
+
 			}
-
-			socket.emit('chat:message:send', message);
-
+			chat.message = '';	
 		}
-		chat.message = '';	
 	};
 
 	function addMessage(chat, data){

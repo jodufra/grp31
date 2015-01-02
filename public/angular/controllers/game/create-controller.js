@@ -16,6 +16,10 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 		}
 	});
 
+	socket.on('disconnect', function () {
+		$scope.started = false;
+	});
+
 	socket.on('game:create:init', function(data){
 		$scope.leader = data.room.leader;
 		$scope.players = data.room.players;
@@ -53,7 +57,7 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 	};
 
 	$scope.canStartGame = function(){
-		return $scope.started && $scope.players.length > 1 && $scope.canStart;
+		return $scope.started && $scope.isLeader($scope.user.name) && $scope.players.length > 1 && $scope.canStart;
 	};
 
 	$scope.botsCount = function(){
@@ -209,20 +213,24 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 				}
 				$scope.canStart = true;
 			}else{
-				var store = {
-					_token:CSRF_TOKEN,
-					players:$scope.players
-				}
-				GameStore(store).success(function(data){
-					emitStart(data.game_id);
-				}).error(function(data){
-					if(data.message){
-						alert(data.message);
-					}else{
-						alert('Server Error. Please try again.');
+				if(confirm('Press OK when you feel ready to start?')){
+					var store = {
+						_token:CSRF_TOKEN,
+						players:$scope.players
 					}
+					GameStore(store).success(function(data){
+						emitStart(data.game_id);
+					}).error(function(data){
+						if(data.message){
+							alert(data.message);
+						}else{
+							alert('Server Error. Please try again.');
+						}
+						$scope.canStart = true;
+					});
+				}else{
 					$scope.canStart = true;
-				});
+				}
 			}
 		}
 	};

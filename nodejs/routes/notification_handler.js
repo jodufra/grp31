@@ -8,7 +8,7 @@ var NotificationsHandler = (function(){
 	var self = {};
 
 	self.checkUser = function(name){
-		if(!users[name]){
+		if(users[name] == null){
 			users[name] = {count:0, notifications:[]};
 			addNotification(name, NOTIFICATION_NORMAL, {type:'info', text:WELLCOME_MSG});
 		}
@@ -16,7 +16,8 @@ var NotificationsHandler = (function(){
 
 	self.newNotification = function(msg){
 		var new_notification;
-
+		console.log(msg);
+		console.log(users['jodufra']);
 		if(users[msg.name] && users[msg.name].notifications){
 			var note;
 			switch(msg.notification.type){
@@ -38,7 +39,7 @@ var NotificationsHandler = (function(){
 				var invite_suppliant = msg.notification.user.name;
 
 				var note = {type:'danger', text:'User \''+invite_target+'\' doesn\'t exist or he hasn\'t login since last downtime.'};
-				var notification = addNotification(msg.invite_suppliant, NOTIFICATION_NORMAL, note);
+				var notification = addNotification(invite_suppliant, NOTIFICATION_NORMAL, note);
 				new_notification = {name:invite_suppliant, notification:notification};
 			};
 		}

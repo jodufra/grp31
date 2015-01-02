@@ -120,7 +120,6 @@ class GameController extends \BaseController {
 			}
 			unset($player);
 		}catch(Exception $e){
-			var_dump($e);
 			return Response::json(['message'=>$e], 400);
 		}
 
