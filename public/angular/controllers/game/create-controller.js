@@ -4,6 +4,7 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 	$scope.players = [];
 	$scope.invited = [];
 	$scope.timeouts = [];
+	$scope.queues = 0;
 	$scope.canStart = true;
 
 	$scope.user;
@@ -25,6 +26,7 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 		$scope.players = data.room.players;
 		$scope.invited = data.room.invited;
 		$scope.timeouts = data.room.timeouts;
+		$scope.queues = data.room.queues;
 		$scope.started = true;
 		changeChatChannel();
 		$scope.$apply();
@@ -35,6 +37,7 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 			$scope.players = data.room.players;
 			$scope.invited = data.room.invited;
 			$scope.timeouts = data.room.timeouts;
+			$scope.queues = data.room.queues;
 		}
 		$scope.$apply();
 	});
@@ -92,7 +95,7 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 	};
 
 	$scope.addRobot = function(){
-		if($scope.started && $scope.isLeader($scope.user.name) && $scope.players.length < 10){
+		if($scope.started && $scope.isLeader($scope.user.name) && ($scope.players.length + $scope.queues) < 10){
 			var bot_id = $scope.botsCount() + 1;
 			var bot = Player(bot_id, null, "Robot "+bot_id, "../img/bot.png");
 			socket.emit('game:create:addbot',{leader:$scope.user.name, player:bot});
@@ -130,10 +133,23 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 		$scope.$apply();
 	});
 
+	$scope.addQueueSpot = function(){
+		if($scope.started && $scope.isLeader($scope.user.name)){
+			console.log("addQueueSpot()");
+			socket.emit('game:create:addqueuespot',{leader:$scope.user.name});
+		}
+	};
+
+	$scope.removeQueueSpot = function(){
+		if($scope.started && $scope.isLeader($scope.user.name)){
+			socket.emit('game:create:removequeuespot',{leader:$scope.user.name});
+		}
+	};
+
 	$scope.leaveRoom = function(){
 		socket.emit('game:create:leave',{leader:$scope.leader, player:$scope.user});
 		$window.location.href = '/game';
-	}
+	};
 
 	$scope.getInvitedPlayers = function(){
 		return $scope.invited;
@@ -151,6 +167,14 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 							notInvited = false;
 						}
 						break;
+					}
+				}
+				if(notInvited){
+					for (var i = 0; i < $scope.players.length; i++) {
+						if($scope.players[i].name == onlineFriend.name){
+							notInvited = false;
+							break;
+						}
 					}
 				}
 				if(notInvited){

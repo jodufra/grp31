@@ -104,7 +104,7 @@
                     <li ng-repeat="request in getFriendNotifications()">
                         <p>User <a href="/user/show/[[request.user.name]]">[[request.user.name]]</a> wants to add you to his friends list</p>
                         <div class="btn-group btn-group clearfix">
-                            <p ng-click="acceptFriendRequest([[request]])" class="success">
+                            <p ng-click="acceptFriendRequest(request)" class="success">
                                 <span class="glyphicon glyphicon-check"></span><span>&nbsp;Accept</span>
                             </p>
                             <p ng-click="dismissNotification([[request.id]])" class="danger">

@@ -1,4 +1,4 @@
-appControllers.controller('GameIndexController', function($scope, $http, GameIndex){
+appControllers.controller('GameIndexController', function($scope, $http, $window, GameIndex){
 	$scope.user;
 	$scope.started = false;
 	$scope.isUser = false;
@@ -15,6 +15,13 @@ appControllers.controller('GameIndexController', function($scope, $http, GameInd
 		init();
 	});
 
+	socket.on('disconnect', function () {
+		$scope.started = false;
+		$scope.isUser = false;
+		$scope.isPlaying = false;
+		$scope.isSearching = false;
+	});
+
 	function init(){
 		GameIndex.getOngoingGames().success(function(data){
 			$scope.ongoingGames = data;
@@ -24,21 +31,42 @@ appControllers.controller('GameIndexController', function($scope, $http, GameInd
 	}
 
 	$scope.searchGame = function(){
-		$scope.isSearching = true;
+		if($scope.started && $scope.isUser){
+			socket.emit('game:create:addqueue',{user:$scope.user});
+		}
 	}
+
+	socket.on('game:create:addqueue',function(data){
+		if(data.name == $scope.user.name){
+			$scope.isSearching = true;
+		}
+		$scope.apply();
+	});
 
 	$scope.stopSearching = function(){
-		$scope.isSearching = false;
+		if($scope.started && $scope.isUser){
+			socket.emit('game:create:removequeue',{user:$scope.user});
+		}
 	}
 
+	socket.on('game:create:removequeue',function(data){
+		if(data.name == $scope.user.name){
+			$scope.isSearching = false;
+		}
+		$scope.apply();
+	});
 
-
-	// $http.get("https://grp31.dad:4430/getGames").success(function(data) {
-	// 	$scope.games = data;
-	// });
-	// setInterval(function () {
-	// 	$http.get("https://grp31.dad:4430/getGames").success(function(data) {$scope.games = data;});
-	// }, 5000);
-
+	socket.on('game:create:acceptedqueue',function(data){
+		if(data.name == $scope.user.name){
+			$scope.started = false;
+			$scope.isUser = false;
+			$scope.isPlaying = false;
+			$scope.isSearching = false;
+			$window.location.href = '/game/create';
+			alert('You are entering the room.');
+		}
+		$scope.apply();
+	});
+	
 
 });

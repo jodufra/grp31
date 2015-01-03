@@ -1,4 +1,4 @@
-appControllers.controller('NotificationsController', function($scope, $rootScope, $window, FriendList, NotificationNormal, NotificationGame, NotificationFriend) {
+appControllers.controller('NotificationsController', function($scope, $rootScope, $window, CSRF_TOKEN, FriendList, NotificationNormal, NotificationGame, NotificationFriend) {
 	$scope.started = false;
 	$scope.user = {};
 
@@ -20,8 +20,14 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 	var friends = [];
 
 	function getFriendsList(){
-		friends['qualquercoisa'] = {online:false, user:{id:2, player_id:12, name:"qualquercoisa", img_src:"/img/default.png"}};
-		requestFriendsOnlineState();
+		FriendList.getFriendsList().success(function(data){
+			friends = [];
+			for (var i = 0; i < data.length; i++) {
+				friends[data[i].name] = {online:false,user:{name:data[i].name, img_src:data[i].img_src}};
+			}
+			console.log(friends);
+			requestFriendsOnlineState();
+		});
 	}
 
 	function requestFriendsOnlineState(){
@@ -80,11 +86,45 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 
 	$scope.sendFriendRequest = function(data){
 		if($scope.started){
-			var notification = NotificationFriend(-1, $scope.user.id, $scope.user.name);
-			socket.emit('notification_handler:newNotification', {name:data.name, notification:notification});
+			var canSend = true;
+			for(key in friends){
+				if(friends[key] == data.name){
+					canSend = false;
+					break;
+				}
+			}
+
+			if(canSend){
+				var notification = NotificationFriend(-1, $scope.user.user_id, $scope.user.name);
+				socket.emit('notification_handler:newNotification', {name:data.name, notification:notification});
+			}
 			data.name = '';
 		}
 	}
+
+	$scope.acceptFriendRequest = function(notification){
+		var input = {};
+		input.user_id = $scope.user.user_id;
+		input.friend_id = notification.user.id;
+		input._token = CSRF_TOKEN;
+		FriendList.newFriend(input).success(function(data){
+			if(data.name){
+				socket.emit('notification_handler:wearefriends', {name:data.name, user:$scope.user.name});
+				$scope.dismissNotification(notification.id);
+				$scope.apply();
+			}
+		});
+	};
+	
+	socket.on('notification_handler:wearefriends', function(data){
+		if(data.name == $scope.user.name || data.user == $scope.user.name){
+			getFriendsList();
+		}
+		$scope.apply();
+	});
+
+
+
 
 	// Notifications 
 	const NOTIFICATION_NORMAL = 1;

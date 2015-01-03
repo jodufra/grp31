@@ -1,14 +1,15 @@
 var NotificationsHandler = require('../notification_handler').notifications;
 var rooms = [];
 var usersInRoom = [];
+var onlineUsers = [];
 var usersInQueue = [];
 var roomsInQueue = [];
-var onlineUsers = [];
+var onlineUsersInQueue = [];
 var gio;
 
 var RoomManager = (function(){
 	var self = {};
-	var TIMEOUT_FOR_DISCONNECT = 7500;
+	var TIMEOUT_FOR_DISCONNECT = 15000;
 
 	self.init = function(user, socketID){
 		var name = user.name;
@@ -24,6 +25,7 @@ var RoomManager = (function(){
 	};
 
 	self.getRoom = function (name) {
+		if(!usersInRoom[name]) return;
 		var room = {};
 
 		room.leader = usersInRoom[name].leader;
@@ -39,10 +41,12 @@ var RoomManager = (function(){
 		for(key in usersInRoom[name].timeouts){
 			room.timeouts.push(usersInRoom[name].timeouts[key].name);
 		}
+		room.queues = usersInRoom[name].queues;
 		return room;
 	};
 
 	self.removePlayer = function(leader, player){
+		if(!rooms[leader] || !player) return;
 		removePlayer(leader, player);
 		if(!(player.id < 10)){
 			delete onlineUsers[name];
@@ -50,12 +54,14 @@ var RoomManager = (function(){
 	};
 
 	self.addBot = function(leader, player){
+		if(!rooms[leader]) return;
 		rooms[leader].players[player.name] = player;
 		rooms[leader].players[player.name].online = true;
 		usersInRoom[player.name] = rooms[leader];
 	};
 
 	self.removeBot = function(leader){
+		if(!rooms[leader]) return;
 		var id = -1;
 		var name = '';
 		for(p_name in rooms[leader].players){
@@ -69,6 +75,7 @@ var RoomManager = (function(){
 	};
 
 	self.removeAllBots = function(leader, player){
+		if(!rooms[leader]) return;
 		var bots = [];
 		for(key in usersInRoom[leader].players){
 			if(usersInRoom[leader].players[key].id < 10){
@@ -83,7 +90,19 @@ var RoomManager = (function(){
 		delete onlineUsers[player.name];
 	};
 
-	self.onPlayerDisconnected = function(io, socketID){
+	self.onPlayerDisconnected = function(socketID){
+		var username = '';
+		for(name in onlineUsersInQueue){
+			if(onlineUsersInQueue[name].socketID == socketID){
+				username = name;
+				break;
+			}
+		}
+		if(username != ''){
+			RoomManager.removeQueue(username);
+			return null;
+		}
+
 		var username = '';
 		for(name in onlineUsers){
 			if(onlineUsers[name].socketID == socketID){
@@ -95,59 +114,66 @@ var RoomManager = (function(){
 			usersInRoom[username].players[username].online = false;
 			usersInRoom[username].timeouts[username] = {};
 			usersInRoom[username].timeouts[username].name = username;
-			usersInRoom[username].timeouts[username].timeout = setTimeout(function(){ RoomManager.disconnectPlayer(io, username)}, TIMEOUT_FOR_DISCONNECT);
+			usersInRoom[username].timeouts[username].timeout = setTimeout(function(){ RoomManager.disconnectPlayer(username)}, TIMEOUT_FOR_DISCONNECT);
 			return usersInRoom[username].leader;
 		}
 	};
 
-	self.disconnectPlayer = function(io, name){
-		if(usersInRoom[name]){
+	self.disconnectPlayer = function(name){
+		if(usersInRoom[name] && usersInRoom[name].timeouts[name]){
 			if(usersInRoom[name].leader == name){
 				RoomManager.terminate(name);
-				io.emit('user:disconnect',{name:name});
+				//gio.emit('user:disconnect',{name:name});
+				gio.emit('game:create:terminate', {leader:name});
 			}else{
 				var leader = usersInRoom[name].leader;
 				usersInRoom[name].invited[name] = "waiting";
 				delete usersInRoom[name].players[name];
 				delete onlineUsers[name];
 				delete usersInRoom[name];
-				io.emit('game:create:update', {room:RoomManager.getRoom(leader)});
+				gio.emit('game:create:update', {room:RoomManager.getRoom(leader)});
 			}
 		}
 		return null;
 	};
 
 	self.addQueueSpot = function(leader){
+		if(!rooms[leader]) return;
 		if(rooms[leader].queues == 0){
 			roomsInQueue[leader] = rooms[leader];
 		}
-		rooms[leader].queues++;
+		rooms[leader].queues ++;
 		attemptJoinAfterQueue();
 	};
 
 	self.removeQueueSpot = function(leader){
+		if(!rooms[leader]) return;
 		rooms[leader].queues--;
 		if(rooms[leader].queues == 0){
 			delete roomsInQueue[leader];
 		}
 	};
 
-	self.addQueue = function(user){
+	self.addQueue = function(user, socketID){
 		usersInQueue[user.name] = user;
+		onlineUsersInQueue[user.name] = user;
 		attemptJoinAfterQueue();
 	};
 
 	self.removeQueue = function(user){
-		usersInQueue[user.name] = user;
+		delete usersInQueue[user.name];
+		delete usersInQueue[user.name]
 	};
 
 	self.addInvited = function(leader, name){
+		if(!rooms[leader]) return;
 		var user = {state:'waiting', name:name};
 		rooms[leader].invited[name] = user;
 		return rooms[leader];
 	};
 
 	self.acceptInvite = function(leader, user){
+		if(!rooms[leader]) return;
 		if(usersInRoom[user.name]){
 			rooms[leader].invited[user.name].state = 'declined';
 			return 'busy';
@@ -165,6 +191,32 @@ var RoomManager = (function(){
 		if(isNotInvited){
 			return 'unavailable';
 		}
+
+		if(addPlayer(leader, user)){
+			rooms[leader].invited[user.name].state = 'accepted';
+			rooms[leader].players[user.name] = user;
+			return 'ok';
+		}else{
+			rooms[leader].invited[user.name].state = 'full';
+			return 'full';
+		}
+	};
+
+	self.declineInvite = function(leader, name){
+		rooms[leader].invited[name].state = 'declined';
+	};
+
+	self.terminate = function(leader){
+		if(!rooms[leader]) return;
+		for(name in rooms[leader].players){
+			delete usersInRoom[name];
+			delete onlineUsers[name];
+		}
+		delete roomsInQueue[name];
+		delete rooms[leader];
+	};
+
+	function addPlayer(leader, user){
 		var players_count = rooms[leader].queues;
 		var max_bot_id = -1;
 		for(name in rooms[leader].players){
@@ -182,28 +234,13 @@ var RoomManager = (function(){
 			}
 		}
 		if(players_count < 10){
-			rooms[leader].invited[user.name].state = 'accepted';
 			rooms[leader].players[user.name] = user;
 			usersInRoom[user.name] = rooms[leader];
-			return 'ok';
+			return true;
 		}else{
-			rooms[leader].invited[user.name].state = 'full';
-			return 'full';
+			return false;
 		}
-	};
-
-	self.declineInvite = function(leader, name){
-		rooms[leader].invited[name].state = 'declined';
-	};
-
-	self.terminate = function(leader){
-		for(name in rooms[leader].players){
-			delete usersInRoom[name];
-			delete onlineUsers[name];
-		}
-		delete roomsInQueue[name];
-		delete rooms[leader];
-	};
+	} 
 
 	function removePlayer(leader, player){
 		delete onlineUsers[player.name]
@@ -226,6 +263,17 @@ var RoomManager = (function(){
 			var user = usersInQueue[u_key];
 			for(r_key in roomsInQueue){
 				var room = roomsInQueue[r_key];
+				RoomManager.removeQueueSpot(room.leader);
+				RoomManager.removeQueue(user);
+
+				if(!addPlayer(room.leader, user)){
+					RoomManager.addQueueSpot(room.leader);
+					RoomManager.addQueue(user);
+				}else{
+					gio.emit('game:create:update', {room:RoomManager.getRoom(room.leader)});
+					gio.emit('game:create:acceptedqueue', {name:user.name});
+				}
+				break;
 			}
 		}
 	}
@@ -277,23 +325,23 @@ module.exports.sio = function(io, socket) {
 	});
 
 	socket.on('game:create:addqueuespot', function(data){
-		//	RoomManager.addQueueSpot(data.leader);
+		RoomManager.addQueueSpot(data.leader);
 		io.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
 	});
 
 	socket.on('game:create:removequeuespot', function(data){
-		//	RoomManager.removeQueueSpot(data.leader);
+		RoomManager.removeQueueSpot(data.leader);
 		io.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
 	});
 
 	socket.on('game:create:addqueue', function(data){
-		//	RoomManager.addQueue(data.leader);
-		io.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
+		RoomManager.addQueue(data.user, socket.id);
+		socket.emit('game:create:addqueue',{name:data.user.name});
 	});
 
 	socket.on('game:create:removequeue', function(data){
-		//	RoomManager.removeQueue(data.leader);
-		io.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
+		RoomManager.removeQueue(data.user);
+		socket.emit('game:create:removequeue',{name:data.user.name});
 	});
 
 	socket.on('game:create:addinvited', function(data){
@@ -343,7 +391,7 @@ module.exports.sio = function(io, socket) {
 	});
 
 	socket.on('disconnect', function(){
-		var leader = RoomManager.onPlayerDisconnected(io, socket.id);
+		var leader = RoomManager.onPlayerDisconnected(socket.id);
 		if(leader){
 			io.emit('game:create:update', {room:RoomManager.getRoom(leader)});
 		}

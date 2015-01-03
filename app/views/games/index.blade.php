@@ -18,8 +18,8 @@
         </div>
       </a>
     </div>
-    <div ng-if="!isPlaying && !isSearching" class="col-md-6">
-      <div class="jumbotron button" ng-click="searchGame()">
+    <div ng-if="!isPlaying && !isSearching" class="col-md-6" ng-click="searchGame()">
+      <div class="jumbotron button">
         <h2 class="text-success"><span class="glyphicon glyphicon-play"></span>&nbsp;&nbsp;&nbsp;Join Game</h2>
       </div>
     </div>
@@ -30,15 +30,14 @@
         </div>
       </a>
     </div>
-    <div ng-if="isSearching" class="col-md-12">
-        <div class="jumbotron button searching" ng-click="stopSearching()">
+    <div ng-if="isSearching" class="col-md-12" ng-click="stopSearching()">
+        <div class="jumbotron button searching">
           <h2 class="text-info">
             <i class="fa fa-spinner fa-spin"></i>
             <span>&nbsp;&nbsp;&nbsp;</span><span>Searching for a Game</span><span>&nbsp;&nbsp;&nbsp;</span>
             <small>Time In Queue: <timer interval="1000">[[minutes]] minute[[minutesS]],&nbsp; [[seconds]] second[[secondsS]]</timer></small>
           </h2>
           <h2 class="text-warning searching"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;&nbsp;Stop Searching</h2>
-          
         </div>
     </div>
   </div>
@@ -48,6 +47,7 @@
     <div class="row-item games">
       <h3>Ongoing Games</h3>
       <hr>
+      <p ng-if="!ongoingGames.length" class="text-muted"> There are no games currently being played.</p>
       <div class="games-wrapper clearfix">
         <div class="game-wrapper" ng-repeat='game in ongoingGames'>
           <div class="game">

@@ -45,6 +45,18 @@ function notification(id, type, message_type, message_text, game_owner, game_inv
 	}
 }
 
-appServices.service('FriendList', function(){
-	return {onlineFriends:[]};
+appServices.service('FriendList', function($http){
+	var service = {};
+
+	service.onlineFriends = [];
+
+	service.getFriendsList = function(){
+		return $http.get('/friends/friendsList');
+	};
+
+	service.newFriend = function(data){
+		return $http.post('/friends/create', data);
+	};
+
+	return service;
 })

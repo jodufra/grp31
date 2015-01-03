@@ -107,6 +107,10 @@ module.exports.sio = function(io, socket) {
 		io.emit('notification_handler:newNotification', new_notification);
 	});
 
+	socket.on('notification_handler:wearefriends', function(data){
+		io.emit('notification_handler:wearefriends', data);
+	});
+
 	socket.on('notification_handler:dismissNotification', function(data){
 		NotificationsHandler.dismissNotification(data.name, data.id);
 		socket.emit('notification_handler:dismissNotification', {id:data.id});

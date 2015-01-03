@@ -31,6 +31,9 @@ Route::group(array('before' => 'guest'), function () {
 
 // Only Users
 Route::group(array('before' => 'auth'), function () {
+    //Friends
+    Route::get('/friends/friendsList', 'FriendsController@friendsList');
+    Route::post('/friends/create', 'FriendsController@create');
     // Player
     Route::controller('player', 'PlayersController');
     // Auth
@@ -38,14 +41,12 @@ Route::group(array('before' => 'auth'), function () {
     Route::put('user/update', array('uses' => 'UsersController@update', 'as' => 'user.update'));
 });
 
-// Not Finished Yet
+// Not Finished
 Route::group(array('before' => 'not.finished'), function () {
     Route::resource('tournament','TournamentController');
     Route::resource('replay','ReplayController');
     Route::resource('calendar','CalendarController');
     Route::resource('ranking','RankingController');
     Route::get('user/edit', array('uses' => 'UsersController@edit', 'as' => 'user.edit'));
-
     Route::delete('user/delete', array('uses' => 'UsersController@delete', 'as' => 'user.delete'));
-
 });

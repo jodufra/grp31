@@ -27,9 +27,9 @@
 				</button>
 				<span class="pull-left">&nbsp;</span>
 				<div class="pull-left">
-				<button ng-disabled="canStartGame() == false"ng-click="startGame()" type="submit" class="btn btn-primary btn-sm">
-					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>&nbsp;Start Game
-				</button>
+					<button ng-disabled="canStartGame() == false"ng-click="startGame()" type="submit" class="btn btn-primary btn-sm">
+						<span class="glyphicon glyphicon-play" aria-hidden="true"></span>&nbsp;Start Game
+					</button>
 				</div>
 			</div>
 		</div>
@@ -46,6 +46,7 @@
 		</div>
 		<hr>
 	</div>
+
 	<div class="col-md-9">
 		<div class="row">
 			<div ng-if="havePlayers()" class="list-group">
@@ -58,14 +59,28 @@
 						<span ng-if="!isLeader(player.name) && !isUser(player.name) && isLeader(user.name)" ng-click="removePlayerOrBot(player.id)" class="glyphicon glyphicon-remove" aria-hidden="true" style="position: absolute;top:5px;right:5px;cursor:pointer;color:gray;"></span>
 					</div>
 				</div>
-				<div class="list-group-item col-md-6 clearfix empty searching" ng-repeat="n in [] | range: (10 - getPlayers().length)">
-					<div class="content">
-
+				<div class="list-group-item col-md-6 clearfix empty searching" ng-click="removeQueueSpot()" ng-repeat="n in [] | range:queues">
+					<div class="content text-center">
+						<span class="text-info">
+							<i class="fa fa-spinner fa-spin"></i>
+							<span>&nbsp;</span><span>Waiting for a Player</span><span>&nbsp;</span>
+							<small class="text-muted">Queue: <timer interval="1000">[[minutes]] m,&nbsp; [[seconds]] s</timer></small>
+						</span>
 					</div>
 				</div>
+				<div ng-if="isLeader(user.name)" ng-repeat="n in [] | range: (10 - (getPlayers().length + queues))" class="list-group-item col-md-6 clearfix empty" ng-click="addQueueSpot()">
+					<div class="content text-center" style="opacity: 0.5">
+						<span><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Search for a Player</span>
+					</div>
+				</div>
+				<!-- <div class="list-group-item col-md-6 clearfix empty" ng-repeat="n in [] | range: (10 - (getPlayers().length + queues + 1))">
+					<div class="content">
+					</div>
+				</div> -->
 			</div>
 		</div>					
 	</div>
+
 	<div class="col-md-3" style="padding-right: 0">
 		<div class="row row-item">
 			<table class="table">
