@@ -1,4 +1,5 @@
 $(function(){
+	$('input[type=file]').bootstrapFileInput();
 	$('.datepicker').datepicker({});
 	timeoutAlerts();
 	setInterval(function(){refreshUI();}, 2500);
