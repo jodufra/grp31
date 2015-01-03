@@ -12,6 +12,8 @@ class UsersController extends BaseController
     public function __construct(User $user)
     {
         $this->user = $user;
+        $this->beforeFilter('csrf', array('on' => 'post'));
+        $this->beforeFilter('csrf', array('on' => 'post'));
     }
 
     public function getCurrentUser()

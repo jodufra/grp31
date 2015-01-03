@@ -1,6 +1,8 @@
 var NotificationsHandler = require('../notification_handler').notifications;
 var rooms = [];
 var usersInRoom = [];
+var usersInQueue = [];
+var roomsInQueue = [];
 var onlineUsers = [];
 
 var RoomManager = (function(){
@@ -10,7 +12,7 @@ var RoomManager = (function(){
 	self.init = function(user, socketID){
 		var name = user.name;
 		if(usersInRoom[name] == null){
-			rooms[name] = {leader: name, players:[], invited:[], timeouts:[]};
+			rooms[name] = {leader: name, players:[], invited:[], timeouts:[], queues:0};
 			rooms[name].players[name] = user;
 			usersInRoom[name] = rooms[name];
 		}else if(usersInRoom[name].timeouts[name]){
@@ -114,10 +116,28 @@ var RoomManager = (function(){
 		return null;
 	};
 
-	self.addQueue = function(leader){
+	self.addQueueSpot = function(leader){
+		if(rooms[leader].queues == 0){
+			roomsInQueue[leader] = rooms[leader];
+		}
+		rooms[leader].queues++;
+		attemptJoinAfterQueue();
 	};
 
-	self.removeQueue = function(leader){
+	self.removeQueueSpot = function(leader){
+		rooms[leader].queues--;
+		if(rooms[leader].queues == 0){
+			delete roomsInQueue[leader];
+		}
+	};
+
+	self.addQueue = function(user){
+		usersInQueue[user.name] = user;
+		attemptJoinAfterQueue();
+	};
+
+	self.removeQueue = function(user){
+		usersInQueue[user.name] = user;
 	};
 
 	self.addInvited = function(leader, name){
@@ -144,7 +164,7 @@ var RoomManager = (function(){
 		if(isNotInvited){
 			return 'unavailable';
 		}
-		var players_count = 0;
+		var players_count = rooms[leader].queues;
 		var max_bot_id = -1;
 		for(name in rooms[leader].players){
 			if(rooms[leader].players[name].id < 10 && max_bot_id < rooms[leader].players[name].id){
@@ -156,6 +176,8 @@ var RoomManager = (function(){
 			if(max_bot_id != -1){
 				RoomManager.removeRobot(leader);
 				players_count--;
+			}else if(rooms[leader].queues){
+				RoomManager.removeQueueSpot(leader);
 			}
 		}
 		if(players_count < 10){
@@ -178,6 +200,7 @@ var RoomManager = (function(){
 			delete usersInRoom[name];
 			delete onlineUsers[name];
 		}
+		delete roomsInQueue[name];
 		delete rooms[leader];
 	};
 
@@ -196,6 +219,10 @@ var RoomManager = (function(){
 			}
 		}
 	} 
+
+	function attemptJoinAfterQueue(){
+		
+	}
 
 	function connectUser(user, socketID){
 		usersInRoom[user.name].players[user.name].online = true;
@@ -218,12 +245,11 @@ module.exports.sio = function(io, socket) {
 	socket.on('game:create:removeplayer', function(data){
 		RoomManager.removePlayer(data.leader, data.player);
 		var note = {type:'danger', text:'You were kicked out of the game room.'};
-		var notification = {id:0, type:1, message:note};
-		var new_notification = {name:data.player.name, notification:notification};
+		var new_notification = {name:data.player.name, notification:{id:0, type:1, message:note}};
 		new_notification = NotificationsHandler.newNotification(new_notification);
 
-		socket.emit('game:create:removeplayer', {name:data.player.name});
-		socket.emit('notification_handler:newNotification', new_notification);
+		io.emit('game:create:removeplayer', {leader:data.leader, name:data.player.name});
+		io.emit('notification_handler:newNotification', new_notification);
 		io.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
 	});
 
@@ -239,6 +265,16 @@ module.exports.sio = function(io, socket) {
 
 	socket.on('game:create:removeallbots', function(data){
 		RoomManager.removeAllBots(data.leader);
+		io.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
+	});
+
+	socket.on('game:create:addqueuespot', function(data){
+		//	RoomManager.addQueueSpot(data.leader);
+		io.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
+	});
+
+	socket.on('game:create:removequeuespot', function(data){
+		//	RoomManager.removeQueueSpot(data.leader);
 		io.emit('game:create:update', {room:RoomManager.getRoom(data.leader)});
 	});
 

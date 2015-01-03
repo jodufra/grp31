@@ -34,9 +34,7 @@
         <div class="jumbotron button searching" ng-click="stopSearching()">
           <h2 class="text-info">
             <i class="fa fa-spinner fa-spin"></i>
-            <span>&nbsp;&nbsp;&nbsp;</span>
-            <span>Searching for a Game</span>
-            <span>&nbsp;&nbsp;&nbsp;</span>
+            <span>&nbsp;&nbsp;&nbsp;</span><span>Searching for a Game</span><span>&nbsp;&nbsp;&nbsp;</span>
             <small>Time In Queue: <timer interval="1000">[[minutes]] minute[[minutesS]],&nbsp; [[seconds]] second[[secondsS]]</timer></small>
           </h2>
           <h2 class="text-warning searching"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;&nbsp;Stop Searching</h2>
@@ -51,7 +49,7 @@
       <h3>Ongoing Games</h3>
       <hr>
       <div class="games-wrapper clearfix">
-        <div class="game-wrapper">
+        <div class="game-wrapper" ng-repeat='game in ongoingGames'>
           <div class="game">
             <div class="wrapper clearfix"> 
               <div class="logo">
@@ -62,185 +60,21 @@
                 <span class="glyphicon glyphicon-search"></span>
               </div>
               <div class="names impar">
-                <span>nasdame 1</span>
-                <span>name 1</span>
-                <span>namasdasasde 1</span>
-                <span>nasme 1</span>
-                <span>nadasdme 1</span>
+                <div ng-repeat="player in game.players" ng-if="player.player_num % 2">
+                  <a ng-if="!(player.id < 10)" ng-bind="player.name" href="/user/show/[[player.name]]"></a>
+                  <span ng-if="player.id < 10" ng-bind="player.name"></span>
+                </div>
               </div>
               <div class="names par">
-                <span>naasdaasdsme 1</span>
-                <span>nawqeme 1</span>
-                <span>namwwqee 1</span>
-                <span>namdsade 1</span>
-                <span>naaame 1</span>
+                <div ng-repeat="player in game.players" ng-if="!(player.player_num % 2)">
+                  <a ng-if="!(player.id < 10)" ng-bind="player.name" href="/user/show/[[player.name]]"></a>
+                  <span ng-if="player.id < 10" ng-bind="player.name"></span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="game-wrapper">
-          <div class="game">
-            <div class="wrapper clearfix"> 
-              <div class="logo">
-                <span class="helper"></span>
-                <img src="/img/yahtzee_logo.png" alt="">
-              </div>
-              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
-                <span class="glyphicon glyphicon-search"></span>
-              </div>
-              <div class="names impar">
-                <span>nasdame 1</span>
-                <span>name 1</span>
-                <span>namasdasasde 1</span>
-                <span>nasme 1</span>
-                <span>nadasdme 1</span>
-              </div>
-              <div class="names par">
-                <span>naasdaasdsme 1</span>
-                <span>nawqeme 1</span>
-                <span>namwwqee 1</span>
-                <span>namdsade 1</span>
-                <span>naaame 1</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="game-wrapper">
-          <div class="game">
-            <div class="wrapper clearfix"> 
-              <div class="logo">
-                <span class="helper"></span>
-                <img src="/img/yahtzee_logo.png" alt="">
-              </div>
-              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
-                <span class="glyphicon glyphicon-search"></span>
-              </div>
-              <div class="names impar">
-                <span>nasdame 1</span>
-                <span>name 1</span>
-                <span>namasdasasde 1</span>
-                <span>nasme 1</span>
-                <span>nadasdme 1</span>
-              </div>
-              <div class="names par">
-                <span>naasdaasdsme 1</span>
-                <span>nawqeme 1</span>
-                <span>namwwqee 1</span>
-                <span>namdsade 1</span>
-                <span>naaame 1</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="game-wrapper">
-          <div class="game">
-            <div class="wrapper clearfix"> 
-              <div class="logo">
-                <span class="helper"></span>
-                <img src="/img/yahtzee_logo.png" alt="">
-              </div>
-              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
-                <span class="glyphicon glyphicon-search"></span>
-              </div>
-              <div class="names impar">
-                <span>nasdame 1</span>
-                <span>name 1</span>
-                <span>namasdasasde 1</span>
-                <span>nasme 1</span>
-                <span>nadasdme 1</span>
-              </div>
-              <div class="names par">
-                <span>naasdaasdsme 1</span>
-                <span>nawqeme 1</span>
-                <span>namwwqee 1</span>
-                <span>namdsade 1</span>
-                <span>naaame 1</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="game-wrapper">
-          <div class="game">
-            <div class="wrapper clearfix"> 
-              <div class="logo">
-                <span class="helper"></span>
-                <img src="/img/yahtzee_logo.png" alt="">
-              </div>
-              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
-                <span class="glyphicon glyphicon-search"></span>
-              </div>
-              <div class="names impar">
-                <span>nasdame 1</span>
-                <span>name 1</span>
-                <span>namasdasasde 1</span>
-                <span>nasme 1</span>
-                <span>nadasdme 1</span>
-              </div>
-              <div class="names par">
-                <span>naasdaasdsme 1</span>
-                <span>nawqeme 1</span>
-                <span>namwwqee 1</span>
-                <span>namdsade 1</span>
-                <span>naaame 1</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="game-wrapper">
-          <div class="game">
-            <div class="wrapper clearfix"> 
-              <div class="logo">
-                <span class="helper"></span>
-                <img src="/img/yahtzee_logo.png" alt="">
-              </div>
-              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
-                <span class="glyphicon glyphicon-search"></span>
-              </div>
-              <div class="names impar">
-                <span>nasdame 1</span>
-                <span>name 1</span>
-                <span>namasdasasde 1</span>
-                <span>nasme 1</span>
-                <span>nadasdme 1</span>
-              </div>
-              <div class="names par">
-                <span>naasdaasdsme 1</span>
-                <span>nawqeme 1</span>
-                <span>namwwqee 1</span>
-                <span>namdsade 1</span>
-                <span>naaame 1</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="game-wrapper">
-          <div class="game">
-            <div class="wrapper clearfix"> 
-              <div class="logo">
-                <span class="helper"></span>
-                <img src="/img/yahtzee_logo.png" alt="">
-              </div>
-              <div class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
-                <span class="glyphicon glyphicon-search"></span>
-              </div>
-              <div class="names impar">
-                <span>nasdame 1</span>
-                <span>name 1</span>
-                <span>namasdasasde 1</span>
-                <span>nasme 1</span>
-                <span>nadasdme 1</span>
-              </div>
-              <div class="names par">
-                <span>naasdaasdsme 1</span>
-                <span>nawqeme 1</span>
-                <span>namwwqee 1</span>
-                <span>namdsade 1</span>
-                <span>naaame 1</span>
-              </div>
-            </div>
-          </div>
-        </div>
 
       </div>
     </div>

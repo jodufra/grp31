@@ -1,12 +1,34 @@
-appServices.service('GameStore', function($http){
-    var self = function(data){
-        return $http.post( '/game', data );
-    }
-    return self;
+appServices.service('GameIndex', function($http){
+    var service = {};
+    service.getOngoingGames = function(){
+        return $http.get( '/game/ongoinggames' );
+    };
+
+    return service;
 });
+
+appServices.service('GameStore', function($http){
+    var service = function(data){
+        return $http.post( '/game/store', data );
+    }
+    return service;
+});
+
+appServices.service('GameShow', function($http){
+    var service = {};
+    service.getReroll = function(dicesCount){
+        return $http.post( '/game/getReroll', dicesCount );
+    };
+    service.getDices = function(){
+        return $http.get( '/game/getDices' );
+    };
+
+    return service;
+});
+
 app.factory('Dices', function ($q, $http)
 {
-    var self = {
+    var service = {
         getReroll : function(dicesCount){
             return $http.post( '/game/getReroll', dicesCount );
         },
@@ -14,7 +36,7 @@ app.factory('Dices', function ($q, $http)
             return $http.get( '/game/getDices' );
         },
     };
-    return self;
+    return service;
 });
 
 app.factory('Dice', function ()

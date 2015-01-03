@@ -1,9 +1,10 @@
-appControllers.controller('GameIndexController', function($scope, $http){
+appControllers.controller('GameIndexController', function($scope, $http, GameIndex){
 	$scope.user;
 	$scope.started = false;
 	$scope.isUser = false;
 	$scope.isPlaying = false;
 	$scope.isSearching = false;
+	$scope.ongoingGames = [];
 	
 	$scope.$on('user:init', function(event, data) {
 		if(data.isUser){
@@ -15,7 +16,11 @@ appControllers.controller('GameIndexController', function($scope, $http){
 	});
 
 	function init(){
-		
+		GameIndex.getOngoingGames().success(function(data){
+			$scope.ongoingGames = data;
+		}).error(function(){
+			$scope.ongoingGames = [];
+		});
 	}
 
 	$scope.searchGame = function(){

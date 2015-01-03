@@ -55,12 +55,43 @@ class GameController extends \BaseController {
     	return Response::json($dices);
     }
 
+    public function getOngoinggames()
+    {
+    	$games = [];
+    	$q_games = Game::take(10)->skip(0)->get();
+    	$g_count = 0;
+    	foreach ($q_games as $this->game) {
+    		$games[$g_count] = [];
+    		$games[$g_count]['id'] = $this->game->id;
+    		$games[$g_count]['players'] = [];
+    		$q_players = DB::table('games_have_players')->where('game_id', $games[$g_count]['id'])->get();
+    		$p_count = 0;
+    		foreach ($q_players as $game_have_players) {
+    			if($game_have_players->player_id < 10){
+    				$games[$g_count]['players'][$p_count]['player_num'] = $game_have_players->player_num;
+    				$games[$g_count]['players'][$p_count]['id'] = $game_have_players->player_id;
+    				$games[$g_count]['players'][$p_count]['name'] = 'Robot '.$game_have_players->player_id;
+    				$p_count++;
+    			}else{
+    				$user_id = Player::find($game_have_players->player_id)->user_id;
+    				$games[$g_count]['players'][$p_count]['player_num'] = $game_have_players->player_num;
+    				$games[$g_count]['players'][$p_count]['id'] = $game_have_players->player_id;
+    				$games[$g_count]['players'][$p_count]['name'] = User::find($user_id)->username;
+    				$p_count++;
+    			}
+    		}
+    		$g_count++;
+    	}
+
+    	return $games;
+    }
+
 	/**
 	 * Display a listing of games
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function getIndex()
 	{
 		//$games = Game::all();
 
@@ -74,7 +105,7 @@ class GameController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function getCreate()
 	{
 		return View::make('games.create');
 	}
@@ -84,7 +115,7 @@ class GameController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store(){   
+	public function postStore(){   
 		$data = [];
 		$data['players_count'] = 0;
 		$data['one_player_is_user'] = false;
@@ -134,7 +165,7 @@ class GameController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function getShow($id)
 	{
 		//$game = Game::findOrFail($id);
 
@@ -148,7 +179,7 @@ class GameController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function getEdit($id)
 	{
 		$game = Game::find($id);
 
@@ -161,7 +192,7 @@ class GameController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function putUpdate($id)
 	{
 		$game = Game::findOrFail($id);
 
@@ -183,32 +214,10 @@ class GameController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function deleteDestroy($id)
 	{
 		Game::destroy($id);
 
 		return Redirect::route('games.index');
-	}
-
-	public function getGames()
-	{
-		$games = [];
-		$q_games = Game::take(10)->skip(10)->get();
-		$g_count = 0;
-		foreach ($q_games as $this->game) {
-			$games[$g_count] = [];
-			$games[$g_count]->id = $this->game->id;
-			$q_players = DB::table('games_have_players')->where('game_id', $games[$g_count]->id);
-
-			$p_count = 0;
-			foreach ($q_players as $player) {
-				$player[$p_count] = [];
-				$player[$p_count]->name = $player->user()->first()->username;
-				$p_count++;
-			}
-			$g_count++;
-		}
-
-		return Response::json();
 	}
 }

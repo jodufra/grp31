@@ -11,6 +11,11 @@
 */
 
 Route::get('/', array('uses' => 'HomeController@showHome', 'as' => 'home'));
+// Game
+Route::controller('game','GameController');
+// User
+Route::get('user/show/{username}', array('uses' => 'UsersController@show', 'as' => 'user.show'));
+
 
 // Only Guests
 Route::group(array('before' => 'guest'), function () {
@@ -26,16 +31,10 @@ Route::group(array('before' => 'guest'), function () {
 
 // Only Users
 Route::group(array('before' => 'auth'), function () {
-    // User
-    Route::get('user/show/{username}', array('uses' => 'UsersController@show', 'as' => 'user.show'));
     // Player
     Route::controller('player', 'PlayersController');
     // Auth
     Route::get('logout', array('uses' => 'AuthController@getLogout', 'as' => 'logout'));
-    // Game
-    Route::resource('game','GameController');
-	Route::get('game/getDices','GameController@getDices');
-    Route::get('getGames','GameController@getGames');
 });
 
 // Not Finished Yet

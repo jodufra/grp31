@@ -91,13 +91,6 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 		return players;
 	};
 
-	socket.on('game:create:removeplayer', function(data){
-		if(data.name==$scope.user.name){
-			$window.location.href = '/game/';
-		}
-		$scope.$apply();
-	});
-
 	$scope.addRobot = function(){
 		if($scope.started && $scope.isLeader($scope.user.name) && $scope.players.length < 10){
 			var bot_id = $scope.botsCount() + 1;
@@ -129,6 +122,13 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 			}
 		}
 	};
+
+	socket.on('game:create:removeplayer', function(data){
+		if(data.leader==$scope.leader && data.name==$scope.user.name){
+			$window.location.href = '/game/';
+		}
+		$scope.$apply();
+	});
 
 	$scope.leaveRoom = function(){
 		socket.emit('game:create:leave',{leader:$scope.leader, player:$scope.user});
@@ -245,7 +245,7 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 			$scope.started = false;
 			$scope.$apply();
 			alert('Game is starting. Press OK to continue.');
-			$window.location.href = '/game/'+data.game_id;
+			$window.location.href = '/game/show/'+data.game_id;
 		}
 		$scope.$apply();
 	});
