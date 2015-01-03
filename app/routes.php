@@ -35,6 +35,7 @@ Route::group(array('before' => 'auth'), function () {
     Route::controller('player', 'PlayersController');
     // Auth
     Route::get('logout', array('uses' => 'AuthController@getLogout', 'as' => 'logout'));
+    Route::put('user/update', array('uses' => 'UsersController@update', 'as' => 'user.update'));
 });
 
 // Not Finished Yet
@@ -44,7 +45,7 @@ Route::group(array('before' => 'not.finished'), function () {
     Route::resource('calendar','CalendarController');
     Route::resource('ranking','RankingController');
     Route::get('user/edit', array('uses' => 'UsersController@edit', 'as' => 'user.edit'));
-    Route::put('user/update', array('uses' => 'UsersController@update', 'as' => 'user.update'));
+
     Route::delete('user/delete', array('uses' => 'UsersController@delete', 'as' => 'user.delete'));
 
 });

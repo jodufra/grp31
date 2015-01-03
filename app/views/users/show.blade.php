@@ -2,7 +2,7 @@
 @section('body')
 <div class="container">
     <div>
-        @if(Auth::check())
+        @if(Auth::check() && Auth::user()->id == $user->id)
 
         <br><br>
 
@@ -13,7 +13,7 @@
             </ul>
             <div id="myTabContent" class="tab-content">
                 <div class="tab-pane active in" id="home">
-                    <form id="tab">
+                    <div id="tab">
                         <div class="container-fluid well span5">
                             <div class="row-fluid">
                                 <div class="media">
@@ -24,8 +24,9 @@
                                     <div class="media-body">
                                         <h2 class="media-heading">{{Auth::user()->username}}</h2>
                                         <div>
-                                            {{Form::open(array('route' => array('user.store'), 'method' => 'post', 'enctype' => 'multipart/form-data'))}}
-                                            {{Form::file('photo_file',null, array('class'=>'file-input'))}}
+                                            {{Form::open(array('route' => array('user.update'), 'method' => 'PUT', 'enctype' => 'multipart/form-data'))}}
+                                            {{Form::file('photo_update')}}
+                                            {{Form::submit('Register', array('class' => 'btn btn-primary'))}}
                                             {{Form::close()}}
                                         </div>
                                     </div>
@@ -89,7 +90,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="profile">
                         <div class="clearfix well">
