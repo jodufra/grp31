@@ -166,7 +166,7 @@ class UsersController extends BaseController
 
 
 		}
-		return $this->show(Auth::user()->username);
+		return Redirect::route('user.show', array(Auth::user()->username));
 	}
 
 	/**
