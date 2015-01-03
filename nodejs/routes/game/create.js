@@ -4,6 +4,7 @@ var usersInRoom = [];
 var usersInQueue = [];
 var roomsInQueue = [];
 var onlineUsers = [];
+var gio;
 
 var RoomManager = (function(){
 	var self = {};
@@ -221,7 +222,12 @@ var RoomManager = (function(){
 	} 
 
 	function attemptJoinAfterQueue(){
-		
+		for(u_key in usersInQueue){
+			var user = usersInQueue[u_key];
+			for(r_key in roomsInQueue){
+				var room = roomsInQueue[r_key];
+			}
+		}
 	}
 
 	function connectUser(user, socketID){
@@ -235,6 +241,8 @@ var RoomManager = (function(){
 
 
 module.exports.sio = function(io, socket) {
+	gio = io;
+
 	socket.on('game:create:init', function(data){
 		RoomManager.init(data.user, socket.id);
 		var room = RoomManager.getRoom(data.user.name);
