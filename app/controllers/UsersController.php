@@ -67,15 +67,14 @@ class UsersController extends BaseController
 		try {
 			if (Input::hasFile('photo_file')) {
 
-				$extension = Input::file('photo_file')->getClientOriginalExtension();
 				$filename = $this->user->username;
 				$filename = str_replace(' ', '_', $filename);
 				$filename = preg_replace('/[^A-Za-z0-9\-]/', '', $filename);
 				if ($filename == '') {
 					$filename = 'user' . $this->user->id;
 				}
-				Input::file('photo_file')->move(public_path() . '/img/uploads/', $filename . '.' . $extension);
-				$data['photo'] = ('/img/uploads/' . $filename . '.' . $extension);
+				Input::file('photo_file')->move(public_path() . '/img/uploads/', $filename);
+				$data['photo'] = ('/img/uploads/' . $filename);
 			} else {
 				$data['photo'] = ('/img/default.png');
 			}
@@ -152,15 +151,14 @@ class UsersController extends BaseController
 
 			$person = Auth::user()->person()->first();
 
-			$extension = Input::file('photo_update')->getClientOriginalExtension();
-			$filename = $this->user->username;
+			$filename = Auth::user()->username;
 			$filename = str_replace(' ', '_', $filename);
 			$filename = preg_replace('/[^A-Za-z0-9\-]/', '', $filename);
 			if ($filename == '') {
-				$filename = 'user' . $this->user->id;
+				$filename = 'user'.Auth::user()->id;
 			}
-			Input::file('photo_update')->move(public_path() . '/img/uploads/', $filename . '.' . $extension);
-			$photo = ('/img/uploads/' . $filename . '.' . $extension);
+			Input::file('photo_update')->move(public_path() . '/img/uploads/', $filename);
+			$photo = ('/img/uploads/' . $filename);
 			$person->photo = $photo;
 			$person->push();
 
