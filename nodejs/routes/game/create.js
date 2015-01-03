@@ -5,17 +5,19 @@ var onlineUsers = [];
 
 var RoomManager = (function(){
 	var self = {};
-	var TIMEOUT_DISCONNECT = 7500;
+	var TIMEOUT_FOR_DISCONNECT = 7500;
 
 	self.init = function(user, socketID){
 		var name = user.name;
 		if(usersInRoom[name] == null){
-			createRoom(user);
-		}else {
-			destroyTimeout(name);
+			rooms[name] = {leader: name, players:[], invited:[], timeouts:[]};
+			rooms[name].players[name] = user;
+			usersInRoom[name] = rooms[name];
+		}else if(usersInRoom[name].timeouts[name]){
+			clearTimeout(usersInRoom[name].timeouts[name]);
+			delete usersInRoom[name].timeouts[name];
 		}
 		connectUser(user, socketID);
-
 	};
 
 	self.getRoom = function (name) {
@@ -25,17 +27,15 @@ var RoomManager = (function(){
 		room.players=[];
 		room.invited=[];
 		room.timeouts=[];
-
 		for(key in usersInRoom[name].players){
 			room.players.push(usersInRoom[name].players[key]);
 		}
 		for(key in usersInRoom[name].invited){
 			room.invited.push(usersInRoom[name].invited[key]);
-		}
+		}		
 		for(key in usersInRoom[name].timeouts){
-			room.timeouts.push(usersInRoom[name].timeouts[key]);
+			room.timeouts.push(usersInRoom[name].timeouts[key].name);
 		}
-
 		return room;
 	};
 
@@ -81,19 +81,37 @@ var RoomManager = (function(){
 	};
 
 	self.onPlayerDisconnected = function(io, socketID){
-		createTimeout(io, socketID);
+		var username = '';
+		for(name in onlineUsers){
+			if(onlineUsers[name].socketID == socketID){
+				username = name;
+				break;
+			}
+		}
+		if(username != ''){
+			usersInRoom[username].players[username].online = false;
+			usersInRoom[username].timeouts[username] = {};
+			usersInRoom[username].timeouts[username].name = username;
+			usersInRoom[username].timeouts[username].timeout = setTimeout(function(){ RoomManager.disconnectPlayer(io, username)}, TIMEOUT_FOR_DISCONNECT);
+			return usersInRoom[username].leader;
+		}
 	};
 
 	self.disconnectPlayer = function(io, name){
-		if(usersInRoom[name].leader == name){
-			RoomManager.terminate(name);
-			io.emit('user:disconnect',{name:name});
-		}else{
-			usersInRoom[name].invited[name] = "waiting";
-			delete usersInRoom[name].players[name];
-			delete usersInRoom[name];
-			delete onlineUsers[name];
+		if(usersInRoom[name]){
+			if(usersInRoom[name].leader == name){
+				RoomManager.terminate(name);
+				io.emit('user:disconnect',{name:name});
+			}else{
+				var leader = usersInRoom[name].leader;
+				usersInRoom[name].invited[name] = "waiting";
+				delete usersInRoom[name].players[name];
+				delete onlineUsers[name];
+				delete usersInRoom[name];
+				io.emit('game:create:update', {room:RoomManager.getRoom(leader)});
+			}
 		}
+		return null;
 	};
 
 	self.addQueue = function(leader){
@@ -182,33 +200,6 @@ var RoomManager = (function(){
 	function connectUser(user, socketID){
 		usersInRoom[user.name].players[user.name].online = true;
 		onlineUsers[user.name] = {name:user.name, socketID:socketID};
-	}
-
-	function destroyTimeout(name){
-		if(usersInRoom[name].timeouts[name]){
-			clearTimeout(usersInRoom[name].timeouts[name]);
-			delete usersInRoom[name].timeouts[name];
-		}
-	}
-
-	function createTimeout(io, socketID){
-		var user = null;
-		for(name in onlineUsers){
-			if(onlineUsers[name].socketID == socketID){
-				user = onlineUsers[name];
-				break;
-			}
-		}
-		if(user != null){
-			usersInRoom[user.name].players[user.name].online = false;
-			usersInRoom[user.name].timeouts[user.name] = setTimeout(function(){ RoomManager.disconnectPlayer(io, user.name)}, TIMEOUT_DISCONNECT);
-		}
-	}
-
-	function createRoom(user){
-		rooms[user.name] = {leader: user.name, players:[], invited:[], timeouts:[]};
-		rooms[user.name].players[user.name] = user;
-		usersInRoom[user.name] = rooms[user.name];
 	}
 
 	return self;
@@ -308,6 +299,9 @@ module.exports.sio = function(io, socket) {
 	});
 
 	socket.on('disconnect', function(){
-		RoomManager.onPlayerDisconnected(io, socket.id);
+		var leader = RoomManager.onPlayerDisconnected(io, socket.id);
+		if(leader){
+			io.emit('game:create:update', {room:RoomManager.getRoom(leader)});
+		}
 	});
 }
