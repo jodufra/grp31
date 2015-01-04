@@ -19,6 +19,14 @@
 		<div class="container">
 			<div class="row players-wrapper">
 				<div class="players clearfix">
+					<div class="player" >
+						<img src="/img/default.png" class="portrait" alt="">
+						<span>user</span>
+					</div>
+					<div class="player" >
+						<img src="/img/default.png" class="portrait active" alt="">
+						<span>opponent</span>
+					</div>
 					<div class="player" ng-repeat="n in [] | range:8">
 						<img src="/img/default.png" class="portrait" alt="">
 						<span>username</span>
@@ -29,7 +37,7 @@
 				<div class="col-xs-9">
 					<div class="row">
 						<div class="player single-player">
-							<img src="/img/default.png" class="portrait" alt="">
+							<img src="/img/default.png" class="portrait active" alt="">
 							<span>opponent</span>
 						</div>
 					</div>
@@ -75,7 +83,7 @@
 								<th>Score Table</th>
 								<th style="position:relative">
 									<i ng-click="previousCurrentScore()" class="fa fa-chevron-left btn-navigation btn-navigation-score btn-navigation-left"></i>
-									<span >asdasdasdasdsa</span>
+									<span >opponent</span>
 									<i ng-click="nextCurrentScore()" class="fa fa-chevron-right text-right btn-navigation btn-navigation-score btn-navigation-right"></i>
 								</th>
 							</tr>
