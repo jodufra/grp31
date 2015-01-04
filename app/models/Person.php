@@ -29,6 +29,19 @@ class Person extends Eloquent
 		'credit_card_valid_year' => 'required',
 	];
 
+	public static $rulesUpdate = [
+		'photo_file' => 'image',
+		'name_update' => 'required|min:2',
+//		'last_name' => 'required|min:2',
+//		'country' => 'required',
+		'address' => 'min:12',
+		'phone' => 'min:9',
+//		'credit_card_titular' => 'required|min:6',
+//		'credit_card_num' => 'required|min:13',
+//		'credit_card_valid_month' => 'required',
+//		'credit_card_valid_year' => 'required',
+	];
+
 	protected $fillable = [
 		'name',
 		'photo',

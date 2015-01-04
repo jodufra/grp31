@@ -146,6 +146,21 @@ class UsersController extends BaseController
 	 */
 	public function update()
 	{
+		$data = Input::all();
+		$person = Auth::user()->person()->first();
+		$user = Auth::user();
+
+		$validator = Validator::make($data, User::$create_rules_update);
+		if ($validator->fails()) {
+			return Redirect::route('user.show', array(Auth::user()->username))->withErrors($validator)->withInput();
+		}
+
+
+		$validator = Validator::make($data, Person::$rulesUpdate);
+		if ($validator->fails()) {
+			return Redirect::route('user.show', array(Auth::user()->username))->withErrors($validator)->withInput();
+		}
+
 
 		if (Input::hasFile('photo_update')) {
 
@@ -160,10 +175,38 @@ class UsersController extends BaseController
 			Input::file('photo_update')->move(public_path() . '/img/uploads/', $filename);
 			$photo = ('/img/uploads/' . $filename);
 			$person->photo = $photo;
-			$person->push();
+			;
+
+			if(Input::has('password') && Input::has('password_confirmation'))
+			{
+
+			}
+
+		}
+
+		if(Input::has('email'))
+		{
+			$user->email = $data['email'];
+		}
+
+
+		if(Input::has('password') && Input::has('password_confirmation') && (Input::has('password') == Input::has('password_confirmation')))
+		{
+			$data['password'] = Hash::make($data['password']);
+			$user->password = $data['password'];
 
 
 		}
+
+		if(Input::has('name_update'))
+		{
+
+//			$name = Input::get('name_update');
+			$person->name = $data['name_update'];
+
+			}
+		$user->push();
+		$person->push();
 		return Redirect::route('user.show', array(Auth::user()->username));
 	}
 

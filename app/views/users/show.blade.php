@@ -1,72 +1,73 @@
 @extends('...layouts.scaffold')
 @section('body')
-<div class="container">
-    <div>
-        @if(Auth::check() && Auth::user()->id == $user->id)
+    <div class="container">
+        <div>
+            @if(Auth::check() && Auth::user()->id == $user->id)
 
-        <br><br>
+                <br><br>
 
-        <div class="well">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#home" data-toggle="tab">Profile</a></li>
-                <li><a href="#profile" data-toggle="tab">Statistics</a></li>
-            </ul>
-            <div id="myTabContent" class="tab-content">
-                <div class="tab-pane active in" id="home">
-                    <div id="tab">
-                        <div class="container-fluid well span5">
-                            <div class="row-fluid">
-                                <div class="media">
-                                    <a class="media-left">
-                                        <img src="{{ Auth::user()->person()->first()->photo}}"
-                                        class="img-tumbnail portrait portrait-l">
-                                    </a>
-                                    <div class="media-body">
-                                        <h2 class="media-heading">{{Auth::user()->username}}</h2>
-                                        <div>
-                                            {{Form::open(array('route' => array('user.update'), 'method' => 'PUT', 'enctype' => 'multipart/form-data'))}}
-                                            {{Form::file('photo_update')}}
-                                            {{Form::submit('Register', array('class' => 'btn btn-primary'))}}
-                                            {{Form::close()}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3>
-
-                                    </h3>
-                                </div>
-
-                                <div>
-                                    <ul class="list-group">
-                                        <li class="list-group-item">Email: {{Auth::user()->email}}
-                                            <br>Country: {{ Auth::user()->person()->first()->country}}</li>
-                                        </ul>
-
-                                    </div>
-
-                                    <div>
-                                        <div class="btn-group">
-                                            <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
-                                                Action
-                                                <span class="icon-cog icon-white"></span><span class="caret"></span>
+                <div class="well">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#home" data-toggle="tab">Profile</a></li>
+                        <li><a href="#profile" data-toggle="tab">Edit</a></li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane active in" id="home">
+                            <div id="tab">
+                                <div class="container-fluid well span5">
+                                    <div class="row-fluid">
+                                        <div class="media">
+                                            <a class="media-left">
+                                                <img src="{{ Auth::user()->person()->first()->photo}}"
+                                                     class="img-tumbnail portrait portrait-l">
                                             </a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="#"><span class="icon-wrench"></span> Modify</a></li>
-                                            </ul>
+
+                                            <div class="media-body">
+                                                <h2 class="media-heading">{{Auth::user()->username}}</h2>
+
+                                                <div>
+                                                    {{Form::open(array('route' => array('user.update'), 'method' => 'PUT', 'enctype' => 'multipart/form-data'))}}
+                                                    {{Form::file('photo_update')}}
+                                                    {{Form::submit('Update', array('class' => 'btn btn-primary'))}}
+                                                    {{Form::close()}}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="bs-example">
-                                        <table class="table table-hover">
-                                            <thead>
+                                        <div>
+                                        </div>
+
+                                        <div>
+                                            <ul class="list-group">
+                                                <li class="list-group-item">Name: {{ Auth::user()->person()->first()->name}}
+                                                    <br>Email: {{Auth::user()->email}}
+                                                    <br>Country: {{ Auth::user()->person()->first()->country}}
+                                                    <br>Birthday: {{ Auth::user()->person()->first()->birthdate}}</li>
+                                            </ul>
+
+                                        </div>
+
+                                        <div>
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
+                                                    Action
+                                                    <span class="icon-cog icon-white"></span><span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#"><span class="icon-wrench"></span> Modify</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="bs-example">
+                                            <table class="table table-hover">
+                                                <thead>
                                                 <tr>
                                                     <th>Row</th>
                                                     <th>First Name</th>
                                                     <th>Last Name</th>
                                                     <th>Email</th>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
+                                                </thead>
+                                                <tbody>
                                                 <tr>
                                                     <td>1</td>
                                                     <td>John</td>
@@ -85,98 +86,256 @@
                                                     <td>Rambo</td>
                                                     <td>johnrambo@mail.com</td>
                                                 </tr>
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="profile">
-                        <div class="clearfix well">
+                        <div class="tab-pane fade" id="profile">
+                            <div class="clearfix well">
 
 
-                            <div class="col-md-8 col-md-offset-2">
-                                <div class="page-header"><h1>Register</h1></div>
-                                @include('partials.session_messages')
+                                <div class="col-md-8 col-md-offset-2">
+                                    <div class="page-header"><h2>Update</h2></div>
+                                    @include('partials.session_messages')
+                                    {{Form::open(array('route' => array('user.update'), 'method' => 'PUT', 'class' => 'form-horizontal')) }}
 
-                                {{ Form::open(array('route' => array('user.store'), 'method' => 'post', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) }}
+                                    <div class="row-item">
+                                        <fieldset>
+                                            <legend><small>Account Information</small></legend>
 
-                                <div class="row-item">
-                                    <fieldset>
-                                        <legend>
-                                            <small>Account Information</small>
-                                        </legend>
-                                        <div class="form-group">
-                                            {{Form::label('username','Username', array('class'=>'col-md-3 control-label text-right required'))}}
-                                            <div class="col-md-6">
-                                                {{Form::text('username', null,array('class' => 'form-control','min'=>'5','size' => '24','required','placeholder' => 'myusername'))}}
+                                            <div class="form-group">
+                                                {{Form::label('email','Email', array('class'=>'col-md-3 control-label text-right'))}}
+                                                <div class="col-md-6">
+                                                    {{Form::email('email', Auth::user()->email,array('class' => 'form-control','min'=>'5','size' => '24','required','placeholder' => 'myemail@example.com'))}}
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="form-group">
+                                                {{Form::label('password','Password', array('class'=>'col-md-3 control-label text-right'))}}
+                                                <div class="col-md-6">
+                                                    {{Form::password('password',array('class' => 'form-control','min'=>'5','size' => '24'))}}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                {{Form::label('password_confirmation','Password Confirm', array('class'=>'col-md-3 control-label text-right'))}}
+                                                <div class="col-md-6">
+                                                    {{Form::password('password_confirmation',array('class' => 'form-control','min'=>'5','size' => '24'))}}
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
 
-                                        <div class="form-group">
-                                            {{Form::label('email','Email', array('class'=>'col-md-3 control-label text-right required'))}}
-                                            <div class="col-md-6">
-                                                {{Form::email('email', null,array('class' => 'form-control','min'=>'5','size' => '24','required','placeholder' => 'myemail@example.com'))}}
+
+
+
+
+
+                                    <div class="row-item">
+                                        <fieldset>
+                                            <legend><small>User Information</small></legend>
+                                            <div class="form-group">
+                                                {{Form::label('name_update','Name', array('class'=>'col-md-3 control-label text-right'))}}
+                                                <div class="col-md-6">
+                                                    {{Form::text('name_update',Auth::user()->person()->first()->name,array('class' => 'form-control'))}}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            {{Form::label('password','Password', array('class'=>'col-md-3 control-label text-right required'))}}
-                                            <div class="col-md-6">
-                                                {{Form::password('password',array('class' => 'form-control','min'=>'5','size' => '24','required'))}}
+
+
+                                            {{--<div class="form-group">--}}
+                                                {{--{{Form::label('country','Country', array('class'=>'col-md-3 control-label text-right required'))}}--}}
+                                                {{--<div class="col-md-6">--}}
+                                                    {{--@include('partials.countries')--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                            <div class="form-group">
+                                                {{Form::label('address','Address', array('class'=>'col-md-3 control-label text-right'))}}
+                                                <div class="col-md-6">
+                                                    {{Form::text('address_1', Auth::user()->person()->first()->address1,array('class' => 'form-control'))}}
+                                                    {{Form::text('address_2', Auth::user()->person()->first()->address2,array('class' => 'form-control', 'style' => 'margin-top: 5px;'))}}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            {{Form::label('password_confirmation','Password Confirm', array('class'=>'col-md-3 control-label text-right required'))}}
-                                            <div class="col-md-6">
-                                                {{Form::password('password_confirmation',array('class' => 'form-control','min'=>'5','size' => '24','required'))}}
+                                            <div class="form-group">
+                                                {{Form::label('facebook_url','Connect to Facebook', array('class'=>'col-md-3 control-label text-right'))}}
+                                                <div class="col-md-6">
+                                                    {{Form::text('facebook_url', Auth::user()->person()->first()->facebook,array('class' => 'form-control', 'placeholder' => 'https://www.facebook.com/yourfacebook'))}}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </fieldset>
+                                            <div class="form-group">
+                                                {{Form::label('twitter_url','Connect to Twitter', array('class'=>'col-md-3 control-label text-right'))}}
+                                                <div class="col-md-6">
+                                                    {{Form::text('twitter_url', Auth::user()->person()->first()->twitter,array('class' => 'form-control', 'placeholder' => 'https://www.twitter.com/yourtwitter'))}}
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
+
+
+
+                                    {{--<div class="row-item">--}}
+                                        {{--<fieldset>--}}
+                                            {{--<legend><small>Payment Information</small></legend>--}}
+                                            {{--<div class="form-group">--}}
+                                                {{--{{Form::label('credit_card_type','Credit Card Type', array('class'=>'col-md-3 control-label text-right required'));}}--}}
+                                                {{--<div class="col-md-6">--}}
+                                                    {{--<table>--}}
+                                                        {{--<tr>--}}
+                                                            {{--<td>{{Form::radio('credit_card_type', 'Visa', true, array('class' => ''));}}</td>--}}
+                                                            {{--<td><img height="46px" width="63px" src="{{asset('img/visa.png')}}" alt="VISA" title="VISA"></td>--}}
+                                                            {{--<td>{{Form::radio('credit_card_type', 'Mastercard', false, array('class' => ''));}}</td>--}}
+                                                            {{--<td><img height="46px" width="63px" src="{{asset('img/master.png')}}" alt="MasterCard" title="MasterCard"></td>--}}
+                                                            {{--<td>{{Form::radio('credit_card_type', 'American Express', false, array('class' => ''));}}</td>--}}
+                                                            {{--<td><img height="46px" width="63px" src="{{asset('img/amex.png')}}" alt="American Express" title="American Express"></td>--}}
+                                                        {{--</tr>--}}
+                                                    {{--</table>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="form-group">--}}
+                                                {{--{{Form::label('credit_card_titular','Credit Card Titular', array('class'=>'col-md-3 control-label text-right required'));}}--}}
+                                                {{--<div class="col-md-6">--}}
+                                                    {{--{{Form::text('credit_card_titular', null,array('class' => 'form-control','placeholder' => 'Credit Card Titular', 'required'))}}--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="form-group">--}}
+                                                {{--{{Form::label('credit_card_num','Credit Card Number', array('class'=>'col-md-3 control-label text-right required'));}}--}}
+                                                {{--<div class="col-md-6">--}}
+                                                    {{--{{Form::number('credit_card_num', null,array('class' => 'form-control','placeholder' => 'Credit Card Number', 'required'))}}--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="form-group">--}}
+                                                {{--{{Form::label('credit_card_valid_month','Valid until', array('class'=>'col-md-3 control-label text-right required', 'required'))}}--}}
+                                                {{--<div class="col-md-6">--}}
+                                                    {{--<?php--}}
+                                                    {{--$min_year = date('Y');--}}
+                                                    {{--$max_year = $min_year + 5;--}}
+                                                    {{--?>--}}
+                                                    {{--{{Form::selectYear('credit_card_valid_year', $min_year, $max_year)}}--}}
+                                                    {{--{{Form::selectMonth('credit_card_valid_month')}}--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="form-group">--}}
+                                                {{--{{Form::label('credit_card_cvc','CVC', array('class'=>'col-md-3 control-label text-right required'));}}--}}
+                                                {{--<div class="col-md-6">--}}
+                                                    {{--{{Form::number('credit_card_cvc', null,array('class' => 'form-control','placeholder' => 'Credit Card CVC', 'required'))}}--}}
+                                                    {{--<img src="{{asset('img/cvc2.png')}}" alt="CVC">--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                            {{--<hr>--}}
+                                            <div class="form-group">
+                                                <div class="col-md-9 col-md-offset-3">
+                                                    <table>
+                                                        <ul>
+                                                            <td>{{link_to('/','Cancel', array('class' => 'btn btn-default'))}}</td>
+                                                            <td>{{Form::submit('Update', array('class' => 'btn btn-primary'))}}</td>
+                                                        </ul>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        {{--</fieldset>--}}
+                                    {{--</div>--}}
+                                    {{ Form::close() }}
+
                                 </div>
-
-                                {{ Form::close() }}
-
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
 
 
-            {{--<div class="container-fluid well span5" style="background: #000000">--}}
-            {{--<div class="row-fluid">--}}
-            {{--<div class="media">--}}
-            {{--<a class="media-left" href="#" style="color:#ffffff">--}}
+                {{--<div class="container-fluid well span5" style="background: #000000">--}}
+                {{--<div class="row-fluid">--}}
+                {{--<div class="media">--}}
+                {{--<a class="media-left" href="#" style="color:#ffffff">--}}
 
-            {{--<img src="{{ Auth::user()->person()->first()->photo}}"--}}
-            {{--class="img-responsive portrait portrait-l">--}}
+                {{--<img src="{{ Auth::user()->person()->first()->photo}}"--}}
+                {{--class="img-responsive portrait portrait-l">--}}
 
-            {{--</a>--}}
+                {{--</a>--}}
 
-            {{--<div class="media-body" style="width:100%">--}}
-            {{--<br>--}}
+                {{--<div class="media-body" style="width:100%">--}}
+                {{--<br>--}}
 
-            {{--<h3 class="media-heading" style="color:#ffffff">{{Auth::user()->username}}</h3>--}}
-            {{--<br>--}}
-            {{--<ul class="list-unstyled">--}}
-            {{--<li class="list-group-item">Email: {{Auth::user()->email}}</li>--}}
-            {{--<li class="list-group-item">--}}
-            {{--Country: {{ Auth::user()->person()->first()->country}}</li>--}}
-            {{--<li class="list-group-item">Morbi leo risus</li>--}}
-            {{--<li class="list-group-item">Porta ac consectetur ac</li>--}}
-            {{--<li class="list-group-item">Vestibulum at eros</li>--}}
-            {{--</ul>--}}
-            {{--</div>--}}
-            {{--</div>--}}
-            {{--</div>--}}
-            {{--</div>--}}
+                {{--<h3 class="media-heading" style="color:#ffffff">{{Auth::user()->username}}</h3>--}}
+                {{--<br>--}}
+                {{--<ul class="list-unstyled">--}}
+                {{--<li class="list-group-item">Email: {{Auth::user()->email}}</li>--}}
+                {{--<li class="list-group-item">--}}
+                {{--Country: {{ Auth::user()->person()->first()->country}}</li>--}}
+                {{--<li class="list-group-item">Morbi leo risus</li>--}}
+                {{--<li class="list-group-item">Porta ac consectetur ac</li>--}}
+                {{--<li class="list-group-item">Vestibulum at eros</li>--}}
+                {{--</ul>--}}
+                {{--</div>--}}
+                {{--</div>--}}
+                {{--</div>--}}
+                {{--</div>--}}
 
 
             @else
-            <h1>You are not allowed to be in this page</h1>
+                <div class="container-fluid well span5">
+                    <div class="row-fluid">
+                        <div class="media">
+                            <a class="media-left">
+                                <img src="{{ $person->photo}}"
+                                     class="img-tumbnail portrait portrait-l">
+                            </a>
+
+                            <div class="media-body">
+                                <h2 class="media-heading">{{$user->username}}</h2>
+                            </div>
+                        </div>
+                        <div>
+                        </div>
+
+                        <div>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <br>Country: {{ $person->country }}
+                                    <br>Birthday: {{ $person->birthdate}}</li>
+                            </ul>
+
+                        </div>
+
+                        <div>
+                        </div>
+                        <div class="bs-example">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Row</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>John</td>
+                                    <td>Carter</td>
+                                    <td>johncarter@mail.com</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Peter</td>
+                                    <td>Parker</td>
+                                    <td>peterparker@mail.com</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>John</td>
+                                    <td>Rambo</td>
+                                    <td>johnrambo@mail.com</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             @endif
         </div>
     </div>
-    @stop
+@stop
