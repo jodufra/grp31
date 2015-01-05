@@ -7,13 +7,26 @@ class FriendsTableSeeder extends Seeder {
 
 	public function run()
 	{
-		$faker = Faker::create();
-
-		foreach(range(1, 10) as $index)
+		DB::table('friends')->truncate();
+		$friends = [];
+		for($i=5;$i<15;$i++)
 		{
-			Friend::create([
+			for($j = 5;$j<15;$j++)
+			{
+				if($j != $i)
+				{
+				array_push($friends, [
+					'user_id' => $i,
+				'friend_id' => $j
 
 			]);
+				}
+			}
+		}
+
+
+		foreach($friends as $friend){
+			Friend::create($friend);
 		}
 	}
 

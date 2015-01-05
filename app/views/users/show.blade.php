@@ -6,13 +6,13 @@
 
                 <br><br>
 
-                <div class="well">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#home" data-toggle="tab">Profile</a></li>
-                        <li><a href="#profile" data-toggle="tab">Edit</a></li>
+                <div>
+                    <ul class="nav nav-pills">
+                        <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
+                        <li><a href="#edit" data-toggle="tab">Edit</a></li>
                     </ul>
                     <div id="myTabContent" class="tab-content">
-                        <div class="tab-pane active in" id="home">
+                        <div class="tab-pane active in" id="profile">
                             <div id="tab">
                                 <div class="container-fluid well span5">
                                     <div class="row-fluid">
@@ -28,7 +28,7 @@
                                                 <div>
                                                     {{Form::open(array('route' => array('user.update'), 'method' => 'PUT', 'enctype' => 'multipart/form-data'))}}
                                                     {{Form::file('photo_update')}}
-                                                    {{Form::submit('Update', array('class' => 'btn btn-primary'))}}
+                                                    {{Form::submit('Update', array('class' => 'btn btn-info'))}}
                                                     {{Form::close()}}
                                                 </div>
                                             </div>
@@ -38,54 +38,55 @@
 
                                         <div>
                                             <ul class="list-group">
-                                                <li class="list-group-item">Name: {{ Auth::user()->person()->first()->name}}
-                                                    <br>Email: {{Auth::user()->email}}
-                                                    <br>Country: {{ Auth::user()->person()->first()->country}}
-                                                    <br>Birthday: {{ Auth::user()->person()->first()->birthdate}}</li>
+                                                <li class="list-group-item">
+                                                    Name: {{ Auth::user()->person()->first()->name}}</li>
+                                                <li class="list-group-item">
+                                                    Birthday: {{ Auth::user()->person()->first()->birthdate}}</li>
+                                                <li class="list-group-item">
+                                                    Country: {{ Auth::user()->person()->first()->country}}</li>
+                                                <li class="list-group-item">
+                                                    Address: {{ Auth::user()->person()->first()->address}}</li>
+                                                <li class="list-group-item">
+                                                    Phone: {{ Auth::user()->person()->first()->phone}}</li>
+                                                <li class="list-group-item">Email: {{Auth::user()->email}}</li>
+                                                <li class="list-group-item">Twitter: <a
+                                                            href="{{ Auth::user()->person()->first()->twitter_url}}">{{ Auth::user()->person()->first()->twitter_url}}</a>
+                                                </li>
+                                                <li class="list-group-item">Facebook: <a
+                                                            href="{{ Auth::user()->person()->first()->facebook_url}}">{{ Auth::user()->person()->first()->facebook_url}}</a>
+                                                </li>
+
+
                                             </ul>
 
                                         </div>
 
                                         <div>
-                                            <div class="btn-group">
-                                                <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
-                                                    Action
-                                                    <span class="icon-cog icon-white"></span><span class="caret"></span>
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#"><span class="icon-wrench"></span> Modify</a></li>
-                                                </ul>
-                                            </div>
                                         </div>
-                                        <div class="bs-example">
+                                        <div class="bs-example well" style="background-color: #ffffff">
                                             <table class="table table-hover">
                                                 <thead>
                                                 <tr>
-                                                    <th>Row</th>
-                                                    <th>First Name</th>
-                                                    <th>Last Name</th>
-                                                    <th>Email</th>
+                                                    <th>Games Played</th>
+                                                    <th>Wins</th>
+                                                    <th>Losses</th>
+                                                    <th>Yahtzees</th>
+                                                    <th>Tournaments Played</th>
+                                                    <th>Tournaments Won</th>
+                                                    <th>Tournaments Lost</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>John</td>
-                                                    <td>Carter</td>
-                                                    <td>johncarter@mail.com</td>
-                                                </tr>
-                                                <tr>
+                                                    <td>4</td>
                                                     <td>2</td>
-                                                    <td>Peter</td>
-                                                    <td>Parker</td>
-                                                    <td>peterparker@mail.com</td>
+                                                    <td>2</td>
+                                                    <td>2</td>
+                                                    <td>1</td>
+                                                    <td>1</td>
+                                                    <td>0</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>John</td>
-                                                    <td>Rambo</td>
-                                                    <td>johnrambo@mail.com</td>
-                                                </tr>
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -93,23 +94,30 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="profile">
+                        <div class="tab-pane fade" id="edit">
                             <div class="clearfix well">
 
 
                                 <div class="col-md-8 col-md-offset-2">
-                                    <div class="page-header"><h2>Update</h2></div>
                                     @include('partials.session_messages')
                                     {{Form::open(array('route' => array('user.update'), 'method' => 'PUT', 'class' => 'form-horizontal')) }}
 
                                     <div class="row-item">
                                         <fieldset>
-                                            <legend><small>Account Information</small></legend>
+                                            <legend>
+                                                <small>Account Information</small>
+                                            </legend>
 
                                             <div class="form-group">
                                                 {{Form::label('email','Email', array('class'=>'col-md-3 control-label text-right'))}}
                                                 <div class="col-md-6">
-                                                    {{Form::email('email', Auth::user()->email,array('class' => 'form-control','min'=>'5','size' => '24','required','placeholder' => 'myemail@example.com'))}}
+                                                    {{Form::email('email', null,array('class' => 'form-control','min'=>'5','size' => '24','placeholder' => Auth::user()->email))}}
+                                                </div>
+                                            </div>
+                                            <div id="date" class="form-group date">
+                                                {{Form::label('birth_date','Birth Date', array('class'=>'col-md-3 control-label text-right'))}}
+                                                <div class="col-md-6">
+                                                    {{ Form::text('birth_date', null, array('type' => 'text', 'class' => 'form-control datepicker','placeholder' => Auth::user()->person()->first()->birthdate)) }}
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -128,113 +136,74 @@
                                     </div>
 
 
-
-
-
-
                                     <div class="row-item">
                                         <fieldset>
-                                            <legend><small>User Information</small></legend>
+                                            <legend>
+                                                <small>User Information</small>
+                                            </legend>
                                             <div class="form-group">
                                                 {{Form::label('name_update','Name', array('class'=>'col-md-3 control-label text-right'))}}
                                                 <div class="col-md-6">
-                                                    {{Form::text('name_update',Auth::user()->person()->first()->name,array('class' => 'form-control'))}}
+                                                    {{Form::text('name_update',null,array('class' => 'form-control' ,'placeholder' => Auth::user()->person()->first()->name))}}
                                                 </div>
                                             </div>
 
 
-                                            {{--<div class="form-group">--}}
-                                                {{--{{Form::label('country','Country', array('class'=>'col-md-3 control-label text-right required'))}}--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--@include('partials.countries')--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
+                                            <div class="form-group">
+                                                {{Form::label('country','Country', array('class'=>'col-md-3 control-label text-right'))}}
+                                                <div class="col-md-6">
+                                                    <div ng-controller="CountriesController"
+                                                         ng-init="selected = '{{Auth::user()->person()->first()->country}}'">
+                                                        <select name="country" class="form-control col-md-4" required>
+                                                            <option ng-repeat="country in countries()"
+                                                                    ng-selected="selected == country"
+                                                                    value="[[country]]" title="[[country]]"
+                                                                    ng-bind="country"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="form-group">
                                                 {{Form::label('address','Address', array('class'=>'col-md-3 control-label text-right'))}}
                                                 <div class="col-md-6">
-                                                    {{Form::text('address_1', Auth::user()->person()->first()->address1,array('class' => 'form-control'))}}
-                                                    {{Form::text('address_2', Auth::user()->person()->first()->address2,array('class' => 'form-control', 'style' => 'margin-top: 5px;'))}}
+                                                    {{Form::text('address',null ,array('class' => 'form-control','placeholder' => Auth::user()->person()->first()->address))}}
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                {{Form::label('phone','Phone', array('class'=>'col-md-3 control-label text-right' ))}}
+                                                <div class="col-md-6">
+                                                    {{Form::text('phone', null,array('class' => 'form-control', 'style' => 'margin-top: 5px;' ,'placeholder' => Auth::user()->person()->first()->phone))}}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 {{Form::label('facebook_url','Connect to Facebook', array('class'=>'col-md-3 control-label text-right'))}}
                                                 <div class="col-md-6">
-                                                    {{Form::text('facebook_url', Auth::user()->person()->first()->facebook,array('class' => 'form-control', 'placeholder' => 'https://www.facebook.com/yourfacebook'))}}
+                                                    {{Form::text('facebook_url', null,array('class' => 'form-control', 'placeholder' => Auth::user()->person()->first()->facebook_url))}}
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 {{Form::label('twitter_url','Connect to Twitter', array('class'=>'col-md-3 control-label text-right'))}}
                                                 <div class="col-md-6">
-                                                    {{Form::text('twitter_url', Auth::user()->person()->first()->twitter,array('class' => 'form-control', 'placeholder' => 'https://www.twitter.com/yourtwitter'))}}
+                                                    {{Form::text('twitter_url', null,array('class' => 'form-control', 'placeholder' => Auth::user()->person()->first()->twitter_url))}}
                                                 </div>
                                             </div>
                                         </fieldset>
                                     </div>
 
 
+                                    <div class="form-group">
+                                        <div class="col-md-9 col-md-offset-3">
+                                            <table>
+                                                <ul>
+                                                    <td>{{link_to('/','Cancel', array('class' => 'btn btn-default'))}}</td>
+                                                    <td>{{Form::submit('Update', array('class' => 'btn btn-primary'))}}</td>
+                                                </ul>
+                                            </table>
+                                        </div>
+                                    </div>
 
-
-                                    {{--<div class="row-item">--}}
-                                        {{--<fieldset>--}}
-                                            {{--<legend><small>Payment Information</small></legend>--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--{{Form::label('credit_card_type','Credit Card Type', array('class'=>'col-md-3 control-label text-right required'));}}--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--<table>--}}
-                                                        {{--<tr>--}}
-                                                            {{--<td>{{Form::radio('credit_card_type', 'Visa', true, array('class' => ''));}}</td>--}}
-                                                            {{--<td><img height="46px" width="63px" src="{{asset('img/visa.png')}}" alt="VISA" title="VISA"></td>--}}
-                                                            {{--<td>{{Form::radio('credit_card_type', 'Mastercard', false, array('class' => ''));}}</td>--}}
-                                                            {{--<td><img height="46px" width="63px" src="{{asset('img/master.png')}}" alt="MasterCard" title="MasterCard"></td>--}}
-                                                            {{--<td>{{Form::radio('credit_card_type', 'American Express', false, array('class' => ''));}}</td>--}}
-                                                            {{--<td><img height="46px" width="63px" src="{{asset('img/amex.png')}}" alt="American Express" title="American Express"></td>--}}
-                                                        {{--</tr>--}}
-                                                    {{--</table>--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--{{Form::label('credit_card_titular','Credit Card Titular', array('class'=>'col-md-3 control-label text-right required'));}}--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--{{Form::text('credit_card_titular', null,array('class' => 'form-control','placeholder' => 'Credit Card Titular', 'required'))}}--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--{{Form::label('credit_card_num','Credit Card Number', array('class'=>'col-md-3 control-label text-right required'));}}--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--{{Form::number('credit_card_num', null,array('class' => 'form-control','placeholder' => 'Credit Card Number', 'required'))}}--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--{{Form::label('credit_card_valid_month','Valid until', array('class'=>'col-md-3 control-label text-right required', 'required'))}}--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--<?php--}}
-                                                    {{--$min_year = date('Y');--}}
-                                                    {{--$max_year = $min_year + 5;--}}
-                                                    {{--?>--}}
-                                                    {{--{{Form::selectYear('credit_card_valid_year', $min_year, $max_year)}}--}}
-                                                    {{--{{Form::selectMonth('credit_card_valid_month')}}--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--{{Form::label('credit_card_cvc','CVC', array('class'=>'col-md-3 control-label text-right required'));}}--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--{{Form::number('credit_card_cvc', null,array('class' => 'form-control','placeholder' => 'Credit Card CVC', 'required'))}}--}}
-                                                    {{--<img src="{{asset('img/cvc2.png')}}" alt="CVC">--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                            {{--<hr>--}}
-                                            <div class="form-group">
-                                                <div class="col-md-9 col-md-offset-3">
-                                                    <table>
-                                                        <ul>
-                                                            <td>{{link_to('/','Cancel', array('class' => 'btn btn-default'))}}</td>
-                                                            <td>{{Form::submit('Update', array('class' => 'btn btn-primary'))}}</td>
-                                                        </ul>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        {{--</fieldset>--}}
-                                    {{--</div>--}}
                                     {{ Form::close() }}
 
                                 </div>
@@ -243,35 +212,6 @@
                     </div>
                 </div>
 
-
-
-                {{--<div class="container-fluid well span5" style="background: #000000">--}}
-                {{--<div class="row-fluid">--}}
-                {{--<div class="media">--}}
-                {{--<a class="media-left" href="#" style="color:#ffffff">--}}
-
-                {{--<img src="{{ Auth::user()->person()->first()->photo}}"--}}
-                {{--class="img-responsive portrait portrait-l">--}}
-
-                {{--</a>--}}
-
-                {{--<div class="media-body" style="width:100%">--}}
-                {{--<br>--}}
-
-                {{--<h3 class="media-heading" style="color:#ffffff">{{Auth::user()->username}}</h3>--}}
-                {{--<br>--}}
-                {{--<ul class="list-unstyled">--}}
-                {{--<li class="list-group-item">Email: {{Auth::user()->email}}</li>--}}
-                {{--<li class="list-group-item">--}}
-                {{--Country: {{ Auth::user()->person()->first()->country}}</li>--}}
-                {{--<li class="list-group-item">Morbi leo risus</li>--}}
-                {{--<li class="list-group-item">Porta ac consectetur ac</li>--}}
-                {{--<li class="list-group-item">Vestibulum at eros</li>--}}
-                {{--</ul>--}}
-                {{--</div>--}}
-                {{--</div>--}}
-                {{--</div>--}}
-                {{--</div>--}}
 
 
             @else
@@ -293,42 +233,40 @@
                         <div>
                             <ul class="list-group">
                                 <li class="list-group-item">
-                                    <br>Country: {{ $person->country }}
-                                    <br>Birthday: {{ $person->birthdate}}</li>
+                                    Country: {{ $person->country }} </li>
+                                <li class="list-group-item">Birthday: {{ $person->birthdate}} </li>
+                                <li class="list-group-item">Facebook: <a
+                                            href="{{$person->facebook_url}}">{{$person->facebook_url}}</a></li>
+                                <li class="list-group-item">Twitter: <a
+                                            href="{{$person->twitter_url}}">{{$person->twitter_url}}</a></li>
                             </ul>
 
                         </div>
 
                         <div>
                         </div>
-                        <div class="bs-example">
+                        <div class="bs-example well" style="background-color: #ffffff">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
-                                    <th>Row</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Email</th>
+                                    <th>Games Played</th>
+                                    <th>Wins</th>
+                                    <th>Losses</th>
+                                    <th>Yahtzees</th>
+                                    <th>Tournaments Played</th>
+                                    <th>Tournaments Won</th>
+                                    <th>Tournaments Lost</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>1</td>
-                                    <td>John</td>
-                                    <td>Carter</td>
-                                    <td>johncarter@mail.com</td>
-                                </tr>
-                                <tr>
+                                    <td>4</td>
                                     <td>2</td>
-                                    <td>Peter</td>
-                                    <td>Parker</td>
-                                    <td>peterparker@mail.com</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>John</td>
-                                    <td>Rambo</td>
-                                    <td>johnrambo@mail.com</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>0</td>
                                 </tr>
                                 </tbody>
                             </table>

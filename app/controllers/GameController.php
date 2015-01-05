@@ -17,22 +17,6 @@ class GameController extends \BaseController {
     	$this->game = $game;
     }
 
-    private $R_NODE_NAME = 'laravelServer';
-    private $LARAVEL_COOKIE = 'laravelServerrrrrr';
-
-    public function notifyNode($request_type, $gameid, $r_msg){
-
-		//print_r(mcrypt_list_algorithms());
-    	$client = new Client(new Version1X('http://localhost:5555'));
-    	$client->initialize();
-    	$client->emit($this->R_NODE_NAME, [
-    		'cookie'=> Crypt::encrypt($this->LARAVEL_COOKIE),
-    		'request' => $request_type,
-    		'msg' => $r_msg,
-    		'gameid' => $gameid]);
-    	$client->close();
-    }
-
     public function scoreCalculator()
     {
     	$dices=array();
@@ -50,9 +34,18 @@ class GameController extends \BaseController {
     {
     	$dices = [];
     	for ($i = 0; $i < 5; $i++) {
+    		$dices[$i] = ['value'=>rand(1,6),'saved'=>false];
+    	}
+    	return array('dices'=>$dices);
+    }
+
+    public function postReroll()
+    {
+    	$dices = [];
+    	for ($i = 0; $i < 5; $i++) {
     		$dices[$i] = array('val'=>rand(1,6),'saved'=>false);
     	}
-    	return Response::json($dices);
+    	return array('dices'=>$dices);
     }
 
     public function getOngoinggames()
@@ -167,10 +160,92 @@ class GameController extends \BaseController {
 	 */
 	public function getShow($id)
 	{
-		//$game = Game::findOrFail($id);
+		$this->game = Game::findOrFail($id);
+		return View::make('games.show')->with(array("game"=>['id'=>$this->game->id]));
+	}
 
-		//return View::make('games.show', compact('game'));
-		return View::make('games.show', array("game_id"=>$id));
+	/**
+	 * Display the specified game.
+	 *
+	 * @param  int  $id
+	 * @return Json
+	 */
+	public function getGame($id)
+	{
+		$this->game = Game::findOrFail($id);
+
+		$game['id'] = $this->game->id;
+		$game['players'] = [];
+		$game['timeouts'] = [];
+		$game['play'] = false;
+		$game['rounds'] = 10;
+
+		$q_players = DB::table('games_have_players')->where('game_id', $game['id'])->get();
+		$p_count = 0;
+		foreach ($q_players as $game_have_players) {
+			$player = [];
+			$id = $game_have_players->player_id;
+			if($id < 10){
+				$user_id = null;
+				$name = 'Robot '.$id;
+				$img_src = '/img/bot.png';
+				$player['user'] = ['id'=>$id,'user_id'=>$user_id,'name'=>$name,'img_src'=>$img_src];
+				$player['online'] = true;
+			}else{
+				$user_id = Player::find($id)->user_id;
+				$name = User::find($user_id)->username;
+				$img_src = Person::where('user_id', '=', $user_id)->first()->photo;
+				$player['user'] = ['id'=>$id,'user_id'=>$user_id,'name'=>$name,'img_src'=>$img_src];
+				$player['online'] = false;
+			}
+			$player['player_num'] = $game_have_players->player_num;
+			$player['dices'] = [];
+
+			$q_score = DB::table('moves')->where('game_id',$game['id'])->where('player_id',$id)->max('id');
+			$score = [];
+			if($q_score){
+				$score['ones'] = $q_score->s_ones;
+				$score['twos'] = $q_score->s_twos;
+				$score['threes'] = $q_score->s_threes;
+				$score['fours'] = $q_score->s_fours;
+				$score['fives'] = $q_score->s_fives;
+				$score['sixes'] = $q_score->s_sixes;
+				$score['bonus'] = $q_score->s_bonus;
+				$score['threeKind'] = $q_score->s_threekind;
+				$score['fourKind'] = $q_score->s_fourkind;
+				$score['house'] = $q_score->s_house;
+				$score['small_s'] = $q_score->s_small_s;
+				$score['large_s'] = $q_score->s_large_s;
+				$score['chance'] = $q_score->s_chance;
+				$score['yahtzee'] = $q_score->s_yahtzee;
+			}else{
+				$score['ones'] = 0;
+				$score['twos'] = 0;
+				$score['threes'] = 0;
+				$score['fours'] = 0;
+				$score['fives'] = 0;
+				$score['sixes'] = 0;
+				$score['sum'] = 0;
+				$score['bonus'] = 0;
+				$score['threeKind'] = 0;
+				$score['fourKind'] = 0;
+				$score['house'] = 0;
+				$score['small_s'] = 0;
+				$score['large_s'] = 0;
+				$score['chance'] = 0;
+				$score['yahtzee'] = 0;
+				$score['total'] = 0;
+			}
+			$player['score'] = $score;
+			$player['r_score'] = $score;
+			$player['rollsAvailable'] = $score;
+
+			$game['players'][$p_count] = $player;
+			$p_count++;
+		}
+		$game['turn'] = 0;
+
+		return $game;
 	}
 
 	/**

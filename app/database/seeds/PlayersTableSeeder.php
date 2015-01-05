@@ -7,13 +7,11 @@ class PlayersTableSeeder extends Seeder {
 
 	public function run()
 	{
-		// $faker = Faker::create();
-
-		// Criar os 9 bots
 		foreach(range(1, 9) as $index)
 		{
 			Player::create([]);
 		}
+
 
 	}
 

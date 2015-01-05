@@ -25,7 +25,6 @@ appControllers.controller('NotificationsController', function($scope, $rootScope
 			for (var i = 0; i < data.length; i++) {
 				friends[data[i].name] = {online:false,user:{name:data[i].name, img_src:data[i].img_src}};
 			}
-			console.log(friends);
 			requestFriendsOnlineState();
 		});
 	}
