@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreatePlayersTable extends Migration {
+class CreateTournamentsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,14 @@ class CreatePlayersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('players', function(Blueprint $table)
+		Schema::create('tournaments', function(Blueprint $table)
 		{
 			$table->increments('id');
-            $table->integer('user_id')->unsigned()->nullable();
-
+			$table->string('name',30)->unique();
+			$table->dateTime('begin');
+            $table->dateTime('ends');
+			$table->text('description');
+			$table->string('prize');
 			$table->timestamps();
 		});
 	}
@@ -29,7 +32,7 @@ class CreatePlayersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('players');
+		Schema::drop('tournaments');
 	}
 
 }

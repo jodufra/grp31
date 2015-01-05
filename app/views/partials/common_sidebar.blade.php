@@ -11,9 +11,9 @@
       <h4 class="list-group-item-heading">Games</h4>
       <p class="list-group-item-text">Some kind of description</p>
     </a>
-    <a href="/tournament" class="list-group-item {{ isset($sidebar_tournament)? 'active' : ''}}">
+    <a href="/tournaments" class="list-group-item {{ isset($sidebar_tournament)? 'active' : ''}}">
       <h4 class="list-group-item-heading">Tournaments</h4>
-      <p class="list-group-item-text">Some kind of description</p>
+      <p class="list-group-item-text">See all tournaments</p>
     </a>
     <a href="/replay" class="list-group-item {{ isset($sidebar_replay)? 'active' : ''}}">
       <h4 class="list-group-item-heading">Replays</h4>

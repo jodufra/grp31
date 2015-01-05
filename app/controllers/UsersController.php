@@ -1,7 +1,23 @@
 <?php
-
+function validateCC($cc){
+    $cards = array(
+        "visa" => "(4\d{12}(?:\d{3})?)",
+        "amex" => "(3[47]\d{13})",
+        "jcb" => "(35[2-8][89]\d\d\d{10})",
+        "maestro" => "((?:5020|5038|6304|6579|6761)\d{12}(?:\d\d)?)",
+        "solo" => "((?:6334|6767)\d{12}(?:\d\d)?\d?)",
+        "mastercard" => "(5[1-5]\d{14})",
+        "switch" => "(?:(?:(?:4903|4905|4911|4936|6333|6759)\d{12})|(?:(?:564182|633110)\d{10})(\d\d)?\d?)",
+    );
+    $names = array("Visa", "American Express", "JCB", "Maestro", "Solo", "Mastercard", "Switch");
+    $matches = array();
+    $pattern = "#^(?:".implode("|", $cards).")$#";
+    $result = preg_match($pattern, str_replace(" ", "", $cc), $matches);
+    return ($result>0)?true:false;
+}
 class UsersController extends BaseController
 {
+
 	/**
 	 * User Repository
 	 *
@@ -41,6 +57,7 @@ class UsersController extends BaseController
 	 *
 	 * @return Response
 	 */
+
 	public function store()
 	{
 		$data = Input::all();
@@ -49,10 +66,11 @@ class UsersController extends BaseController
 			return Redirect::route('user.create')->withErrors($validator)->withInput();
 		}
 
-		$validator = Validator::make($data, Person::$rules);
+		$validator = Validator::make($data, Person::$rules, Person::$messages);
 		if ($validator->fails()) {
 			return Redirect::route('user.create')->withErrors($validator)->withInput();
 		}
+
 
 		try {
 			$data['password'] = Hash::make($data['password']);
@@ -81,7 +99,11 @@ class UsersController extends BaseController
 
 			$data['name'] = $data['first_name'] . " " . $data['last_name'];
 			$data['credit_card_valid'] = $data['credit_card_valid_month'] . "/" . $data['credit_card_valid_year'];
-			$data['birthdate'] = strtotime($data['birth_date']);
+
+            $dob=strtotime($data['birth_date']);
+
+
+			$data['birthdate'] = $dob;
 			$data['user_id'] = $this->user->id;
 			$this->user->person()->create($data);
 			if (!$this->user->person()) {
@@ -89,7 +111,7 @@ class UsersController extends BaseController
 			}
 		} catch (Exception $e) {
 			$this->user->delete();
-			return Redirect::route('user.create')->withErrors("Error Processing Request. Please try again.")->withInput();
+			return Redirect::route('user.create')->withErrors("Error Processing Request. Please try again."+$e->getMessage())->withInput();
 		}
 
 

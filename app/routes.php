@@ -15,7 +15,8 @@ Route::get('/', array('uses' => 'HomeController@showHome', 'as' => 'home'));
 Route::controller('game','GameController');
 // User
 Route::get('user/show/{username}', array('uses' => 'UsersController@show', 'as' => 'user.show'));
-
+Route::resource('ranking','RankingController');
+Route::resource('tournaments', 'TournamentsController');
 
 // Only Guests
 Route::group(array('before' => 'guest'), function () {
@@ -27,11 +28,15 @@ Route::group(array('before' => 'guest'), function () {
     Route::post('/', array('uses' => 'AuthController@postLogin', 'as'=>'login'));
     // Pass Reminder
     Route::controller('password', 'RemindersController');
+
 });
 
 // Only Users
 Route::group(array('before' => 'auth'), function () {
-    //Friends
+    //
+    Route::get('tournaments/subscribe/{id}', array('uses' => 'TournamentsController@subscribe'));
+    Route::get('tournaments/show/{id}', array('uses' => 'TournamentsController@show'));
+    Route::get('tournaments/showRanking/{id}', array('uses' => 'TournamentsController@showRanking'));
     Route::get('/friends/friendsList', 'FriendsController@friendsList');
     Route::post('/friends/create', 'FriendsController@create');
     // Player
@@ -43,10 +48,9 @@ Route::group(array('before' => 'auth'), function () {
 
 // Not Finished
 Route::group(array('before' => 'not.finished'), function () {
-    Route::resource('tournament','TournamentController');
     Route::resource('replay','ReplayController');
     Route::resource('calendar','CalendarController');
-    Route::resource('ranking','RankingController');
+
     Route::get('user/edit', array('uses' => 'UsersController@edit', 'as' => 'user.edit'));
     Route::delete('user/delete', array('uses' => 'UsersController@delete', 'as' => 'user.delete'));
 });

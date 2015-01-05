@@ -17,7 +17,8 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('role')->unsigned()->defaultValue(10);
+            $table->integer('role')->unsigned()->default(10);
+            $table->integer('wins')->unsigned()->default(0);
             // role = 0 => SuperAdmin
             // role = 1 => Admin
             // role = 2 => SuperUser

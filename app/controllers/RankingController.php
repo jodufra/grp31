@@ -10,7 +10,9 @@ class RankingController extends BaseController {
 	 */
 	public function index()
 	{
-		//
+        $users =User::orderBy('wins','DESC')->take(25)->get();
+
+        return View::make('ranking.show', compact('users'));
 	}
 
 	/**
@@ -35,16 +37,12 @@ class RankingController extends BaseController {
 		//
 	}
 
-	/**
-	 * Display the specified resource.
-	 * GET /ranking/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
+
+	public function show()
 	{
-		//
+        $users =User::orderBy('wins','DESC')->get(25);
+
+        return View::make('ranking.show', compact('users'));
 	}
 
 	/**

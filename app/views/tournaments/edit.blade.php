@@ -1,0 +1,1 @@
+/home/vagrant/grp31/site/app/views/tournaments/edit.blade.php
