@@ -464,6 +464,29 @@ a.button:hover {
 #game-show-container .table-wrapper .dices-wrapper .dices{
     line-height: 110px;
 }
+#game-show-container .table-wrapper .dices-wrapper .dices .dice{
+    cursor: pointer;
+}
+#game-show-container .table-wrapper .dices-wrapper .dices .dice.ng-move,
+#game-show-container .table-wrapper .dices-wrapper .dices .dice.ng-enter,
+#game-show-container .table-wrapper .dices-wrapper .dices .dice.ng-leave {
+  -webkit-transition:all 0.5s;
+  transition:all 0.5s;
+}
+#game-show-container .table-wrapper .dices-wrapper .dices .dice.ng-leave.ng-leave-active,
+#game-show-container .table-wrapper .dices-wrapper .dices .dice.ng-move,
+#game-show-container .table-wrapper .dices-wrapper .dices .dice.ng-enter {
+  opacity:0;
+  height:0;
+  width:0;
+}
+#game-show-container .table-wrapper .dices-wrapper .dices .dice.ng-leave,
+#game-show-container .table-wrapper .dices-wrapper .dices .dice.ng-move.ng-move-active,
+#game-show-container .table-wrapper .dices-wrapper .dices .dice.ng-enter.ng-enter-active {
+  opacity:1;
+  height:auto;
+  width:auto;
+}
 #game-show-container .table-wrapper .controls-wrapper{
     position: absolute;
     bottom: 0;
@@ -501,7 +524,31 @@ a.button:hover {
     background: #f8f8f8 url("../img/paper.png") repeat 0 0 ;
     box-shadow: 0 0 4px 0 black;
 }
-/************ PORTRAITS  ************/
+
+#game-show-container .game-choice-container{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 10000;
+    width: 100%;
+    height: 100%;
+    background-color: #f8f8f888;
+}
+#game-show-container .game-choice-container .game-choice-wrapper{
+    margin: auto;
+    background-color: white;
+    border-width: 10px;
+    border-style: solid;
+    border-color: #ffffff; /* Old browsers */
+    border-color: -moz-linear-gradient(top,  #ffffff 0%, #c59f7f 47%, #9d7f7a 84%, #8b6458 100%); /* FF3.6+ */
+    border-color: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#c59f7f), color-stop(84%,#9d7f7a), color-stop(100%,#8b6458)); /* Chrome,Safari4+ */
+    border-color: -webkit-linear-gradient(top,  #ffffff 0%,#c59f7f 47%,#9d7f7a 84%,#8b6458 100%); /* Chrome10+,Safari5.1+ */
+    border-color: -o-linear-gradient(top,  #ffffff 0%,#c59f7f 47%,#9d7f7a 84%,#8b6458 100%); /* Opera 11.10+ */
+    border-color: -ms-linear-gradient(top,  #ffffff 0%,#c59f7f 47%,#9d7f7a 84%,#8b6458 100%); /* IE10+ */
+    border-color: linear-gradient(to bottom,  #ffffff 0%,#c59f7f 47%,#9d7f7a 84%,#8b6458 100%); /* W3C */
+}
+
+/************ PORTRAITS  *************************************************************************************************************/
 .portrait{
     width: 100%;
     height: auto;

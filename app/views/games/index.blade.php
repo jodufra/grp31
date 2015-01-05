@@ -56,14 +56,9 @@
                 <span class="helper"></span>
                 <img src="/img/yahtzee_logo.png" alt="">
               </div>
-              {{Form::open(array('url' => '/spectators/', 'method' => 'post'))}}
-              @if(Auth::check())
-              {{Form::hidden('player_id',Auth::user()->person()->first()->id)}}
-              @endif
-              {{Form::hidden('game_id','[[game.id]]')}}
-              <button type="submit" class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
+              <a href="/game/show/[[game.id]]" type="submit" class="spectate" data-toggle="tooltip" data-placement="top" title="Spectate">
                 <span class="glyphicon glyphicon-search"></span>
-              </button>
+              </a>
               {{Form::close()}}
               <div class="names impar">
                 <div ng-repeat="player in game.players" ng-if="player.player_num % 2">
