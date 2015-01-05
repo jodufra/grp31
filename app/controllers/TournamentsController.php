@@ -87,6 +87,7 @@ class TournamentsController extends \BaseController {
         $users= Array();
         $tournaments = Tournament::findOrFail($id)->players()->get();
         $numberOfElements=count($tournaments);
+            if($numberOfElements<=1)return Redirect::route('tournaments.index')->with('danger','Impossible, don\'t have sufficient players!');
         $a=0;
         for($i=0;$i<32;$i++){
             $a=2^$i;
@@ -101,7 +102,6 @@ class TournamentsController extends \BaseController {
            $newGame= Game::create($game);
             $gameHavePlayer=array('game_id'=>$newGame->id,'player_id'=>$value->player_id,'player_num'=>($i%2!=0)?1:2);
             GameHavePlayer::create($gameHavePlayer);
-            array_push($users,$user);
             $i++;
         }
         for($i;$i<$a;$i++){
