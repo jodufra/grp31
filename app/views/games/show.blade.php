@@ -16,29 +16,25 @@
 	<img class="hidden" src="{{asset('img/dice6.png')}}" />
 	@include('partials.header')
 	<div id="game-show-container" ng-controller="GameShowController" class="game-show-container game clearfix">
-		<div ng-if="started" class="container">
+		<div ng-cloak ng-if="started" class="container">
 			<div class="row players-wrapper">
 				<div class="players clearfix">
-					<div class="player" >
-						<img src="/img/default.png" class="portrait" alt="">
-						<span class="glyphicon glyphicon-record text-success" data-toggle="tooltip" data-placement="bottom" title="Online"></span>&nbsp;<span>user</span>
-					</div>
-					<div class="player" >
-						<img src="/img/default.png" class="portrait active" alt="">
-						<span class="glyphicon glyphicon-record text-warning" data-toggle="tooltip" data-placement="bottom" title="Disconected"></span>&nbsp;<span>opponent</span>
-					</div>
-					<div class="player" ng-repeat="n in [] | range:8">
-						<img src="/img/default.png" class="portrait" alt="">
-						<span class="glyphicon glyphicon-record text-danger" data-toggle="tooltip" data-placement="bottom" title="Offline"></span>&nbsp;<span>username</span>
+					<div class="player" ng-repeat="player in game.players" ng-class"active:player.player_num == game.turn">
+						<span ng-if="player.online" class="glyphicon glyphicon-off text-success" data-toggle="tooltip" data-placement="bottom" title="Online"></span>
+						<span ng-if="isDisconnected(player)" class="glyphicon glyphicon-off text-warning" data-toggle="tooltip" data-placement="bottom" title="Disconnected"></span>
+						<span ng-if="!player.online" class="glyphicon glyphicon-off text-danger" data-toggle="tooltip" data-placement="bottom" title="Offline"></span>
+
+						<img src="[[player.user.img_src]]" class="portrait" alt="">
+						<span ng-bind="player.user.name"></span>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-xs-9">
 					<div class="row">
-						<div class="player single-player">
-							<img src="/img/default.png" class="portrait active" alt="">
-							<span>opponent</span>
+						<div class="player single-player" ng-if="getOpponent()" >
+							<img src="[[getOpponent().user.img_src]]" class="portrait" alt="">
+							<span ng-bind="getOpponent().user.name"></span>
 						</div>
 					</div>
 					<div class="row">
@@ -46,41 +42,29 @@
 							<img class="table" src="/img/table.png" />
 							<div class="dices-wrapper">
 								<span class="dices">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
+									<img ng-repeat="dice in getPlayerOpponentSavedDices()" src="/img/dice[[dice]].png" class="dice" alt="">
 								</span>
 								<br>
 								<span class="dices">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
+									<img ng-repeat="dice in getPlayerDices()" src="/img/dice[[dice]].png" class="dice" alt="">
 								</span>
 								<br>
 								<span class="dices">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
-									<img src="/img/dice1.png" class="dice" alt="">
+									<img ng-repeat="dice in getPlayerSavedDices()" src="/img/dice[[dice]].png" class="dice" alt="">
 								</span>
 							</div>
 							<div class="controls-wrapper">
 								<span class="btn-group">
-									<button class="btn btn-default" disabled>Roll</button>
-									<button class="btn btn-default">End Turn</button>
+									<button class="btn btn-default" ng-disabled="!canRoll()" ng-click="roll()">Roll</button>
+									<button class="btn btn-default" ng-disabled="!canEndTurn()" ng-click="endTurn()">End Turn</button>
 								</span>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="player single-player">
-							<span>user</span>
-							<img src="/img/default.png" class="portrait" alt="">
+						<div class="player single-player" ng-if="getUser()">
+							<span ng-bind="getUser().name"></span>
+							<img src="[[getUser().img_src]]" class="portrait" alt="">
 						</div>
 					</div>
 				</div>

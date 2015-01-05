@@ -27,14 +27,15 @@ appServices.service('GameShow', function($http, CSRF_TOKEN){
     return service;
 });
 
-app.factory('Dices', function ($q, $http)
+app.factory('Dices', function ($q, $http, CSRF_TOKEN)
 {
     var service = {
-        getReroll : function(dicesCount){
-            return $http.post( '/game/getReroll', dicesCount );
+        getReroll : function(data){
+            data['_token']=CSRF_TOKEN;
+            return $http.post( '/game/reroll', data );
         },
         getDices : function(){
-            return $http.get( '/game/getDices' );
+            return $http.get( '/game/dices' );
         },
     };
     return service;

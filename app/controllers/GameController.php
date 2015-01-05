@@ -195,10 +195,24 @@ class GameController extends \BaseController {
 	public function getShow($id)
 	{
 		$this->game = Game::findOrFail($id);
+		return View::make('games.show')->with(array("game"=>['id'=>$this->game->id]));
+	}
+
+	/**
+	 * Display the specified game.
+	 *
+	 * @param  int  $id
+	 * @return Json
+	 */
+	public function getGame($id)
+	{
+		$this->game = Game::findOrFail($id);
 
 		$game['id'] = $this->game->id;
 		$game['players'] = [];
 		$game['timeouts'] = [];
+		$game['play'] = false;
+		$game['rounds'] = 10;
 
 		$q_players = DB::table('games_have_players')->where('game_id', $game['id'])->get();
 		$p_count = 0;
@@ -210,11 +224,13 @@ class GameController extends \BaseController {
 				$name = 'Robot '.$id;
 				$img_src = '/img/bot.png';
 				$player['user'] = ['id'=>$id,'user_id'=>$user_id,'name'=>$name,'img_src'=>$img_src];
+				$player['online'] = true;
 			}else{
 				$user_id = Player::find($id)->user_id;
 				$name = User::find($user_id)->username;
 				$img_src = Person::where('user_id', '=', $user_id)->first()->photo;
 				$player['user'] = ['id'=>$id,'user_id'=>$user_id,'name'=>$name,'img_src'=>$img_src];
+				$player['online'] = false;
 			}
 			$player['player_num'] = $game_have_players->player_num;
 			$player['dices'] = [];
@@ -257,13 +273,14 @@ class GameController extends \BaseController {
 			}
 			$player['score'] = $score;
 			$player['r_score'] = $score;
+			$player['rollsAvailable'] = $score;
 
-			$player['online'] = false;
 			$game['players'][$p_count] = $player;
 			$p_count++;
 		}
+		$game['turn'] = 0;
 
-		return View::make('games.show')->with(array("game"=>$game));
+		return $game;
 	}
 
 	/**

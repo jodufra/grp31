@@ -414,12 +414,21 @@ a.button:hover {
     width: 9%;
     padding: 2px;
 }
-#game-show-container .player .portrait{
-    border:1px solid gray;
+#game-show-container .player span{
+    text-align: center;
 }
-#game-show-container .player .portrait.active{
+#game-show-container .player span.online{
+    text-decoration-color:#3C763D;
+}
+#game-show-container .player span.disconnected{
+    text-decoration-color:#8A6D3B;
+}
+#game-show-container .player span.offline{
+    text-decoration-color:#A94442;
+}
+#game-show-container .player.active .portrait{
     border:1px solid #DD4814;
-    box-shadow: 0 0 6px 4px #DD4814;
+    box-shadow: 0 0 3px 1px #DD4814, inset 0 0 3px 1px #DD4814;
 }
 #game-show-container .player.single-player{
     display: inherit;
