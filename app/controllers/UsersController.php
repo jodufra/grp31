@@ -209,6 +209,12 @@ class UsersController extends BaseController
 
 		}
 
+		if (Input::has('country')) {
+
+//			$name = Input::get('name_update');
+			$person->country = $data['country'];
+
+		}
 		if (Input::has('name_update')) {
 
 //			$name = Input::get('name_update');

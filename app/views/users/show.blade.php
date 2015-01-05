@@ -165,12 +165,14 @@
                                             </div>
 
 
-                                            {{--<div class="form-group">--}}
-                                            {{--{{Form::label('country','Country', array('class'=>'col-md-3 control-label text-right required'))}}--}}
-                                            {{--<div class="col-md-6">--}}
-                                            {{--@include('partials.countries')--}}
-                                            {{--</div>--}}
-                                            {{--</div>--}}
+                                            <div class="form-group">
+                                            {{Form::label('country','Country', array('class'=>'col-md-3 control-label text-right required'))}}
+                                            <div class="col-md-6">
+                                                <div ng-controller="CountriesController" ng-init="Selected = '{{Auth::user()->person()->first()->country}}'">
+                                                    <select name="country" class="form-control col-md-4" ng-model="Selected" ng-options="country for country in countries()"></select>
+                                                </div>
+                                            </div>
+                                            </div>
 
                                             <div class="form-group">
                                                 {{Form::label('address','Address', array('class'=>'col-md-3 control-label text-right'))}}
