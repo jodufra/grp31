@@ -32,6 +32,7 @@ var gio;
 
 var GameManager = (function(){
 	var self = {};
+	/*
 	self.init = function(game, user, socketID){
 		if(user){
 			if(games[game.id] == null){
@@ -52,6 +53,7 @@ var GameManager = (function(){
 			return null;
 		}
 	};
+	*/
 
 	self.getGame = function(name){
 

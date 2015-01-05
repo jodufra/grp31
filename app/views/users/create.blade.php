@@ -76,8 +76,10 @@
         <div class="col-md-6">
           
           <!-- COUNTRIES -->
-          <div ng-controller="CountriesController" ng-init="Selected = ''">
-            <select name="country" class="form-control col-md-4" ng-model="Selected" ng-options="country for country in countries()"></select>
+          <div ng-controller="CountriesController" ng-init="selected = ''">
+            <select name="country" class="form-control col-md-4" required>
+              <option ng-repeat="country in countries()" ng-selected="selected == country" value="[[country]]" title="[[country]]" ng-bind="country"></option>
+            </select>
           </div>
 
 
