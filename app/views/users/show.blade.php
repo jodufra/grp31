@@ -38,14 +38,23 @@
 
                                         <div>
                                             <ul class="list-group">
-                                                <li class="list-group-item">Name: {{ Auth::user()->person()->first()->name}}</li>
-                                                <li class="list-group-item">Birthday: {{ Auth::user()->person()->first()->birthdate}}</li>
-                                                <li class="list-group-item">Country: {{ Auth::user()->person()->first()->country}}</li>
-                                                <li class="list-group-item">Address: {{ Auth::user()->person()->first()->address}}</li>
-                                                <li class="list-group-item">Phone: {{ Auth::user()->person()->first()->phone}}</li>
+                                                <li class="list-group-item">
+                                                    Name: {{ Auth::user()->person()->first()->name}}</li>
+                                                <li class="list-group-item">
+                                                    Birthday: {{ Auth::user()->person()->first()->birthdate}}</li>
+                                                <li class="list-group-item">
+                                                    Country: {{ Auth::user()->person()->first()->country}}</li>
+                                                <li class="list-group-item">
+                                                    Address: {{ Auth::user()->person()->first()->address}}</li>
+                                                <li class="list-group-item">
+                                                    Phone: {{ Auth::user()->person()->first()->phone}}</li>
                                                 <li class="list-group-item">Email: {{Auth::user()->email}}</li>
-                                                <li class="list-group-item">Twitter: <a href="{{ Auth::user()->person()->first()->twitter_url}}">{{ Auth::user()->person()->first()->twitter_url}}</a></li>
-                                                <li class="list-group-item">Facebook: <a href="{{ Auth::user()->person()->first()->facebook_url}}">{{ Auth::user()->person()->first()->facebook_url}}</a></li>
+                                                <li class="list-group-item">Twitter: <a
+                                                            href="{{ Auth::user()->person()->first()->twitter_url}}">{{ Auth::user()->person()->first()->twitter_url}}</a>
+                                                </li>
+                                                <li class="list-group-item">Facebook: <a
+                                                            href="{{ Auth::user()->person()->first()->facebook_url}}">{{ Auth::user()->person()->first()->facebook_url}}</a>
+                                                </li>
 
 
                                             </ul>

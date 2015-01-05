@@ -12,7 +12,9 @@ class GamesTableSeeder extends Seeder {
 		foreach(range(1, 10) as $index)
 		{
 			Game::create([
-
+				'name' => 'semi',
+				'winner' => '1',
+				'finished_at' => date("Y-m-d", strtotime('2015-5-12')) ,
 			]);
 		}
 	}

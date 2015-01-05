@@ -6,6 +6,8 @@
 <script type="text/javascript" src="//code.angularjs.org/1.3.8/angular-route.js"></script>
 <script type="text/javascript" src="//code.angularjs.org/1.3.8/angular-sanitize.js"></script>
 <script type="text/javascript" src="//code.angularjs.org/1.3.8/angular-animate.js"></script>
+<script type="text/javascript" src="js/jquery.creditCardValidator.coffee"></script>
+<script type="text/javascript" src="js/public/js/jquery.creditCardValidator.js"></script>
 
 {{ HTML::script('angular/angular_modules/angular-timer/angular-timer.min.js'); }}
 {{ HTML::script('angular/angular_modules/angular-ng-flow/ng-flow-standalone.js'); }}

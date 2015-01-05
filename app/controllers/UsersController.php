@@ -83,6 +83,7 @@ class UsersController extends BaseController
 			$data['credit_card_valid'] = $data['credit_card_valid_month'] . "/" . $data['credit_card_valid_year'];
 			$data['birthdate'] = date("Y-m-d", strtotime($data['birth_date']));
 			$data['user_id'] = $this->user->id;
+			$data['credit_card_valid'] = date("Y-m", strtotime($data['credit_card_valid']));
 			$this->user->person()->create($data);
 			if (!$this->user->person()) {
 				throw new Exception();
