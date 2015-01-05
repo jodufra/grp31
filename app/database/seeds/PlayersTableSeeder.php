@@ -12,7 +12,6 @@ class PlayersTableSeeder extends Seeder {
 			Player::create([]);
 		}
 
-
 	}
 
 }

@@ -1,7 +1,7 @@
 <?php
 
 // Composer: "fzaninotto/faker": "v1.3.0"
-use Faker\Factory as Faker;
+//use Faker\Factory as Faker;
 
 class GamesTableSeeder extends Seeder {
 
@@ -14,7 +14,7 @@ class GamesTableSeeder extends Seeder {
 			Game::create([
 				'name' => 'semi',
 				'winner' => '1',
-				'finished_at' => date("Y-m-d", strtotime('2015-5-12')) ,
+				'finished_at' => date("Y-m-d", strtotime('2015-5-12'))
 			]);
 		}
 	}

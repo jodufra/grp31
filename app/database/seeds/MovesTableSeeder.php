@@ -1,7 +1,7 @@
 <?php
 
 // Composer: "fzaninotto/faker": "v1.3.0"
-use Faker\Factory as Faker;
+//use Faker\Factory as Faker;
 
 class MovesTableSeeder extends Seeder {
 
