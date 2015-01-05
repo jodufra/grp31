@@ -13,6 +13,7 @@ class PlayersTableSeeder extends Seeder {
 		}
 
 
+
 	}
 
 }

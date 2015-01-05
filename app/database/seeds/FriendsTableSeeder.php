@@ -1,7 +1,7 @@
 <?php
 
 // Composer: "fzaninotto/faker": "v1.3.0"
-use Faker\Factory as Faker;
+//use Faker\Factory as Faker;
 
 class FriendsTableSeeder extends Seeder {
 
@@ -18,7 +18,6 @@ class FriendsTableSeeder extends Seeder {
 				array_push($friends, [
 					'user_id' => $i,
 				'friend_id' => $j
-
 			]);
 				}
 			}

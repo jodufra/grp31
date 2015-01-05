@@ -10,21 +10,18 @@ class UsersTableSeeder extends Seeder {
 
         $users = [
             [
-
                 'username' => 'sadmin',
                 'email' => 'sadmin@example.com',
                 'password' => Hash::make('sadmin'),
                 'role' => 0
             ],
             [
-
                 'username' => 'admin',
                 'email' => 'admin@example.com',
                 'password' => Hash::make('admin'),
                 'role' => 1
             ],
             [
-
                 'username' => 'suser',
                 'email' => 'suser@example.com',
                 'password' => Hash::make('suser'),

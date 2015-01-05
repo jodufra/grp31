@@ -1,19 +1,19 @@
 <?php
 
 // Composer: "fzaninotto/faker": "v1.3.0"
-use Faker\Factory as Faker;
+//use Faker\Factory as Faker;
 
 class PeopleTableSeeder extends Seeder {
 
 	public function run()
 	{
 		DB::table('people')->truncate();
-		$peoples = [];
+		$people = [];
 		for($i=1;$i<15;$i++)
 		{
-			array_push($peoples, [
-				'nome' => 'player',
-				'photo' => '/img/default.png,',
+			array_push($people, [
+				'name' => 'player',
+				'photo' => '/img/default.png',
 				'birthdate' => date("Y-m-d", strtotime('2015-5-12')),
 				'country' => 'Afghanistan',
 				'address' => 'Fake Street 123',
@@ -26,13 +26,11 @@ class PeopleTableSeeder extends Seeder {
 
 			]);
 		}
-		foreach($peoples as $people){
-			Person::create($people);
+		foreach($people as $person){
+			Person::create($person);
 		}
-		foreach(range(1, 15) as $index)
-		{
-			Player::create(['user_id' => $i]);
-		}
+
+
 
 	}
 
