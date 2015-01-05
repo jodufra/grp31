@@ -26,7 +26,7 @@ class FriendsTableSeeder extends Seeder {
 
 
 		foreach($friends as $friend){
-			User::create($friend);
+			Friend::create($friend);
 		}
 	}
 

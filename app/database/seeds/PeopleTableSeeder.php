@@ -27,7 +27,11 @@ class PeopleTableSeeder extends Seeder {
 			]);
 		}
 		foreach($peoples as $people){
-			User::create($people);
+			Person::create($people);
+		}
+		foreach(range(1, 15) as $index)
+		{
+			Player::create(['user_id' => $i]);
 		}
 
 	}

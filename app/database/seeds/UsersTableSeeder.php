@@ -31,6 +31,7 @@ class UsersTableSeeder extends Seeder {
                 'role' => 2
             ],
 
+
             [
                 'username' => 'buser',
                 'email' => 'buser@example.com',
@@ -38,7 +39,7 @@ class UsersTableSeeder extends Seeder {
                 'role' => 11
             ],
         ];
-        for($i=0;$i<10;$i++)
+        for($i=1;$i<=11;$i++)
         {
             array_push($users, [
                 'username' => 'player'.$i,
