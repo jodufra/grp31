@@ -1,4 +1,4 @@
-appControllers.controller('GameShowController', function($scope, $rootScope, GAME, Spectators, Dices){
+appControllers.controller('GameShowController', function($scope, $rootScope, GAME, Spectators, GameShow){
 	$scope.started = false;
 	$scope.user;
 	$scope.player;
@@ -141,7 +141,7 @@ appControllers.controller('GameShowController', function($scope, $rootScope, GAM
 	});
 
 	$scope.canRoll = function(){
-		return ($scope.player && !$scope.rolling && !$scope.endingturn && $scope.game.play && $scope.game.turn == $scope.player.player_num && $scope.player.rollsAvailable);
+		return ($scope.player && !$scope.rolling && $scope.game.play && $scope.game.turn == $scope.player.player_num && $scope.player.rollsAvailable);
 	}
 
 	$scope.canEndTurn = function(){
@@ -153,41 +153,67 @@ appControllers.controller('GameShowController', function($scope, $rootScope, GAM
 	}
 
 	$scope.roll = function(){
-		if($scope.canRoll()){
+		if($scope.canRoll() && !$scope.endingturn){
 			$scope.rolling = true;
-			if($scope.player.rollsAvailable == 3){
-				Dices.getDices().success(function(data){
-					if(data.dices){
-						console.log(data.dices);
-						$scope.game.players[getInGameIndex()].dices = data.dices;
-						$scope.game.players[getInGameIndex()].rollsAvailable--;
-						updateGame();
+			var data_sent = {'player':$scope.player};
+			GameShow.Dices(data_sent).success(function(data){
+				if(data.player){
+					$scope.game.players[getInGameIndex()].score = data.player.score;
+					$scope.game.players[getInGameIndex()].dices = data.player.dices;
+					$scope.game.players[getInGameIndex()].rollsAvailable--;
+					updateGame();
+					if($scope.game.players[getInGameIndex()].rollsAvailable == 0){
+						$scope.endTurn();
 					}
-					$scope.rolling = false;
-				});
-			}else{
-				var data = []
-				data['dices'] = $scope.player.dices;
-				Dices.getReroll(data).success(function(data){
-					if(data.dices){
-						$scope.game.players[getInGameIndex()].dices = data.dices;
-						$scope.game.players[getInGameIndex()].rollsAvailable--;
-						updateGame();
-						if($scope.game.players[getInGameIndex()].rollsAvailable == 0){
-							$scope.endTurn();
-						}
-					}
-					$scope.rolling = false;
-				});
-			}
+				}
+				$scope.rolling = false;
+			});
 		}
 	}
 
 	$scope.endTurn = function(){
-		if($scope.canEndTurn()){
+		if($scope.canEndTurn() && !$scope.rolling){
 			$scope.endingturn = true;
 		}
 	}
+	$scope.closeEndingTurn = function(){
+		if($scope.canRoll()){
+			$scope.endingturn = false;
+		}
+	}
+
+	$scope.endTurnScores = function(){
+		var scores = [];
+		if($scope.endingturn){
+			for(s_name in getPlayerByNum($scope.game.turn).score){
+				var score = getPlayerByNum($scope.game.turn).score[s_name];
+				var r_score = getPlayerByNum($scope.game.turn).r_score[s_name];
+				if(score != 0 && score != r_score){
+					scores.push({name:s_name, value:score});
+				}
+			}
+		}
+		return scores;
+	}
+
+	$scope.endTurnWithScore = function(score_name){
+		if($scope.game.turn == $scope.player.player_num){
+			var data = [];
+			data['player'] = getPlayerByNum($scope.game.turn);
+			GameShow.move(data).success(function(data){
+				if(data.player){
+					socket.emit('game:show:endturn',{game:$scope.game});
+				}
+			})
+		}
+	}
+
+	socket.on('game:show:endturn',function(data){
+		if(data.game.id == $scope.game.id){
+			$scope.game = data.game;
+		}
+		$scope.$apply();
+	})
 
 	$scope.saveDice = function(dice){
 		if($scope.started && $scope.game.turn == $scope.player.player_num && !$scope.rolling && !$scope.endingturn){
@@ -245,6 +271,25 @@ appControllers.controller('GameShowController', function($scope, $rootScope, GAM
 		}
 		return dices;
 	}
+
+	$scope.currentScorePlayerNum = 1;
+
+	$scope.previousCurrentScore = function(){
+		$scope.currentScorePlayerNum--;
+		if($scope.currentScorePlayerNum < 1){
+			$scope.currentScorePlayerNum = $scope.game.players.length;
+		}
+	};
+	$scope.nextCurrentScore = function(){
+		$scope.currentScorePlayerNum++;
+		if($scope.currentScorePlayerNum > $scope.game.players.length ){
+			$scope.currentScorePlayerNum = 1;
+		}
+	};	
+	$scope.getCurrentScorePlayer = function(){
+		return getPlayerByNum($scope.currentScorePlayerNum);
+	};	
+
 	
 
 });
