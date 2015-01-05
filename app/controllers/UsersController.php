@@ -81,7 +81,7 @@ class UsersController extends BaseController
 
 			$data['name'] = $data['first_name'] . " " . $data['last_name'];
 			$data['credit_card_valid'] = $data['credit_card_valid_month'] . "/" . $data['credit_card_valid_year'];
-			$data['birthdate'] = strtotime($data['birth_date']);
+			$data['birthdate'] = date("Y-m-d", strtotime($data['birth_date']));
 			$data['user_id'] = $this->user->id;
 			$this->user->person()->create($data);
 			if (!$this->user->person()) {
@@ -209,6 +209,25 @@ class UsersController extends BaseController
 
 		}
 
+		if (Input::has('address')) {
+
+//			$name = Input::get('name_update');
+			$person->address = $data['address'];
+
+		}
+		if (Input::has('phone')) {
+
+//			$name = Input::get('name_update');
+			$person->phone = $data['phone'];
+
+		}
+
+		if (Input::has('country')) {
+
+//			$name = Input::get('name_update');
+			$person->country = $data['country'];
+
+		}
 		if (Input::has('country')) {
 
 //			$name = Input::get('name_update');
@@ -221,6 +240,15 @@ class UsersController extends BaseController
 			$person->name = $data['name_update'];
 
 		}
+
+		if (Input::has('birth_date')) {
+
+//			$name = Input::get('name_update');
+			$person->birthdate = date("Y-m-d", strtotime($data['birth_date']));
+
+		}
+
+
 		$user->push();
 		$person->push();
 		return Redirect::route('user.show', array(Auth::user()->username));
