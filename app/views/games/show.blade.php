@@ -42,15 +42,15 @@
 							<img class="table" src="/img/table.png" />
 							<div class="dices-wrapper">
 								<span class="dices">
-									<img ng-repeat="dice in getPlayerOpponentSavedDices()" src="/img/dice[[dice]].png" class="dice" alt="">
+									<img ng-repeat="dice in getPlayerOpponentSavedDices()" src="/img/dice[[dice.value]].png" class="dice" alt="">
 								</span>
 								<br>
 								<span class="dices">
-									<img ng-repeat="dice in getPlayerDices()" src="/img/dice[[dice]].png" class="dice" alt="">
+									<img ng-repeat="dice in getPlayerDices()" src="/img/dice[[dice.value]].png" ng-click="saveDice(dice)" class="dice" alt="">
 								</span>
 								<br>
 								<span class="dices">
-									<img ng-repeat="dice in getPlayerSavedDices()" src="/img/dice[[dice]].png" class="dice" alt="">
+									<img ng-repeat="dice in getPlayerSavedDices()" src="/img/dice[[dice.value]].png" ng-click="unsaveDice(dice)" class="dice" alt="">
 								</span>
 							</div>
 							<div class="controls-wrapper">
@@ -149,8 +149,19 @@
 					</table>
 				</div>
 			</div>
-			
-
+			<div ng-if="endingturn" class="game-choice-container">
+				<div class="game-choice-wrapper">
+					<div class='row'>
+						<span>Choose a reward</span>
+						<span class="close pull-right">x</span>
+					</div>
+					<div class='row'>
+						<table class="table">
+							<tr></tr>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	@include('partials.chat')

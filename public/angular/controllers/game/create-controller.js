@@ -215,7 +215,6 @@ appControllers.controller('GameCreateController', function($scope, $rootScope, $
 	});
 
 	$scope.startGame = function(){
-		console.log($scope.players);
 		if($scope.started && $scope.isLeader($scope.user.name) && $scope.players.length > 1){
 			$scope.canStart = false;
 			if($scope.timeouts.length){

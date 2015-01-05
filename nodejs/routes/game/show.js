@@ -78,6 +78,13 @@ var GameManager = (function(){
 		}
 	}
 
+	self.updateGame = function(game){
+		if(games[game.id]){
+			games[game.id] = game;
+		}
+		return games[game.id];
+	}
+
 	self.onPlayerDisconnected = function(socketID){
 		var username = '';
 		for(name in onlineUsers){
@@ -133,6 +140,11 @@ module.exports.sio = function(io, socket) {
 	socket.on('game:show:userinit', function(data){
 		var game = GameManager.initUser(data.game_id, data.user, socket.id);
 		socket.emit('game:show:userinit',{game:game});
+	});
+
+	socket.on('game:show:update', function(data){
+		var game = GameManager.updateGame(data.game);
+		io.emit('game:show:update',{game:game});
 	});
 
 	socket.on('disconnect', function(){

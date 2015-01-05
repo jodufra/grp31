@@ -132,6 +132,7 @@ appControllers.controller('GameShowController', function($scope, $rootScope, GAM
 	};
 
 	socket.on('game:show:update', function(data){
+		console.log(data);
 		if(data.game.id == $scope.game.id){
 			$scope.game = data.game;
 			getInGameIndex();
@@ -140,7 +141,7 @@ appControllers.controller('GameShowController', function($scope, $rootScope, GAM
 	});
 
 	$scope.canRoll = function(){
-		return ($scope.player && !$scope.rolling && $scope.game.play && $scope.game.turn == $scope.player.player_num && $scope.player.rollsAvailable);
+		return ($scope.player && !$scope.rolling && !$scope.endingturn && $scope.game.play && $scope.game.turn == $scope.player.player_num && $scope.player.rollsAvailable);
 	}
 
 	$scope.canEndTurn = function(){
@@ -148,7 +149,7 @@ appControllers.controller('GameShowController', function($scope, $rootScope, GAM
 	}
 
 	function updateGame(){
-		socket.emit('game:show:update', {game:game});
+		socket.emit('game:show:update', {game:$scope.game});
 	}
 
 	$scope.roll = function(){
@@ -157,21 +158,26 @@ appControllers.controller('GameShowController', function($scope, $rootScope, GAM
 			if($scope.player.rollsAvailable == 3){
 				Dices.getDices().success(function(data){
 					if(data.dices){
+						console.log(data.dices);
 						$scope.game.players[getInGameIndex()].dices = data.dices;
 						$scope.game.players[getInGameIndex()].rollsAvailable--;
 						updateGame();
 					}
+					$scope.rolling = false;
 				});
 			}else{
 				var data = []
 				data['dices'] = $scope.player.dices;
-				data['saved_dices'] = $scope.player.saved_dices;
 				Dices.getReroll(data).success(function(data){
 					if(data.dices){
 						$scope.game.players[getInGameIndex()].dices = data.dices;
 						$scope.game.players[getInGameIndex()].rollsAvailable--;
 						updateGame();
+						if($scope.game.players[getInGameIndex()].rollsAvailable == 0){
+							$scope.endTurn();
+						}
 					}
+					$scope.rolling = false;
 				});
 			}
 		}
@@ -179,22 +185,34 @@ appControllers.controller('GameShowController', function($scope, $rootScope, GAM
 
 	$scope.endTurn = function(){
 		if($scope.canEndTurn()){
-			
+			$scope.endingturn = true;
 		}
 	}
 
 	$scope.saveDice = function(dice){
+		if($scope.started && $scope.game.turn == $scope.player.player_num && !$scope.rolling && !$scope.endingturn){
+			dice.saved = true;
+			updateGame();
+		}
 	}
 
 	$scope.unsaveDice = function(dice){
+		if($scope.started && $scope.game.turn == $scope.player.player_num && !$scope.rolling && !$scope.endingturn){
+			dice.saved = false;
+			updateGame();
+		}
 	}
 
 	$scope.getPlayerOpponentSavedDices = function(){
 		var dices = [];
-		if($scope.started){
+		if($scope.started && $scope.game.turn != 0){
 			if($scope.game.turn != $scope.player.player_num){
 				var player = getPlayerByNum($scope.game.turn);
-				dices = player.saved_dices;
+				for (var i = 0; i < player.dices.length; i++) {
+					if(player.dices[i].saved){
+						dices.push(player.dices[i]);
+					}
+				};
 			}	
 		}
 		return dices;
@@ -202,21 +220,27 @@ appControllers.controller('GameShowController', function($scope, $rootScope, GAM
 
 	$scope.getPlayerDices = function(){
 		var dices = [];
-		if($scope.started){
-			if($scope.game.turn == $scope.player.player_num){
-				var player = getPlayerByNum($scope.game.turn);
-				dices = player.dices;
-			}	
+		if($scope.started && $scope.game.turn != 0){
+			var player = getPlayerByNum($scope.game.turn);
+			for (var i = 0; i < player.dices.length; i++) {
+				if(!player.dices[i].saved){
+					dices.push(player.dices[i]);
+				}
+			};
 		}
 		return dices;
 	}
 
 	$scope.getPlayerSavedDices = function(){
 		var dices = [];
-		if($scope.started){
+		if($scope.started && $scope.game.turn != 0){
 			if($scope.game.turn == $scope.player.player_num){
 				var player = getPlayerByNum($scope.game.turn);
-				dices = player.saved_dices;
+				for (var i = 0; i < player.dices.length; i++) {
+					if(player.dices[i].saved){
+						dices.push(player.dices[i]);
+					}
+				};
 			}	
 		}
 		return dices;

@@ -17,22 +17,6 @@ class GameController extends \BaseController {
     	$this->game = $game;
     }
 
-    private $R_NODE_NAME = 'laravelServer';
-    private $LARAVEL_COOKIE = 'laravelServerrrrrr';
-
-    public function notifyNode($request_type, $gameid, $r_msg){
-
-		//print_r(mcrypt_list_algorithms());
-    	$client = new Client(new Version1X('http://localhost:5555'));
-    	$client->initialize();
-    	$client->emit($this->R_NODE_NAME, [
-    		'cookie'=> Crypt::encrypt($this->LARAVEL_COOKIE),
-    		'request' => $request_type,
-    		'msg' => $r_msg,
-    		'gameid' => $gameid]);
-    	$client->close();
-    }
-
     public function scoreCalculator()
     {
     	$dices=array();
@@ -50,9 +34,18 @@ class GameController extends \BaseController {
     {
     	$dices = [];
     	for ($i = 0; $i < 5; $i++) {
+    		$dices[$i] = ['value'=>rand(1,6),'saved'=>false];
+    	}
+    	return array('dices'=>$dices);
+    }
+
+    public function postReroll()
+    {
+    	$dices = [];
+    	for ($i = 0; $i < 5; $i++) {
     		$dices[$i] = array('val'=>rand(1,6),'saved'=>false);
     	}
-    	return Response::json($dices);
+    	return array('dices'=>$dices);
     }
 
     public function getOngoinggames()
@@ -165,33 +158,6 @@ class GameController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-
-	/*
-	this.id = id;
-	this.turn = '';
-	this.players = [];
-	for (var i = 0; i < players.length; i++) {
-		var player = players[i];
-		var name = players[i].name;
-		this.players[name] = {};
-		this.players[name].user = {id:player.id, user_id:player.user_id, name:player.name, img_src:player.img_src};
-		this.players[name].player_num = player.player_num;
-		this.players[name].rollsAvailable = (i==0 ? 3 : 0);
-		this.players[name].online = false;
-		this.players[name].dices = [];
-		this.players[name].saved_dices = [];
-		this.players[name].score = {
-			ones:0, twos:0, threes:0, fours:0, fives:0, sixes:0, sum:0, bonus:0,
-			threeKind:0, fourKind:0, house:0, small_s:0, large_s:0, chance:0, yahtzee:0,
-			total:0
-		};
-		this.players[name].r_score = {
-			ones:0, twos:0, threes:0, fours:0, fives:0, sixes:0, sum:0, bonus:0,
-			threeKind:0, fourKind:0, house:0, small_s:0, large_s:0, chance:0, yahtzee:0,
-			total:0
-		};
-	};
-	 */
 	public function getShow($id)
 	{
 		$this->game = Game::findOrFail($id);
@@ -234,7 +200,6 @@ class GameController extends \BaseController {
 			}
 			$player['player_num'] = $game_have_players->player_num;
 			$player['dices'] = [];
-			$player['saved_dices'] = [];
 
 			$q_score = DB::table('moves')->where('game_id',$game['id'])->where('player_id',$id)->max('id');
 			$score = [];
