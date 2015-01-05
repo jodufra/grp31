@@ -24,6 +24,7 @@ io.on('connection', function(socket) {
 	require('./routes/chat').sio(io, socket);
 	require('./routes/notification_handler').sio(io, socket);
 	require('./routes/game/create').sio(io, socket);
+	require('./routes/game/show').sio(io, socket);
 
 	socket.on('disconnect', function() {
 		//	console.log('Disconnected - '+ socket.id);

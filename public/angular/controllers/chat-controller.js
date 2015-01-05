@@ -42,6 +42,7 @@ appControllers.controller('ChatController', function($scope, PrivateChat, Public
 			user: $scope.user,
 			channel: publicChat.channel,
 		});
+		publicChat.messages = [];
 	}
 
 	socket.on('chat:init:public', function (data) {
@@ -55,6 +56,7 @@ appControllers.controller('ChatController', function($scope, PrivateChat, Public
 	socket.on('chat:message:buffer', function (data) {
 		if(!data.privateChat){
 			if(data.channel == publicChat.channel){
+				publicChat.messages = [];
 				for (var i = 0; i < data.messages.length; i++) {
 					var message = data.messages[i];
 					addMessage(publicChat, message);

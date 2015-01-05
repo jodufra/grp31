@@ -165,12 +165,105 @@ class GameController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
+
+	/*
+	this.id = id;
+	this.turn = '';
+	this.players = [];
+	for (var i = 0; i < players.length; i++) {
+		var player = players[i];
+		var name = players[i].name;
+		this.players[name] = {};
+		this.players[name].user = {id:player.id, user_id:player.user_id, name:player.name, img_src:player.img_src};
+		this.players[name].player_num = player.player_num;
+		this.players[name].rollsAvailable = (i==0 ? 3 : 0);
+		this.players[name].online = false;
+		this.players[name].dices = [];
+		this.players[name].saved_dices = [];
+		this.players[name].score = {
+			ones:0, twos:0, threes:0, fours:0, fives:0, sixes:0, sum:0, bonus:0,
+			threeKind:0, fourKind:0, house:0, small_s:0, large_s:0, chance:0, yahtzee:0,
+			total:0
+		};
+		this.players[name].r_score = {
+			ones:0, twos:0, threes:0, fours:0, fives:0, sixes:0, sum:0, bonus:0,
+			threeKind:0, fourKind:0, house:0, small_s:0, large_s:0, chance:0, yahtzee:0,
+			total:0
+		};
+	};
+	 */
 	public function getShow($id)
 	{
-		//$game = Game::findOrFail($id);
+		$this->game = Game::findOrFail($id);
 
-		//return View::make('games.show', compact('game'));
-		return View::make('games.show', array("game_id"=>$id));
+		$game['id'] = $this->game->id;
+		$game['players'] = [];
+		$game['timeouts'] = [];
+
+		$q_players = DB::table('games_have_players')->where('game_id', $game['id'])->get();
+		$p_count = 0;
+		foreach ($q_players as $game_have_players) {
+			$player = [];
+			$id = $game_have_players->player_id;
+			if($id < 10){
+				$user_id = null;
+				$name = 'Robot '.$id;
+				$img_src = '/img/bot.png';
+				$player['user'] = ['id'=>$id,'user_id'=>$user_id,'name'=>$name,'img_src'=>$img_src];
+			}else{
+				$user_id = Player::find($id)->user_id;
+				$name = User::find($user_id)->username;
+				$img_src = Person::where('user_id', '=', $user_id)->first()->photo;
+				$player['user'] = ['id'=>$id,'user_id'=>$user_id,'name'=>$name,'img_src'=>$img_src];
+			}
+			$player['player_num'] = $game_have_players->player_num;
+			$player['dices'] = [];
+			$player['saved_dices'] = [];
+
+			$q_score = DB::table('moves')->where('game_id',$game['id'])->where('player_id',$id)->max('id');
+			$score = [];
+			if($q_score){
+				$score['ones'] = $q_score->s_ones;
+				$score['twos'] = $q_score->s_twos;
+				$score['threes'] = $q_score->s_threes;
+				$score['fours'] = $q_score->s_fours;
+				$score['fives'] = $q_score->s_fives;
+				$score['sixes'] = $q_score->s_sixes;
+				$score['bonus'] = $q_score->s_bonus;
+				$score['threeKind'] = $q_score->s_threekind;
+				$score['fourKind'] = $q_score->s_fourkind;
+				$score['house'] = $q_score->s_house;
+				$score['small_s'] = $q_score->s_small_s;
+				$score['large_s'] = $q_score->s_large_s;
+				$score['chance'] = $q_score->s_chance;
+				$score['yahtzee'] = $q_score->s_yahtzee;
+			}else{
+				$score['ones'] = 0;
+				$score['twos'] = 0;
+				$score['threes'] = 0;
+				$score['fours'] = 0;
+				$score['fives'] = 0;
+				$score['sixes'] = 0;
+				$score['sum'] = 0;
+				$score['bonus'] = 0;
+				$score['threeKind'] = 0;
+				$score['fourKind'] = 0;
+				$score['house'] = 0;
+				$score['small_s'] = 0;
+				$score['large_s'] = 0;
+				$score['chance'] = 0;
+				$score['yahtzee'] = 0;
+				$score['total'] = 0;
+			}
+			$player['score'] = $score;
+			$player['r_score'] = $score;
+
+			$player['online'] = false;
+			$game['players'][$p_count] = $player;
+			$p_count++;
+		}
+
+		return View::make('games.show')->with(array("game"=>$game));
 	}
 
 	/**

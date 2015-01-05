@@ -13,12 +13,5 @@
 {{ HTML::style('css/bootstrap-datepicker.css'); }}
 {{ HTML::style('css/font-awesome.min.css'); }}
 {{ HTML::style('css/style.css'); }}
-
-<script language="javascript">
-<!--
-
-preloaded_default = new Image(120,120)
-preloaded_default.src = "/img/default.png"
-
-// end hiding -->
-</script>
+<!-- Angular Config -->
+{{ HTML::script('angular/app.js'); }}

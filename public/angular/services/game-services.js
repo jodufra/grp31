@@ -14,10 +14,11 @@ appServices.service('GameStore', function($http){
     return service;
 });
 
-appServices.service('GameShow', function($http){
+appServices.service('GameShow', function($http, CSRF_TOKEN){
     var service = {};
-    service.getReroll = function(dicesCount){
-        return $http.post( '/game/getReroll', dicesCount );
+    service.getReroll = function(data){
+        data['_token'] = CSRF_TOKEN;
+        return $http.post( '/game/getReroll', data );
     };
     service.getDices = function(){
         return $http.get( '/game/getDices' );

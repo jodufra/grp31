@@ -15,8 +15,8 @@
 	<img class="hidden" src="{{asset('img/dice5.png')}}" />
 	<img class="hidden" src="{{asset('img/dice6.png')}}" />
 	@include('partials.header')
-	<div id="game-show-container" class="game-show-container game clearfix">
-		<div class="container">
+	<div id="game-show-container" ng-controller="GameShowController" class="game-show-container game clearfix">
+		<div ng-if="started" class="container">
 			<div class="row players-wrapper">
 				<div class="players clearfix">
 					<div class="player" >
@@ -170,7 +170,7 @@
 		</div>
 	</div>
 	@include('partials.chat')
-	<script> var game_id = {{$game_id}};</script>
+	<script> appConstants.constant('GAME', {{json_encode($game)}} ); </script>
 	@include('partials.includes_aload')
 </body>
 </html>
