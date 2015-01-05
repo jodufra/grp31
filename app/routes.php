@@ -37,6 +37,7 @@ Route::group(array('before' => 'auth'), function () {
     Route::get('tournaments/subscribe/{id}', array('uses' => 'TournamentsController@subscribe'));
     Route::get('tournaments/show/{id}', array('uses' => 'TournamentsController@show'));
     Route::get('tournaments/showRanking/{id}', array('uses' => 'TournamentsController@showRanking'));
+    Route::get('tournaments/start/{id}', array('uses' => 'TournamentsController@start'));
     Route::get('/friends/friendsList', 'FriendsController@friendsList');
     Route::post('/friends/create', 'FriendsController@create');
     // Player

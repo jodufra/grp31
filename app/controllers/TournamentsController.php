@@ -83,6 +83,36 @@ class TournamentsController extends \BaseController {
 
         return View::make('tournaments.results', compact('users'));
     }
+    public function start($id){
+        $users= Array();
+        $tournaments = Tournament::findOrFail($id)->players()->get();
+        $numberOfElements=count($tournaments);
+        $a=0;
+        for($i=0;$i<32;$i++){
+            $a=2^$i;
+            if($numberOfElements<=$a){
+                break;
+            }
+        }
+        $i=1;
+        foreach ($tournaments as $value){
+            if($i%2!=0)
+                $game = array('name'=>'Game'+$i);
+           $newGame= Game::create($game);
+            $gameHavePlayer=array('game_id'=>$newGame->id,'player_id'=>$value->player_id,'player_num'=>($i%2!=0)?1:2);
+            GameHavePlayer::create($gameHavePlayer);
+            array_push($users,$user);
+            $i++;
+        }
+        for($i;$i<$a;$i++){
+            if($i%2!=0)
+                $game = array('name'=>'Game'+$i);
+            $newGame= Game::create($game);
+            $gameHavePlayer=array('game_id'=>$newGame->id,'player_id'=>$value->player_id,'player_num'=>($i%2!=0)?1:2);
+            GameHavePlayer::create($gameHavePlayer);
+        }
+        return Redirect::route('tournaments.index')->with('info','You had started the tournament with success!');
+    }
 	public function show($id)
 	{
         $users= Array();
