@@ -1,22 +1,6 @@
 const CHAT_BUFFER_SIZE = 10;
 var publicChatBuffer = [];
 
-/* 
-Chat init data layout:
-{
-	user: name,
-	channel: '',
-}
-
-Message Layout:
-{
-	user: {name:'',img_src:''},
-	privateChat: false,
-	channel: '',
-	addressee: '',
-	message: '',
-}
-*/
 var chatUsersManager = (function () {
 	var users = {};
 	var names = {};

@@ -15,21 +15,21 @@
 	<img class="hidden" src="{{asset('img/dice5.png')}}" />
 	<img class="hidden" src="{{asset('img/dice6.png')}}" />
 	@include('partials.header')
-	<div id="game-show-container" class="game-show-container game clearfix">
-		<div class="container">
+	<div id="game-show-container" ng-controller="GameShowController" class="game-show-container game clearfix">
+		<div ng-if="started" class="container">
 			<div class="row players-wrapper">
 				<div class="players clearfix">
 					<div class="player" >
 						<img src="/img/default.png" class="portrait" alt="">
-						<span>user</span>
+						<span class="glyphicon glyphicon-record text-success" data-toggle="tooltip" data-placement="bottom" title="Online"></span>&nbsp;<span>user</span>
 					</div>
 					<div class="player" >
 						<img src="/img/default.png" class="portrait active" alt="">
-						<span>opponent</span>
+						<span class="glyphicon glyphicon-record text-warning" data-toggle="tooltip" data-placement="bottom" title="Disconected"></span>&nbsp;<span>opponent</span>
 					</div>
 					<div class="player" ng-repeat="n in [] | range:8">
 						<img src="/img/default.png" class="portrait" alt="">
-						<span>username</span>
+						<span class="glyphicon glyphicon-record text-danger" data-toggle="tooltip" data-placement="bottom" title="Offline"></span>&nbsp;<span>username</span>
 					</div>
 				</div>
 			</div>
@@ -45,6 +45,14 @@
 						<div class="table-wrapper">
 							<img class="table" src="/img/table.png" />
 							<div class="dices-wrapper">
+								<span class="dices">
+									<img src="/img/dice1.png" class="dice" alt="">
+									<img src="/img/dice1.png" class="dice" alt="">
+									<img src="/img/dice1.png" class="dice" alt="">
+									<img src="/img/dice1.png" class="dice" alt="">
+									<img src="/img/dice1.png" class="dice" alt="">
+								</span>
+								<br>
 								<span class="dices">
 									<img src="/img/dice1.png" class="dice" alt="">
 									<img src="/img/dice1.png" class="dice" alt="">
@@ -162,7 +170,7 @@
 		</div>
 	</div>
 	@include('partials.chat')
-	<script> var game_id = {{$game_id}};</script>
+	<script> appConstants.constant('GAME', {{json_encode($game)}} ); </script>
 	@include('partials.includes_aload')
 </body>
 </html>
