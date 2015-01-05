@@ -7,7 +7,7 @@
 @section('body')
 <div class="col-md-12" ng-controller="TournamentController">
     @if(Auth::user()!=null &&(Auth::user()->role==0 || Auth::user()->role==1) )
-     <a class="button" href="/tournaments/start">
+     <a class="button" href="/tournaments/start/[[tournamenID]]">
             <div class="jumbotron button">
               <h2 class="text-info"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;Start tournament</h2>
             </div>
