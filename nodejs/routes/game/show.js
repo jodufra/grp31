@@ -63,6 +63,15 @@ var GameManager = (function(){
 		}
 	};
 
+	self.endTurn = function(game_id){
+		if(games[game_id].rounds){
+			nextTurn(game_id);
+			if(games[game_id].turn == 1){
+				games[game_id].rounds--;
+			}
+		}
+	};
+
 	function nextTurn(game_id){
 		if(games[game_id]){
 			games[game_id].turn++;
@@ -144,6 +153,11 @@ module.exports.sio = function(io, socket) {
 
 	socket.on('game:show:update', function(data){
 		var game = GameManager.updateGame(data.game);
+		io.emit('game:show:update',{game:game});
+	});
+
+	socket.on('game:show:endturn', function(data){
+		var game = GameManager.endTurn(data.game);
 		io.emit('game:show:update',{game:game});
 	});
 

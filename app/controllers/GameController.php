@@ -17,7 +17,7 @@ class GameController extends \BaseController {
     	$this->game = $game;
     }
 
-    public function scoreCalculator()
+    public function getScorecalculator()
     {
     	$dices=array();
     	$dices[0]=Input::get('1',0);
@@ -25,27 +25,55 @@ class GameController extends \BaseController {
     	$dices[2]=Input::get('3',0);
     	$dices[3]=Input::get('4',0);
     	$dices[4]=Input::get('5',0);
+    	$result = $this->calculator($dices);
+    	return $result;
+    }
+
+    public function calculator($dices)
+    {
     	$calculator = new YahtzeeCombinationCalculator();
-    	$result=$calculator->getScore($dices);
-    	return View::make('game.index')->with('result', $result);
+    	return $result=$calculator->getScore($dices);
     }
 
-    public function getDices()
+    public function postDices()
     {
+    	$player = Input::get('player');
+
+    	$p_dices = $player['dices'];
+
     	$dices = [];
-    	for ($i = 0; $i < 5; $i++) {
-    		$dices[$i] = ['value'=>rand(1,6),'saved'=>false];
+    	if(count($p_dices) != 0){
+    		$dices = $p_dices;
+    		for ($i = 0; $i < 5; $i++) {
+    			if(!$dices[$i]->saved){
+    				$dices[$i] = ['value'=>rand(1,6),'saved'=>false];
+    			}
+    		}
+    	}else{
+    		for ($i = 0; $i < 5; $i++) {
+    			$dices[$i] = ['value'=>rand(1,6),'saved'=>false];
+    		}
     	}
-    	return array('dices'=>$dices);
+    	$calc = [];
+    	$calc[0]=$dices[0]['value'];
+    	$calc[1]=$dices[1]['value'];
+    	$calc[2]=$dices[2]['value'];
+    	$calc[3]=$dices[3]['value'];
+    	$calc[4]=$dices[4]['value'];
+
+		$player['dices'] = $dices; 
+    	$player['score'] = $this->calculator($calc);
+    	return array('player'=>$player);
     }
 
-    public function postReroll()
+    public function postEndturn()
     {
-    	$dices = [];
-    	for ($i = 0; $i < 5; $i++) {
-    		$dices[$i] = array('val'=>rand(1,6),'saved'=>false);
-    	}
-    	return array('dices'=>$dices);
+    	$player = Input::get('player');
+
+    	$choice = Input::get('choice');
+    	
+    	return array('player'=>$player);
+
     }
 
     public function getOngoinggames()
@@ -238,7 +266,7 @@ class GameController extends \BaseController {
 			}
 			$player['score'] = $score;
 			$player['r_score'] = $score;
-			$player['rollsAvailable'] = $score;
+			$player['rollsAvailable'] = 0;
 
 			$game['players'][$p_count] = $player;
 			$p_count++;
