@@ -2,7 +2,8 @@ $(function(){
 	$('input[type=file]').bootstrapFileInput();
 	$('.datepicker').datepicker({});
 	timeoutAlerts();
-	fixPortraits()
+	tabNav();
+	fixPortraits();
 	setInterval(function(){refreshUI();}, 2500);
 });
 
@@ -23,4 +24,15 @@ function refreshUI(){
 	$('[data-toggle="tooltip"]').tooltip();
 	$('.dropdown-autoclose-prevented').click(function(e) { e.stopPropagation(); });
 	fixPortraits();
+}
+
+function tabNav(){
+	var hash = window.location.hash;
+	hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+	$('.nav-tabs a').click(function (e) {
+		$(this).tab('show');
+		var scrollmem = $('body').scrollTop();
+		window.location.hash = this.hash;
+		$('html,body').scrollTop(scrollmem);
+	});
 }

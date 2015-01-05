@@ -123,7 +123,7 @@ class UsersController extends BaseController
 		} else {
 
 			$person = Person::where('user_id', '=', $result->id)->first();
-			return View::make('users.show')->with(array('user'=> $result,'person'=>$person));
+			return View::make('users.show')->with(array('user' => $result, 'person' => $person));
 		}
 
 	}
@@ -152,13 +152,15 @@ class UsersController extends BaseController
 
 		$validator = Validator::make($data, User::$create_rules_update);
 		if ($validator->fails()) {
-			return Redirect::route('user.show', array(Auth::user()->username))->withErrors($validator)->withInput();
+			return Redirect::route('user.show',
+				array(Auth::user()->username, '#edit'))->withErrors($validator)->withInput();
 		}
 
 
 		$validator = Validator::make($data, Person::$rulesUpdate);
 		if ($validator->fails()) {
-			return Redirect::route('user.show', array(Auth::user()->username))->withErrors($validator)->withInput();
+			return Redirect::route('user.show',
+				array(Auth::user()->username, '#edit'))->withErrors($validator)->withInput();
 		}
 
 
@@ -170,41 +172,49 @@ class UsersController extends BaseController
 			$filename = str_replace(' ', '_', $filename);
 			$filename = preg_replace('/[^A-Za-z0-9\-]/', '', $filename);
 			if ($filename == '') {
-				$filename = 'user'.Auth::user()->id;
+				$filename = 'user' . Auth::user()->id;
 			}
 			Input::file('photo_update')->move(public_path() . '/img/uploads/', $filename);
 			$photo = ('/img/uploads/' . $filename);
-			$person->photo = $photo;
-			;
+			$person->photo = $photo;;
 
-			if(Input::has('password') && Input::has('password_confirmation'))
-			{
+			if (Input::has('password') && Input::has('password_confirmation')) {
 
 			}
 
 		}
 
-		if(Input::has('email'))
-		{
+		if (Input::has('email')) {
 			$user->email = $data['email'];
 		}
 
 
-		if(Input::has('password') && Input::has('password_confirmation') && (Input::has('password') == Input::has('password_confirmation')))
-		{
+		if (Input::has('password') && Input::has('password_confirmation') && (Input::has('password') == Input::has('password_confirmation'))) {
 			$data['password'] = Hash::make($data['password']);
 			$user->password = $data['password'];
 
 
 		}
 
-		if(Input::has('name_update'))
-		{
+		if (Input::has('twitter_url')) {
+
+//			$name = Input::get('name_update');
+			$person->twitter_url = $data['twitter_url'];
+
+		}
+		if (Input::has('facebook_url')) {
+
+//			$name = Input::get('name_update');
+			$person->facebook_url = $data['facebook_url'];
+
+		}
+
+		if (Input::has('name_update')) {
 
 //			$name = Input::get('name_update');
 			$person->name = $data['name_update'];
 
-			}
+		}
 		$user->push();
 		$person->push();
 		return Redirect::route('user.show', array(Auth::user()->username));

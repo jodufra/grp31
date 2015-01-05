@@ -23,6 +23,8 @@ class Person extends Eloquent
 		'country' => 'required',
 		'address' => 'min:12',
 		'phone' => 'min:9',
+		'facebook_url'=>'url',
+		'twitter_url'=>'url',
 		'credit_card_titular' => 'required|min:6',
 		'credit_card_num' => 'required|min:13',
 		'credit_card_valid_month' => 'required',
@@ -31,11 +33,13 @@ class Person extends Eloquent
 
 	public static $rulesUpdate = [
 		'photo_file' => 'image',
-		'name_update' => 'required|min:2',
+		'name_update' => 'min:2',
 //		'last_name' => 'required|min:2',
 //		'country' => 'required',
 		'address' => 'min:12',
 		'phone' => 'min:9',
+		'facebook_url'=>'url',
+		'twitter_url'=>'url',
 //		'credit_card_titular' => 'required|min:6',
 //		'credit_card_num' => 'required|min:13',
 //		'credit_card_valid_month' => 'required',
