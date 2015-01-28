@@ -29,8 +29,8 @@ class Person extends Eloquent
 	protected $table = 'people';
 
     public static $messages = array(
-        'olderThan'    => 'You need to have more than 18 years old',
-        'validCreditCard' => 'The expiration date is invalid',
+        'older_than'    => 'You need to have more than 18 years old',
+        'valid_credit_card' => 'The expiration date is invalid',
     );
 
 	// Add your validation rules here
