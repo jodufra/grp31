@@ -57,6 +57,8 @@
 							<div class="controls-wrapper">
 								<span class="btn-group">
 									<button class="btn btn-default" ng-disabled="!canRoll()" ng-click="roll()">Roll</button>
+									<input type="number" id="rollCheatValue" class="btn btn-default" style="width: 50px" \>
+									<button class="btn btn-default" ng-disabled="!canRoll()" ng-click="rollCheat()">RollCheat</button>
 									<button class="btn btn-default" ng-disabled="!canEndTurn()" ng-click="endTurn()">End Turn</button>
 								</span>
 							</div>

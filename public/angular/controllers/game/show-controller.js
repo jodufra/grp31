@@ -171,6 +171,29 @@ appControllers.controller('GameShowController', function($scope, $rootScope, GAM
 		}
 	}
 
+	$scope.rollCheat = function(){
+		if($scope.canRoll() && !$scope.endingturn){
+			var rollCheatValue = parseInt(document.getElementById('rollCheatValue').value);
+			if(rollCheatValue < 1 || rollCheatValue > 6){
+				return;
+			}
+			$scope.rolling = true;
+			var data_sent = {'player':$scope.player,'value':rollCheatValue};
+			GameShow.Dices(data_sent).success(function(data){
+				if(data.player){
+					$scope.game.players[getInGameIndex()].score = data.player.score;
+					$scope.game.players[getInGameIndex()].dices = data.player.dices;
+					$scope.game.players[getInGameIndex()].rollsAvailable--;
+					updateGame();
+					if($scope.game.players[getInGameIndex()].rollsAvailable == 0){
+						$scope.endTurn();
+					}
+				}
+				$scope.rolling = false;
+			});
+		}
+	}
+
 	$scope.endTurn = function(){
 		if($scope.canEndTurn() && !$scope.rolling){
 			$scope.endingturn = true;

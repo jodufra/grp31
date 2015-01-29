@@ -18,11 +18,11 @@ appServices.service('GameShow', function($http, CSRF_TOKEN){
     var service = {};
     service.Reroll = function(data){
         data['_token'] = CSRF_TOKEN;
-        return $http.post( '/game/reroll', data );
+        return $http.post( '/game/reroll', data);
     };
     service.Dices = function(data){
         data['_token'] = CSRF_TOKEN;
-        return $http.post( '/game/dices' );
+        return $http.post( '/game/dices', data);
     };
     service.move = function(data){
         data['_token'] = CSRF_TOKEN;

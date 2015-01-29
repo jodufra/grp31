@@ -1,9 +1,9 @@
-var https = require('https');
-var https_options = function(game_id){
+var http = require('http');
+var http_options = function(game_id){
 	return {
 		rejectUnauthorized: false,
 		hostname:'grp31.dad', 
-		port:443, 
+		port:80, 
 		path:'/game/game/'+game_id
 	}
 }
@@ -20,7 +20,7 @@ var GameManager = (function(){
 
 	self.initGame = function(game_id){
 		if(games[game_id] == null){
-			https.get(https_options(game_id), function (res) {
+			http.get(http_options(game_id), function (res) {
 				res.setEncoding('utf8');
 				res.on('data', function (data) {
 					var game = JSON.parse(data);
@@ -31,7 +31,7 @@ var GameManager = (function(){
 					};
 				});
 			}).on('error', function(e) {
-				console.log("HTTPS -> /game/game Error: " + e.message);
+				console.log("http -> /game/game Error: " + e.message);
 			});
 		}
 		return games[game_id];

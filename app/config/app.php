@@ -84,8 +84,6 @@ return array(
     //'cipher' => MCRYPT_RIJNDAEL_128,
     'cipher' => MCRYPT_RC2,
 
-    'privateKey' => 'server.key',
-
     /*
 	|--------------------------------------------------------------------------
 	| Autoloaded Service Providers

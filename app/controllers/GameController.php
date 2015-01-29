@@ -38,19 +38,18 @@ class GameController extends \BaseController {
     public function postDices()
     {
     	$player = Input::get('player');
-
-    	$p_dices = $player['dices'];
-
-    	$dices = [];
-    	if(count($p_dices) != 0){
-    		$dices = $p_dices;
-    		for ($i = 0; $i < 5; $i++) {
-    			if(!$dices[$i]->saved){
-    				$dices[$i] = ['value'=>rand(1,6),'saved'=>false];
-    			}
+    	$value = Input::get('value');
+    	if(!$player){
+    		return null;
+    	}
+    	$dices = $player['dices'];
+    	for ($i = 0; $i < 5; $i++) {
+    		if(isset($dices[$i]) && $dices[$i]['saved']){
+    			continue;
     		}
-    	}else{
-    		for ($i = 0; $i < 5; $i++) {
+    		if(isset($value) && $value > 0){
+    			$dices[$i] = ['value'=>$value,'saved'=>false];
+    		}else{
     			$dices[$i] = ['value'=>rand(1,6),'saved'=>false];
     		}
     	}
@@ -61,7 +60,7 @@ class GameController extends \BaseController {
     	$calc[3]=$dices[3]['value'];
     	$calc[4]=$dices[4]['value'];
 
-		$player['dices'] = $dices; 
+    	$player['dices'] = $dices; 
     	$player['score'] = $this->calculator($calc);
     	return array('player'=>$player);
     }

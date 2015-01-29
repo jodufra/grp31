@@ -1,6 +1,6 @@
 <!-- Socket -->
-<script src="https://grp31.dad:3000/socket.io/socket.io.js"></script>
-<script>var socket = io.connect('https://grp31.dad:3000');</script>
+<script src="http://grp31.dad:3000/socket.io/socket.io.js"></script>
+<script>var socket = io.connect('http://grp31.dad:3000');</script>
 
 
 <!-- Angular Global Constants -->

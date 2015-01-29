@@ -13,11 +13,11 @@
 
 App::before(function($request)
 {
-   //if(!Request::secure()) return Redirect::secure(Request::path(),'307');
-
+   //
 });
 
-App::after(function ($request, $response) {
+App::after(function ($request, $response) 
+{
     //
 });
 
